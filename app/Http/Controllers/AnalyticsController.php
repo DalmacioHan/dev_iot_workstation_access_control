@@ -13,13 +13,22 @@ class AnalyticsController extends Controller
     public function index(){
         //Card data
         $popularWorkstation = PcAccessLogs::select('workstation_id', PcAccessLogs::raw('count(*) as total'))
+            ->where('occurred_at','>=', now()->startOfDay())
             ->with('workstation')
             ->groupBy('workstation_id')
             ->orderBy('total', 'desc')
             ->first();
-        $totalEvents = PcAccessLogs::count();
-        $failedEvents = PcAccessLogs::where('result', 'FAIL')->count();
+        $totalEvents = PcAccessLogs::where('occurred_at','>=', now()->startOfDay())->count();
+        $failedEvents = PcAccessLogs::where('result', 'FAIL')->where('occurred_at','>=', now()->startOfDay())->count();
 
-        return view('admin.analytics.index', compact('totalEvents', 'failedEvents', 'popularWorkstation'));
+        //chart data
+        $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
+            ->whereMonth('occurred_at', now()->month)
+            ->whereYear('occurred_at', now()->year)
+            ->groupBy('student_name')
+            ->orderBy('total', 'desc')
+            ->take(5)
+            ->get();
+        return view('admin.analytics.index', compact('totalEvents', 'failedEvents', 'popularWorkstation', 'topStudents'));
     }
 }

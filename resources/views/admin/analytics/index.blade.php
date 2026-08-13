@@ -7,6 +7,7 @@
 @endphp
 
 @section('content')
+    <!--card-->
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 mb-4">
         <div class="xl:col-span-1">
             <!-- POPULAR WORKSTATION -->
@@ -35,7 +36,7 @@
                     </div>
                     <div class="text-right ms-3">
                         <div class="text-3xl font-semibold text-heading leading-none" id="total-access-events">{{ $totalEvents }}</div>
-                        <div class="mt-1 text-sm text-body">Access Events</div>
+                        <div class="mt-1 text-sm text-body">Access Events Today</div>
                     </div>
                 </div>
             </div>
@@ -53,17 +54,17 @@
                     </div>
                     <div class="text-right ms-3">
                         <div class="text-3xl font-semibold text-heading leading-none" id="total-failed-attempts">{{ $failedEvents }}</div>
-                        <div class="mt-1 text-sm text-body">Failed Access Events</div>
+                        <div class="mt-1 text-sm text-body">Failed Access Events Today</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <!--charts-->
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12 ">
         <div class="xl:col-span-1">
             <!-- COURSE DISTRIBUTION PIE CHART -->
-            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
+            <!--<div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
                 <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
                     <div>
                         <div class="flex items-center mb-2">
@@ -104,11 +105,11 @@
                             <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 90 days</a></li>
                         </ul>
                     </div>
-
                 </div>
             </div>
-        </div>
-        <div class="xl:col-span-1"> <!-- STUDENTS DISTRIBUTION COLUMN CHART -->
+        </div>-->
+        <div class="xl:col-span-1">
+            <!-- STUDENT DISTRIBUTION COLUMN CHART -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
                 <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
                     <div>
@@ -128,13 +129,12 @@
                                 <div data-popper-arrow></div>
                             </div>
                         </div>
-                        <p class="text-sm text-body">Top Students this month</p>
+                        <p class="text-sm text-body">Top 5 Students this month</p>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center mb-4">
-                <span class="text-body text-sm font-normal">Weekly Total Visitors</span>
-                <span class="text-heading text-lg font-semibold">#</span>
+
                 </div>
 
                 <div id="column-chart" class="mb-4"></div>
@@ -173,7 +173,7 @@
         "#93C5FD",
     ];
 
-    /* ════════════ PIE Courses ════════════ */
+    /* ════════════ PIE Courses ════════════
     const pieChartOptions = {
         series: courseCounts,
         colors: bluePalette,
@@ -191,25 +191,23 @@
         const pieChart = new ApexCharts(document.getElementById("pie-chart"), pieChartOptions);
         pieChart.render();
     }
-
+    */
     /* ════════════ COLUMN Students ════════════ */
     const getBrandColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand').trim() || "#1447E6";
     const getBrandSecondaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-subtle').trim() || "#93C5FD";
     const brandColor = getBrandColor();
     const brandSecondaryColor = getBrandSecondaryColor();
+    const topStudents = @json($topStudents);
+    const studentCounts = topStudents.map((student) => Number(student.total));
+    const studentNames = topStudents.map((student) => student.student_name);
 
     const columnChartOptions = {
-        colors: [brandColor, brandSecondaryColor],
+        colors: [brandColor],
         series: [
         {
-            name: "Male",
+            name: 'Access Events',
             color: brandColor,
-            data: maleData.map((y, i) => ({ x: columnChartDays[i], y }))
-        },
-        {
-            name: "Female",
-            color: brandSecondaryColor,
-            data: femaleData.map((y, i) => ({ x: columnChartDays[i], y }))
+            data: studentCounts
         }
         ],
         chart: {
@@ -218,7 +216,7 @@
         fontFamily: "Inter, sans-serif",
         toolbar: { show: false },
         },
-        plotOptions: { bar: { horizontal: false, columnWidth: "70%", borderRadiusApplication: "end", borderRadius: 8 } },
+        plotOptions: { bar: { horizontal: false, columnWidth: "40%", borderRadiusApplication: "end", borderRadius: 8 } },
         tooltip: { shared: true, intersect: false, style: { fontFamily: "Inter, sans-serif" } },
         states: { hover: { filter: { type: "darken", value: 1 } } },
         stroke: { show: true, width: 0, colors: ["transparent"] },
@@ -226,10 +224,13 @@
         dataLabels: { enabled: false },
         legend: { show: false },
         xaxis: {
-        categories: columnChartDays,
+        categories: studentNames,
         floating: false,
-        labels: { show: true, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
+        labels: { show: false, formatter: function () { return ''; }, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
         axisBorder: { show: false }, axisTicks: { show: false },
+        },
+        tooltip: {
+        x: { formatter: function (value) { return value; } },
         },
         yaxis: { show: false },
         fill: { opacity: 1 }
