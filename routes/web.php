@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\adminController as AdminController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\WorkstationController;
@@ -23,7 +24,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('dashboard');
-    Route::get('/analytics',[AdminController::class,'analytics'])->name('analytics');
+    Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
     Route::get('/reports',[AdminController::class,'reports'])->name('reports');
     // Workstation  Routes
     Route::get('/workstation',[WorkstationController::class,'index'])->name('workstation');

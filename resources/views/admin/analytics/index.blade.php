@@ -7,25 +7,9 @@
 @endphp
 
 @section('content')
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-12 mb-4">
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 mb-4">
         <div class="xl:col-span-1">
-            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-                <div class="flex items-center justify-between">
-                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
-                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 5h16v10H4V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M9 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M12 15v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">10</div>
-                        <div class="mt-1 text-sm text-body">Active Devices</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="xl:col-span-1">
+            <!-- POPULAR WORKSTATION -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-xl bg-yellow-300 flex items-center justify-center shrink-0">
@@ -34,13 +18,14 @@
                         </svg>
                     </div>
                     <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">siya</div>
-                        <div class="mt-1 text-sm text-body">Popular Device</div>
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularWorkstation ? $popularWorkstation->workstation->pc_code : 'N/A' }}</div>
+                        <div class="mt-1 text-sm text-body">Popular Workstation</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="xl:col-span-1">
+            <!-- TOTAL ACCESS EVENTS -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
@@ -49,13 +34,14 @@
                         </svg>
                     </div>
                     <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-access-events">10</div>
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-access-events">{{ $totalEvents }}</div>
                         <div class="mt-1 text-sm text-body">Access Events</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="xl:col-span-1">
+            <!-- TOTAL FAILED ACCESS EVENTS -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
                 <div class="flex items-center justify-between">
                     <div class="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center shrink-0">
@@ -66,7 +52,7 @@
                         </svg>
                     </div>
                     <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-failed-attempts">10</div>
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-failed-attempts">{{ $failedEvents }}</div>
                         <div class="mt-1 text-sm text-body">Failed Access Events</div>
                     </div>
                 </div>
@@ -76,6 +62,7 @@
 
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12 ">
         <div class="xl:col-span-1">
+            <!-- COURSE DISTRIBUTION PIE CHART -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
                 <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
                     <div>
@@ -121,7 +108,7 @@
                 </div>
             </div>
         </div>
-        <div class="xl:col-span-1">
+        <div class="xl:col-span-1"> <!-- STUDENTS DISTRIBUTION COLUMN CHART -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
                 <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
                     <div>
@@ -172,7 +159,6 @@
     </div>
 
 @endsection
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     const getBrandTertiaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-strong').trim() || "#1E40AF";

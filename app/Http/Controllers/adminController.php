@@ -63,10 +63,6 @@ class AdminController extends Controller
         ));
     }
 
-    public function analytics(){
-        return view('admin.analytics.index');
-    }
-
     public function reports(){
         return view('admin.reports.index');
     }
