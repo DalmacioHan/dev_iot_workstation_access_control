@@ -20,7 +20,7 @@
                     </div>
                     <div class="text-right ms-3">
                         <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularWorkstation ? $popularWorkstation->workstation->pc_code : 'N/A' }}</div>
-                        <div class="mt-1 text-sm text-body">Popular Workstation</div>
+                        <div class="mt-1 text-sm text-body">Popular Workstation Today</div>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12 ">
         <div class="xl:col-span-1">
             <!-- COURSE DISTRIBUTION PIE CHART -->
-            <!--<div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
+            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
                 <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
                     <div>
                         <div class="flex items-center mb-2">
@@ -85,29 +85,16 @@
                                 <div data-popper-arrow></div>
                             </div>
                         </div>
-                        <p class="text-sm text-body">Top Courses this month</p>
+                        <p class="text-sm text-body">Top 10 Courses</p>
                     </div>
                 </div>
-
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-body text-sm font-normal">Total Courses</span>
+                    <span class="text-heading text-lg font-semibold">{{ $courseCount }}</span>
+                </div>
                 <div id="pie-chart" class="mb-4"></div>
-
-                <div class="flex justify-between items-center pt-4 border-t border-light">
-                    <button id="dropdownLastDays4Button" data-dropdown-toggle="LastDays4dropdown" data-dropdown-placement="bottom" class="text-sm font-medium text-body hover:text-heading inline-flex items-center" type="button">
-                        Last 7 days
-                        <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
-                    </button>
-                    <div id="LastDays4dropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
-                        <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownLastDays4Button">
-                            <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Yesterday</a></li>
-                            <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Today</a></li>
-                            <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 7 days</a></li>
-                            <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 30 days</a></li>
-                            <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 90 days</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
-        </div>-->
+        </div>
         <div class="xl:col-span-1">
             <!-- STUDENT DISTRIBUTION COLUMN CHART -->
             <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
@@ -119,7 +106,6 @@
                             </div>
 
                             <h5 class="text-2xl font-bold text-heading me-2">Student Distribution</h5>
-
                             <svg data-popover-target="traffic-info" data-popover-placement="bottom" class="w-5 h-5 text-body hover:text-heading cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
                             <div data-popover id="traffic-info" role="tooltip" class="absolute z-10 p-3 invisible inline-block text-sm text-body transition-opacity duration-300 bg-neutral-primary-soft border border-default rounded-base shadow-xs opacity-0 w-72">
                                 <div>
@@ -129,116 +115,126 @@
                                 <div data-popper-arrow></div>
                             </div>
                         </div>
-                        <p class="text-sm text-body">Top 10 Students this month</p>
+                        <p class="text-sm text-body">Top 10 Students</p>
                     </div>
                 </div>
-
-                <div class="flex justify-between items-center mb-4">
-
-                </div>
-
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-body text-sm font-normal">Total Students</span>
+                        <span class="text-heading text-lg font-semibold">{{ $totalStudents }}</span>
+                    </div>
                 <div id="column-chart" class="mb-4"></div>
-
-                <div class="flex justify-between items-center pt-4 border-t border-light">
-                    <button id="dropdownLastDaysButton" data-dropdown-toggle="LastDaysdropdown" data-dropdown-placement="bottom" class="text-sm font-medium text-body hover:text-heading inline-flex items-center" type="button">
-                        Last 7 days
-                        <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
-                    </button>
-                    <div id="LastDaysdropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
-                        <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownLastDaysButton">
-                        <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Yesterday</a></li>
-                        <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Today</a></li>
-                        <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 7 days</a></li>
-                        <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 30 days</a></li>
-                        <li><a href="#" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Last 90 days</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+    <!--Todo: Add Table for top 10 Students
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12">
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-700 whitespace-nowrap">
+                    <thead class="bg-neutral-primary-soft">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-heading uppercase tracking-wider">Student Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-heading uppercase tracking-wider">Access Count</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-default">
+                        @foreach($topStudents as $student)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-body">{{ $student->student_name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-body">{{ $student->total }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+    </div>-->
 
 @endsection
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const getBrandTertiaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-strong').trim() || "#1E40AF";
-    const getNeutralPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-neutral-primary').trim() || "#FFFFFF";
-    const brandTertiaryColor = getBrandTertiaryColor();
-    const neutralPrimaryColor = getNeutralPrimaryColor();
-    const bluePalette = [
-        "#1447E6",
-        "#2563EB",
-        "#3B82F6",
-        "#60A5FA",
-        "#93C5FD",
-    ];
+        const getBrandTertiaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-strong').trim() || "#1E40AF";
+        const getNeutralPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-neutral-primary').trim() || "#FFFFFF";
+        const getBrandColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand').trim() || "#1447E6";
+        const getBrandSecondaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-subtle').trim() || "#93C5FD";
 
-    /* ════════════ PIE Courses ════════════
-    const pieChartOptions = {
-        series: courseCounts,
-        colors: bluePalette,
-        chart: { height: 280, width: "100%", type: "pie" },
-        stroke: { colors: [neutralPrimaryColor], lineCap: "" },
-        plotOptions: { pie: { labels: { show: true }, size: "100%", dataLabels: { offset: -25 } } },
-        labels: courseLabels,
-        dataLabels: { enabled: true, style: { fontFamily: "Inter, sans-serif" } },
-        legend: { show: false },
-        yaxis: { labels: { formatter: function (value) { return value + "%" } } },
-        xaxis: { labels: { formatter: function (value) { return value  + "%" } }, axisTicks: { show: false }, axisBorder: { show: false } }
-    };
+        const brandColor = getBrandColor();
+        const brandSecondaryColor = getBrandSecondaryColor();
+        const brandTertiaryColor = getBrandTertiaryColor();
+        const neutralPrimaryColor = getNeutralPrimaryColor();
+        const bluePalette = [
+            "#1447E6",
+            "#2563EB",
+            "#3B82F6",
+            "#60A5FA",
+            "#93C5FD",
+        ];
 
-    if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
-        const pieChart = new ApexCharts(document.getElementById("pie-chart"), pieChartOptions);
-        pieChart.render();
-    }
-    */
-    /* ════════════ COLUMN Students ════════════ */
-    const getBrandColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand').trim() || "#1447E6";
-    const getBrandSecondaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-subtle').trim() || "#93C5FD";
-    const brandColor = getBrandColor();
-    const brandSecondaryColor = getBrandSecondaryColor();
-    const topStudents = @json($topStudents);
-    const studentCounts = topStudents.map((student) => Number(student.total));
-    const studentNames = topStudents.map((student) => student.student_name);
+        /* ════════════ PIE Courses ════════════*/
+        const topCourses = @json($topCourses);
+        const courseCounts = topCourses.map((course) => Number(course.total));
+        const courseLabels = topCourses.map((course) => course.course);
+        const pieChartOptions = {
+            series: courseCounts,
+            colors: bluePalette,
+            chart: { height: 316, width: "100%", type: "pie" },
+            stroke: { colors: [neutralPrimaryColor], lineCap: "" },
+            plotOptions: { pie: { labels: { show: true }, size: "100%", dataLabels: { offset: -25 } } },
+            labels: courseLabels,
+            dataLabels: { enabled: true, style: { fontFamily: "Inter, sans-serif" } },
+            legend: { show: false },
+            yaxis: { labels: { formatter: function (value) { return value + "%" } } },
+            xaxis: { labels: { formatter: function (value) { return value  + "%" } }, axisTicks: { show: false }, axisBorder: { show: false } }
+        };
 
-    const columnChartOptions = {
-        colors: [brandColor],
-        series: [
-        {
-            name: 'Access Events',
-            color: brandColor,
-            data: studentCounts
+        if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
+            const pieChart = new ApexCharts(document.getElementById("pie-chart"), pieChartOptions);
+            pieChart.render();
         }
-        ],
-        chart: {
-        type: "bar",
-        height: "280px",
-        fontFamily: "Inter, sans-serif",
-        toolbar: { show: true },
-        },
-        plotOptions: { bar: { horizontal: false, columnWidth: "50%", borderRadiusApplication: "end", borderRadius: 8 } },
-        tooltip: { shared: true, intersect: true, style: { fontFamily: "Inter, sans-serif" } },
-        states: { hover: { filter: { type: "darken", value: 1 } } },
-        stroke: { show: true, width: 0, colors: ["transparent"] },
-        grid: { show: true, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
-        dataLabels: { enabled: false },
-        legend: { show: false },
-        xaxis: {
-        categories: studentNames,
-        floating: true,
-        labels: { show: true, formatter: function () { return ''; }, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
-        axisBorder: { show: true }, axisTicks: { show: true, color: brandSecondaryColor }, crosshairs: { show: true, position: "front", stroke: { color: brandSecondaryColor, width: 1, dashArray: 3 } }
-        },
-        tooltip: {
-        x: { formatter: function (value) { return value; } },
-        },
-        yaxis: { show: false },
-        fill: { opacity: 1 }
-    };
 
-    if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
-        const columnChart = new ApexCharts(document.getElementById("column-chart"), columnChartOptions);
-        columnChart.render();
-    }
+        /* ════════════ Column Courses ════════════*/
+
+        const topStudents = @json($topStudents);
+        const studentCounts = topStudents.map((student) => Number(student.total));
+        const studentNames = topStudents.map((student) => student.student_name);
+
+        const columnChartOptions = {
+            colors: [brandColor, brandSecondaryColor],
+            series: [
+            {
+                name: 'Access Events',
+                color: brandColor,
+                data: studentCounts
+            }
+            ],
+            chart: {
+                type: "bar",
+                height: "280px",
+                fontFamily: "Inter, sans-serif",
+                toolbar: { show: false },
+            },
+            plotOptions: { bar: { horizontal: false, columnWidth: "55%", borderRadiusApplication: "end", borderRadius: 8 } },
+            tooltip: { shared: true, intersect: true, style: { fontFamily: "Inter, sans-serif" } },
+            states: { hover: { filter: { type: "darken", value: 1 } } },
+            stroke: { show: true, width: 0, colors: ["transparent"] },
+            grid: { show: true, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
+            dataLabels: { enabled: false },
+            legend: { show: false },
+            xaxis: {
+                categories: studentNames,
+                floating: true,
+                labels: { show: true, formatter: function () { return ''; }, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
+                axisBorder: { show: true }, axisTicks: { show: true, color: brandSecondaryColor }, crosshairs: { show: true, position: "front", stroke: { color: brandSecondaryColor, width: 1, dashArray: 3 } }
+            },
+            tooltip: {
+                x: { formatter: function (value) { return value; } },
+            },
+            yaxis: { show: false },
+            fill: { opacity: 1 }
+        };
+
+        if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
+            const columnChart = new ApexCharts(document.getElementById("column-chart"), columnChartOptions);
+            columnChart.render();
+        }
     });
 </script>
