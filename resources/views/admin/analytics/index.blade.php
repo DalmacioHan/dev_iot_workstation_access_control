@@ -129,7 +129,7 @@
                                 <div data-popper-arrow></div>
                             </div>
                         </div>
-                        <p class="text-sm text-body">Top 5 Students this month</p>
+                        <p class="text-sm text-body">Top 10 Students this month</p>
                     </div>
                 </div>
 
@@ -214,20 +214,20 @@
         type: "bar",
         height: "280px",
         fontFamily: "Inter, sans-serif",
-        toolbar: { show: false },
+        toolbar: { show: true },
         },
-        plotOptions: { bar: { horizontal: false, columnWidth: "40%", borderRadiusApplication: "end", borderRadius: 8 } },
-        tooltip: { shared: true, intersect: false, style: { fontFamily: "Inter, sans-serif" } },
+        plotOptions: { bar: { horizontal: false, columnWidth: "50%", borderRadiusApplication: "end", borderRadius: 8 } },
+        tooltip: { shared: true, intersect: true, style: { fontFamily: "Inter, sans-serif" } },
         states: { hover: { filter: { type: "darken", value: 1 } } },
         stroke: { show: true, width: 0, colors: ["transparent"] },
-        grid: { show: false, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
+        grid: { show: true, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
         dataLabels: { enabled: false },
         legend: { show: false },
         xaxis: {
         categories: studentNames,
-        floating: false,
-        labels: { show: false, formatter: function () { return ''; }, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
-        axisBorder: { show: false }, axisTicks: { show: false },
+        floating: true,
+        labels: { show: true, formatter: function () { return ''; }, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
+        axisBorder: { show: true }, axisTicks: { show: true, color: brandSecondaryColor }, crosshairs: { show: true, position: "front", stroke: { color: brandSecondaryColor, width: 1, dashArray: 3 } }
         },
         tooltip: {
         x: { formatter: function (value) { return value; } },

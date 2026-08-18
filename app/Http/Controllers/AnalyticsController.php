@@ -27,7 +27,7 @@ class AnalyticsController extends Controller
             ->whereYear('occurred_at', now()->year)
             ->groupBy('student_name')
             ->orderBy('total', 'desc')
-            ->take(5)
+            ->take(10)
             ->get();
         return view('admin.analytics.index', compact('totalEvents', 'failedEvents', 'popularWorkstation', 'topStudents'));
     }
