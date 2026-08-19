@@ -22,38 +22,25 @@ class AnalyticsController extends Controller
         $totalEvents = PcAccessLogs::where('occurred_at','>=', now()->startOfDay())->count();
         $failedEvents = PcAccessLogs::where('result', 'FAIL')->where('occurred_at','>=', now()->startOfDay())->count();
 
-        //chart data
+        //table data
         $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
-            ->whereMonth('occurred_at', now()->month)
-            ->whereYear('occurred_at', now()->year)
+            ->where('occurred_at','>=', now()->startOfDay())
             ->groupBy('student_name')
             ->orderBy('total', 'desc')
             ->take(10)
             ->get();
 
         $topCourses = PcAccessLogs::select('course', PcAccessLogs::raw('count(*) as total'))
-            ->whereMonth('occurred_at', now()->month)
-            ->whereYear('occurred_at', now()->year)
+            ->where('occurred_at','>=', now()->startOfDay())
             ->groupBy('course')
             ->orderBy('total', 'desc')
             ->take(10)
             ->get();
 
-        $courseCount = PcAccessLogs::select('course', PcAccessLogs::raw('count(*) as total'))
-            ->whereMonth('occurred_at', now()->month)
-            ->whereYear('occurred_at', now()->year)
-            ->distinct('course')
-            ->count();
-
-        $totalStudents = PcAccessLogs::select('student_external_id', PcAccessLogs::raw('count(*) as total'))
-            ->whereMonth('occurred_at', now()->month)
-            ->whereYear('occurred_at', now()->year)
-            ->distinct('student_external_id')
-            ->count();
 
         return view('admin.analytics.index', compact(
             'totalEvents', 'failedEvents', 'popularWorkstation',
-            'topStudents', 'totalStudents',
-            'topCourses', 'courseCount'));
+            'topStudents',
+            'topCourses'));
     }
 }
