@@ -21,14 +21,14 @@ class AdminController extends Controller
         $totalWorkstations = Workstations::count();
         $activeWorkstations = Workstations::where('is_active', 1)->count();
 
-        // Slot Utilization - Here an example as percentage of active workstations to total, change logic as needed
+        
         $slotUtilization = $totalWorkstations > 0 ? round(($activeWorkstations / $totalWorkstations) * 100) : 0;
 
         // Weekly Visitors (unique student sessions in last 7 days)
         $weeklyVisitors = PcAccessLogs::where('occurred_at', '>=', now()->subDays(7))
             ->distinct('student_external_id')->count('student_external_id');
 
-        // Gender Data by Day (real calculation for the last 7 days)
+    
         $male = [];
         $female = [];
         $columnChartDays = [];
@@ -47,7 +47,7 @@ class AdminController extends Controller
                 ->count('student_external_id');
         }
 
-        // Courses distribution
+    
         $courseDistribution = PcAccessLogs::selectRaw('course, COUNT(*) as count')
             ->groupBy('course')
             ->pluck('count', 'course')
