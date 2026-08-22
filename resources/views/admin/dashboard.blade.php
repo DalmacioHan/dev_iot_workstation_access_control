@@ -4,9 +4,7 @@
 
 @section('content')
 
-{{-- =========================
-TOP SUMMARY CARDS (RESPONSIVE)
-========================= --}}
+
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
     {{-- Card 1 --}}
     <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
@@ -97,12 +95,6 @@ TOP SUMMARY CARDS (RESPONSIVE)
             <p class="text-sm text-body">Library Workstation Usage</p>
             </div>
         </div>
-        <div>
-            <span class="inline-flex items-center bg-success-soft border border-success-subtle text-fg-success-strong text-sm font-medium px-2 py-1 rounded">
-            <svg class="w-4 h-4 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/></svg>
-            {{ $slotUtilization }}%
-            </span>
-        </div>
         </div>
 
         <div class="flex justify-between items-center mb-4">
@@ -141,14 +133,7 @@ TOP SUMMARY CARDS (RESPONSIVE)
             <h5 class="text-2xl font-bold text-heading me-2">Course Distribution</h5>
             <svg data-popover-target="traffic-info" data-popover-placement="bottom" class="w-5 h-5 text-body hover:text-heading cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
             <div data-popover id="traffic-info" role="tooltip" class="absolute z-10 p-3 invisible inline-block text-sm text-body transition-opacity duration-300 bg-neutral-primary-soft border border-default rounded-base shadow-xs opacity-0 w-72">
-                <div>
-                <h3 class="font-semibold text-heading mb-2">Course Distribution</h3>
-                <p class="mb-4">This chart shows the distribution of students across different courses in the library system.</p>
-                <a href="#" class="flex items-center font-medium text-fg-brand hover:underline">
-                    Read more 
-                    <svg class="w-4 h-4 ms-1 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
-                </a>
-                </div>
+            
                 <div data-popper-arrow></div>
             </div>
             </div>
