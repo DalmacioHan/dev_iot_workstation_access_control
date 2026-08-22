@@ -18,7 +18,6 @@ return new class extends Migration
                 'device_uid',
                 'session_id',
                 'metadata',
-                'updated_at'
             ]);
         });
     }
@@ -33,7 +32,6 @@ return new class extends Migration
             $table->string('device_uid', 100)->nullable();
             $table->string('session_id', 64)->nullable();
             $table->json('metadata')->nullable();
-            $table->timestamp('updated_at')->nullable();
         });
     }
 };

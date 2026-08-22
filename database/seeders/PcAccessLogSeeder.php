@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\PcAccessLogs;
-use App\Models\Device;
 use App\Models\Workstations;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -98,12 +97,12 @@ class PcAccessLogSeeder extends Seeder
             'Master of Science in Information Technology'
         ];
 
-        $deviceUids = Device::pluck('device_uid')->toArray();
+    
         $workstationIds = Workstations::pluck('id')->toArray();
 
         // ---- SEEDING START DATE ----
-        $startDate = Carbon::create(2026, 5, 21)->startOfDay();
-        $endDate = Carbon::create(2026, 5, 28)->endOfDay();
+        $startDate = Carbon::create(2026, 8, 21)->startOfDay();
+        $endDate = Carbon::create(2026, 8, 28)->endOfDay();
 
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
             // Random logs (24–36) with unique students per day
@@ -113,7 +112,6 @@ class PcAccessLogSeeder extends Seeder
                 [$studentId, $last, $first, $middle] = $student;
                 $studentName = trim("$first $middle $last");
 
-                $device_uid = $deviceUids[array_rand($deviceUids)];
                 $workstation_id = $workstationIds[array_rand($workstationIds)];
                 $course = $courses[array_rand($courses)];
 
@@ -128,18 +126,14 @@ class PcAccessLogSeeder extends Seeder
                 PcAccessLogs::create([
                     'occurred_at'          => $occurredAt,
                     'received_at'          => $receivedAt,
-                    'device_uid'           => $device_uid,
-                    'pc_port'              => rand(1,2),
                     'rfid_uid'             => 'RFID' . rand(1000,9999),
                     'workstation_id'       => $workstation_id,
                     'event_type'           => 'LOGIN',
                     'result'               => rand(0, 9) > 0 ? 'SUCCESS' : 'FAIL',
                     'reason'               => rand(0, 9) > 0 ? 'Authorized' : 'Not Authorized',
-                    'session_id'           => 'SESS' . rand(100,999),
                     'student_external_id'  => $studentId,
                     'student_name'         => $studentName,
                     'course'               => $course,
-                    'metadata'             => json_encode(['ip' => '192.168.0.' . rand(10,99)]),
                 ]);
             }
         }

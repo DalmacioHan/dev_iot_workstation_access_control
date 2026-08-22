@@ -136,7 +136,7 @@
 
 {{-- Global Shared Component Layer --}}
 <x-verification-modal />
-<x-error-modal />
+
 
 <script>
     const accountForm = document.querySelector('form[action="{{ route('account.update') }}"]');
@@ -251,8 +251,6 @@
                 
                 if (typeof closeVerificationModal === "function") {
                     closeVerificationModal();
-                } else {
-                    document.getElementById('verification-modal').classList.add('hidden');
                 }
                 
                 accountForm.requestSubmit();
