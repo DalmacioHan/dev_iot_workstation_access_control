@@ -15,12 +15,10 @@ class WorkstationSeeder extends Seeder
     {
         Workstations::create([
             'pc_code' => 'PC01',
-            'location' => 'Lab 1',
             'is_active' => 1,
         ]);
         Workstations::create([
             'pc_code' => 'PC02',
-            'location' => 'Lab 2',
             'is_active' => 1,
         ]);
     }

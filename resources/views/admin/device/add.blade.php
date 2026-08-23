@@ -77,8 +77,4 @@
         </div>
     </div>
 </div>
-
-{{-- CALLING THE GLOBAL COMPONENT REUSABLE MODAL HERE --}}
-<x-success-pairing-modal />
-
 @endsection

@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/workstation',[WorkstationController::class,'index'])->name('workstation');
     Route::get('/workstation/add',[WorkstationController::class,'create'])->name('workstation.create');
     Route::post('/workstation/add',[WorkstationController::class,'store'])->name('workstation.store');
-    Route::get('/workstation/pc1',[AdminController::class,'workstation_view'])->name('pc1');
+    Route::get('/workstation/{workstation}',[WorkstationController::class,'show'])->name('workstation.view');
     // Device Route
     Route::get('/device',[DeviceController::class,'index'])->name('device');
     Route::get('/device/add',[DeviceController::class,'create'])->name('device.create');
