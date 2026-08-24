@@ -93,7 +93,7 @@ class AccountController extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('status', 'Account updated successfully.');
+        return redirect()->back()->with('success', 'Account updated successfully.');
     }
 
     public function destroy(Request $request)

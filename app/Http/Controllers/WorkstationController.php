@@ -14,7 +14,7 @@ class WorkstationController extends Controller
      */
     public function index()
     {
-        // Eager load relationships to prevent N+1 query issues
+        
         $deviceWorkstations = DeviceWorkstation::with(['workstation', 'device'])->get();
         return view('admin.workstation.index', compact('deviceWorkstations'));   
     }
@@ -29,12 +29,12 @@ class WorkstationController extends Controller
         ->havingRaw('COUNT(*) >= 2')
         ->pluck('device_id');
 
-    //Fetch active devices, excluding the ones whose ports are full
+
     $device = Device::where('is_active', true)
         ->whereNotIn('id', $fullDeviceIds)
         ->get();
 
-    // Fetch used ports for the remaining available devices
+    
     $usedPortsByDevice = DeviceWorkstation::whereIn('pc_port', ['1', '2'])
         ->get()
         ->groupBy('device_id')
@@ -85,7 +85,8 @@ class WorkstationController extends Controller
         }
 
         return redirect()->route('workstation')
-            ->with('success', 'Workstation added successfully!');
+            ->with('success', 'Workstation added successfully!')
+            ->with('success_redirect', route('workstation'));
     }
 
     
@@ -96,9 +97,14 @@ class WorkstationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $workstation = Workstations::findOrFail($id);
+        $workstation = Workstations::with('deviceWorkstations.device')->find($id);;
+        $assignment = $workstation->deviceWorkstations->first();
+        if ($assignment && $assignment->device) {
+        $deviceUid = $assignment->device->device_uid;
+        return view('admin.workstation.view', compact('workstation', 'deviceUid'));
     }
-
+    }
     /**
      * Show the form for editing the specified resource.
      */

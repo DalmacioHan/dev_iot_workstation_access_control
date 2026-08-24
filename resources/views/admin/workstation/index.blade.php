@@ -85,21 +85,39 @@
                             </span>
                         </td>
                         <td class="px-8 py-7">
-                            <div class="flex items-center justify-center">
-                                <button id="actionsButton{{ $dw->id }}" data-dropdown-toggle="actionsDropdown{{ $dw->id }}" data-dropdown-placement="bottom-end" type="button"
-                                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200">
-                                    <span class="sr-only">Open actions</span>
-                                    <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
+                            <div class="flex items-center justify-center gap-3">
+
+                                <a href="{{ route('workstation.view', $dw->workstation->id) }}" class="group rounded-lg p-2 hover:bg-blue-50 transition-all" title="View Details">
+                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                    </svg>
+                                </a>
+
+                                <a href="" class="group rounded-lg p-2 hover:bg-amber-50 transition-all" title="Edit">
+                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </a>
+                                
+                                <button 
+                                    type="button" 
+                                    onclick="openGlobalConfirmModal({
+                                        type: 'delete',
+                                        title: 'Delete Device',
+            
+                                        btnText: 'Delete Device',
+                                        
+                                        
+                                    })"
+                                    class="group rounded-lg p-2 hover:bg-red-50 transition-all" 
+                                    title="Delete"
+                                >
+                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
                                 </button>
-
-                                <div id="actionsDropdown{{ $dw->id }}" class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white shadow">
-                                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="actionsButton{{ $dw->id }}">
-                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">View</a></li>
-                                        <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Edit</a></li>
-                                    </ul>
-                                </div>
                             </div>
                         </td>
                     </tr>
