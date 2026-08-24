@@ -7,6 +7,7 @@
 @endphp
 
 @section('content')
+
     <!--card-->
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 mb-4">
         <!-- POPULAR WORKSTATION -->
@@ -54,16 +55,24 @@
 
     </div>
     <!--table-->
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12 mb-2">
-        <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-            <p class="text-base font-bold  text-black text-center uppercase">Top 10 Students</p>
-        </div>
-        <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-            <p class=" text-base font-bold  text-black text-center uppercase">Top 10 Courses</p>
-        </div>
-    </div>
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12 mb-4">
         <div class="overflow-hidden rounded-lg border border-gray-200">
+            <div class="w-full bg-neutral-primary-soft p-5 border-b border-light flex items-center justify-between">
+                <h3 class="text-lg font-bold text-black uppercase">Top 10 Students</h3>
+                <div class="relative">
+                    <button id="topStudentsDropdownButton" data-dropdown-toggle="topStudentsDropdown" data-dropdown-placement="bottom" class="text-sm font-medium text-body hover:text-heading inline-flex items-center" type="button">
+                        {{ $studentRangeLabel }}
+                        <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+                    </button>
+                    <div id="topStudentsDropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                        <ul class="p-2 text-sm text-body font-medium" aria-labelledby="topStudentsDropdownButton">
+                        @foreach($rangeLabels as $range => $label)
+                            <li><a href="{{ route('analytics', ['students_range' => $range, 'courses_range' => $courseRange]) }}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">{{ $label }}</a></li>
+                        @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="relative overflow-x-auto ">
                 <table class="w-full text-left text-sm text-gray-700 ">
                     <thead class="bg-white uppercase text-black border-b border-gray-200">
@@ -87,6 +96,22 @@
         </div>
         <div class="overflow-hidden rounded-lg border border-gray-200">
             <div class="relative overflow-x-auto">
+                <div class="w-full bg-neutral-primary-soft p-5 border-b border-light flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-black text-left uppercase">Top 10 Courses</h3>
+                    <div class="relative">
+                        <button id="topCoursesDropdownButton" data-dropdown-toggle="topCoursesDropdown" data-dropdown-placement="bottom" class="text-sm font-medium text-body hover:text-heading inline-flex items-center" type="button">
+                            {{ $courseRangeLabel }}
+                            <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+                        </button>
+                        <div id="topCoursesDropdown" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="topCoursesDropdownButton">
+                            @foreach($rangeLabels as $range => $label)
+                                <li><a href="{{ route('analytics', ['students_range' => $studentRange, 'courses_range' => $range]) }}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">{{ $label }}</a></li>
+                            @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <table class="w-full text-left text-sm text-gray-700">
                     <thead class="bg-white uppercase text-black border-b border-gray-200">
                         <tr>
@@ -109,3 +134,6 @@
         </div>
     </div>
 @endsection
+<script>
+
+</script>
