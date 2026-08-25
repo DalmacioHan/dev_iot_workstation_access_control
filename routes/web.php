@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\WorkstationController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ReportsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test-toast', function () {
@@ -25,7 +26,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('dashboard');
     Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
-    Route::get('/reports',[AdminController::class,'reports'])->name('reports');
+    Route::get('/reports',[ReportsController::class,'index'])->name('reports');
     // Workstation  Routes
     Route::get('/workstation',[WorkstationController::class,'index'])->name('workstation');
     Route::get('/workstation/add',[WorkstationController::class,'create'])->name('workstation.create');
