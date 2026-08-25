@@ -127,7 +127,7 @@
 <x-error-modal />
 <x-confirm-modal />
 </div>
-
+@stack('modals')
 <!-- FLOWBITE JS -->
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>

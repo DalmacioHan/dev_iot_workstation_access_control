@@ -94,29 +94,21 @@
                                     </svg>
                                 </a>
 
-                                <a href="" class="group rounded-lg p-2 hover:bg-amber-50 transition-all" title="Edit">
+                                <button type="button" onclick="loadEditModal({{ $dw->workstation->id }})" class="group rounded-lg p-2 hover:bg-blue-50 transition-all" title="Edit">
+                                    <!-- Pencil SVG -->
                                     <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                     </svg>
-                                </a>
-                                
-                                <button 
-                                    type="button" 
-                                    onclick="openGlobalConfirmModal({
-                                        type: 'delete',
-                                        title: 'Delete Device',
-            
-                                        btnText: 'Delete Device',
-                                        
-                                        
-                                    })"
-                                    class="group rounded-lg p-2 hover:bg-red-50 transition-all" 
-                                    title="Delete"
+                                </button>
+                               <button 
+                                type="button" 
+                                onclick="openGlobalConfirmModal({ type: 'delete', title: 'Delete Device', btnText: 'Delete Device' })"
+                                class="group rounded-lg p-2 hover:bg-red-50 transition-all"
+                                title="Delete"
                                 >
-                                    <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                    </svg>
+                                <svg class="w-5 h-5 text-gray-400 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
                                 </button>
                             </div>
                         </td>
@@ -127,4 +119,33 @@
         </div>
     </div>
 
-    @endsection
+    <script>
+function loadEditModal(id) {
+    const container = document.getElementById('dynamic-modal-container');
+    
+    // Fetch the edit view from your Laravel controller
+    fetch(`workstation/${id }/edit`)
+        .then(response => response.text())
+        .then(html => {
+            // Put the HTML inside the container
+            container.innerHTML = html;
+            // Remove the 'hidden' class to show the modal
+            container.classList.remove('hidden');
+        })
+        .catch(error => console.error('Error loading modal:', error));
+}
+
+// Function to close the modal (attach this to your cancel buttons)
+function closeModal() {
+    const container = document.getElementById('dynamic-modal-container');
+    container.classList.add('hidden');
+    container.innerHTML = ''; // Clear the contents
+}
+</script>
+@endsection
+@push('modals')
+    <!-- Notice the added style="z-index: 9999;" and the removal of z-[100] -->
+    <div id="dynamic-modal-container" style="z-index: 9999;" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-900/50 backdrop-blur-sm">
+        <!-- The fetched edit.blade.php content will load inside here -->
+    </div>
+@endpush
