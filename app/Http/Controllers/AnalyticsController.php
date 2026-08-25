@@ -22,27 +22,32 @@ class AnalyticsController extends Controller
         $studentRange = in_array($studentRange, $allowedRanges, true) ? $studentRange : 'today';
         $courseRange = in_array($courseRange, $allowedRanges, true) ? $courseRange : 'today';
 
-        $todayStart = now()->startOfDay();
-        $rangeStart = function (string $range): Carbon {
+        $now = now();
+        $todayStart = $now->copy()->startOfDay();
+        $todayEnd = $now->copy()->endOfDay();
+
+        $rangeStart = function (string $range) use ($now): Carbon {
             return match ($range) {
-                'today' => now()->startOfDay(),
-                'last_7_days' => now()->subDays(6)->startOfDay(),
-                'last_30_days' => now()->subDays(29)->startOfDay(),
-                'last_90_days' => now()->subDays(89)->startOfDay(),
-                default => now()->startOfDay(),
+                'today' => $now->copy()->startOfDay(),
+                'last_7_days' => $now->copy()->subDays(6)->startOfDay(),
+                'last_30_days' => $now->copy()->subDays(29)->startOfDay(),
+                'last_90_days' => $now->copy()->subDays(89)->startOfDay(),
+                default => $now->copy()->startOfDay(),
             };
         };
-        $rangeEnd = fn (string $range): Carbon => now();
+        $rangeEnd = fn (string $range): Carbon => $now->copy()->endOfDay();
 
         //Card data
         $popularWorkstation = PcAccessLogs::select('workstation_id', PcAccessLogs::raw('count(*) as total'))
-            ->where('occurred_at', '>=', $todayStart)
+            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->with('workstation')
             ->groupBy('workstation_id')
             ->orderBy('total', 'desc')
             ->first();
-        $totalEvents = PcAccessLogs::where('occurred_at', '>=', $todayStart)->count();
-        $failedEvents = PcAccessLogs::where('result', 'FAIL')->where('occurred_at', '>=', $todayStart)->count();
+        $totalEvents = PcAccessLogs::whereBetween('occurred_at', [$todayStart, $todayEnd])->count();
+        $failedEvents = PcAccessLogs::where('result', 'FAIL')
+            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->count();
 
         //table data
         $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
