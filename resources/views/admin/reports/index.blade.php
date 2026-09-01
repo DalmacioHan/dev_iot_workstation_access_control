@@ -113,21 +113,38 @@
 <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
     <div class="relative overflow-x-auto">
         <table class="w-full text-left text-sm text-gray-700 whitespace-nowrap">
-            <thead class="bg-white text-xs font-semibold uppercase tracking-wide text-gray-500">
+            <thead class="bg-white text-xs font-semibold uppercase tracking-wide text-gray-500 ">
                 <tr class="border-b border-gray-200">
-                    <th class="px-6 py-4">Date & Time</th>
-                    <th class="px-6 py-4">Student</th>
-                    <th class="px-6 py-4">Course</th>
-                    <th class="px-6 py-4">Workstation</th>
-                    <th class="px-6 py-4">Event</th>
-                    <th class="px-6 py-4">Result</th>
-                    <th class="px-6 py-4">Reason</th>
-                    <th class="px-6 py-4">Session ID</th>
+                    <th scope="col" class="px-5 py-5">ID</th>
+                    <th scope="col" class="px-5 py-5">Date & Time</th>
+                    <th scope="col" class="px-5 py-5">Course</th>
+                    <th scope="col" class="px-5 py-5">Workstation</th>
+                    <th scope="col" class="px-5 py-5">Event</th>
+                    <th scope="col" class="px-5 py-5">Result</th>
+                    <th scope="col" class="px-5 py-5">Reason</th>
                 </tr>
             </thead>
-            <!-- data rows will be populated from the database -->
+            <tbody>
+                @forelse ($logs as $log)
+                    <tr class="border-b border-gray-200 last:border-b-0">
+                        <td class="px-5 py-5">{{ $log->id }}</td>
+                        <td class="px-5 py-5">{{ $log->occurred_at }}</td>
+                        <td class="px-5 py-5">{{ $log->course }}</td>
+                        <td class="px-5 py-5">{{ $log->workstation }}</td>
+                        <td class="px-5 py-5">{{ $log->event_type }}</td>
+                        <td class="px-5 py-5">{{ $log->result }}</td>
+                        <td class="px-5 py-5">{{ $log->reason }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="px-5 py-8 text-center text-gray-500">No access logs found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
         </table>
     </div>
 </div>
-
+<div class="mt-6">
+    {{ $logs->onEachSide(1)->links('vendor.pagination.flowbite') }}
+</div>
 @endsection
