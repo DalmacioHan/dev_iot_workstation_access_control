@@ -98,6 +98,6 @@ class DeviceController extends Controller
         }
         $device->delete();
 
-        return redirect()->route('device')->with('success', "Device '{$device->name}' was successfully deleted.");
+        return redirect()->route('device')->with('success', "Device '{$device->device_uid}' was successfully deleted.");
     }
 }

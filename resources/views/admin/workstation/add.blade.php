@@ -3,9 +3,7 @@
 @section('title','Workstation')
 
 @section('content')
-    @php
-        $noDevices = $device->isEmpty();
-    @endphp
+
 
     <div class="w-full flex justify-end mb-4">
         <a href="{{ route('workstation') }}"
@@ -64,26 +62,21 @@
                                     name="device_id"
                                     class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                     required
-                                    {{ $noDevices ? 'disabled' : '' }}
+                                    
                                 >
-                                    @forelse ($device as $devices)
+                                    @forelse ($devicesName as $devices)
                                         @if ($loop->first)
-                                            <option value="" disabled {{ old('device_id') ? '' : 'selected' }}>Select device</option>
+                                            <option value="" disabled {{ old('device_uid') ? '' : 'selected' }}>Select device</option>
                                         @endif
                                         <option value="{{ $devices->id }}" {{ old('device_id') == $devices->id ? 'selected' : '' }}>
                                             {{ $devices->name ?? $devices->device_name }}
                                         </option>
                                     @empty
-                                        <option value="" selected>No available devices (all devices already have 2 workstations)</option>
+                                        <option value="" selected>No available devices </option>
                                     @endforelse
                                 </select>
                                 @error('device_id') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
 
-                                @if($noDevices)
-                                    <p class="text-amber-700 text-sm mt-2">
-                                        There are currently no devices available for new workstation assignment.
-                                    </p>
-                                @endif
                             </div>
 
                             <div>
@@ -93,7 +86,7 @@
                                     name="pc_port"
                                     class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                     required
-                                    {{ $noDevices ? 'disabled' : '' }}
+
                                 >
                                     <option value="" disabled {{ old('pc_port') ? '' : 'selected' }}>Select port</option>
                                     <option value="1" {{ old('pc_port') == '1' ? 'selected' : '' }}>Port 1</option>
@@ -116,7 +109,7 @@
                                 id="submitBtn"
                                 type="submit"
                                 class="w-full text-black bg-brand hover:bg-brand-strong border border-gray-300 hover:border-gray-400 focus:ring-4 focus:ring-brand-medium shadow-xs font-medium rounded-base text-sm px-10 py-2.5 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                                {{ $noDevices ? 'disabled' : '' }}
+
                             >
                                 Submit
                             </button>
@@ -128,9 +121,6 @@
     </div>
 <x-success-modal />
     <script>
-        const usedPortsByDevice = @json($usedPortsByDevice ?? []);
-        const noDevices = @json($noDevices);
-
         const deviceSelect = document.getElementById('device_id');
         const portSelect = document.getElementById('pc_port');
         const submitBtn = document.getElementById('submitBtn');

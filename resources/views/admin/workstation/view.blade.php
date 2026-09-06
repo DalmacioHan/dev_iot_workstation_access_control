@@ -56,12 +56,12 @@
             </div>
 
             <div class="mt-4 md:mt-0">
-                <a href="#"
+                <a href="{{route('workstation.edit', $workstation->id)}}"
                     class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11 5h2m-1-1v2m-7 5h14M5 12h14m-7 0v8"/>
-                    </svg>
+                                <svg class="w-4 h-4 text-white group-hover:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 25 25">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
                     Edit Workstation
                 </a>
             </div>

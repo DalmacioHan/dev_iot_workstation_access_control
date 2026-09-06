@@ -66,9 +66,6 @@
                     @error('name') <div class="text-red-500 text-sm mt-1">{{ $message }}</div> @enderror
                 </div>
                 <div>
-                    <label for="last_seen" class="mb-2 block text-base font-medium text-gray-900">Last Seen</label>
-                    <input type="text" id="last_seen" value="— (Pending Activation)" class="block w-full {{ $controlHeight }} rounded-xl border border-gray-200 bg-gray-50 px-4 text-base text-gray-600" disabled />
-                </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <button type="submit" class="inline-flex w-full {{ $controlHeight }} items-center justify-center rounded-xl bg-blue-800 px-6 text-base font-medium text-white shadow-sm hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">Save Device</button>
                     <a href="{{ route('device') }}" class="inline-flex w-full {{ $controlHeight }} items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-base font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200">Cancel</a>

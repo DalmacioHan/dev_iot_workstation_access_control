@@ -27,12 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('dashboard');
     Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
     Route::get('/reports',[ReportsController::class,'index'])->name('reports');
+    Route::get('/reports/csv',[ReportsController::class,'exportCsv'])->name('reports.csv');
+    Route::get('/reports/pdf',[ReportsController::class,'exportPdf'])->name('reports.pdf');
     // Workstation  Routes
     Route::get('/workstation',[WorkstationController::class,'index'])->name('workstation');
     Route::get('/workstation/add',[WorkstationController::class,'create'])->name('workstation.create');
     Route::post('/workstation/add',[WorkstationController::class,'store'])->name('workstation.store');
     Route::get('/workstation/{workstation}',[WorkstationController::class,'show'])->name('workstation.view');
-    Route::get('workstation/{workstation}/edit',[WorkstationController::class,'edit'])->name('workstation.edit');
+    Route::get('/workstation/{workstation}/edit',[WorkstationController::class,'edit'])->name('workstation.edit');
+    Route::put('/workstation/{workstation}/update',[WorkstationController::class,'update'])->name('workstation.update');
+    Route::delete('/workstation/{workstation}/delete',[WorkstationController::class,'destroy'])->name('workstation.destroy');
     // Device Route
     Route::get('/device',[DeviceController::class,'index'])->name('device');
     Route::get('/device/add',[DeviceController::class,'create'])->name('device.create');

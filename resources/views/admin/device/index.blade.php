@@ -4,12 +4,6 @@
 
 @section('content')
 
-@php
-
-    $controlHeight = 'h-[52px]';
-@endphp
-
-
 <div class="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-center">
 
     <form class="w-full lg:col-span-2" method="GET" action="{{ route('device') }}">
@@ -22,7 +16,7 @@
                 id="search"
                 name="search"
                 value="{{ request('search') }}"
-                class="block w-full {{ $controlHeight }} rounded-xl border border-gray-200 bg-white pl-12 pr-10 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600"
+                class="block w-full h-[52px] rounded-xl border border-gray-200 bg-white pl-12 pr-10 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600"
                 placeholder="Search by device code or name..."
             />
             @if(request('search'))
@@ -45,7 +39,7 @@
                 id="status"
                 name="status"
                 onchange="this.form.submit()"
-                class="block w-full {{ $controlHeight }} rounded-xl border border-gray-200 bg-white px-4 pr-10 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600"
+                class="block w-full h-[52px] rounded-xl border border-gray-200 bg-white px-4 pr-10 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600"
             >
                 <option value="">All Status</option>
                 <option value="active" @selected(request('status') === 'active')>Active</option>
@@ -55,7 +49,7 @@
 
         <a
             href="{{ route('device.create') }}"
-            class="inline-flex w-full {{ $controlHeight }} items-center justify-center gap-3 rounded-xl bg-blue-700 px-7 text-base font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            class="inline-flex w-full h-[52px] items-center justify-center gap-3 rounded-xl bg-blue-700 px-7 text-base font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
             <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -126,14 +120,7 @@
                             
                             <button 
                                 type="button" 
-                                onclick="openGlobalConfirmModal({
-                                    type: 'delete',
-                                    title: 'Delete Device',
-                                    message: 'Are you sure you want to delete {{ $device->name }} ({{ $device->device_uid }})? This action cannot be undone.',
-                                    btnText: 'Delete Device',
-                                    method: 'DELETE',
-                                    action: '{{ route('device.destroy', $device->id) }}'
-                                })"
+                                onclick="openDeleteModal('{{ route('device.destroy', $device->id) }}', 'Are you sure you want to delete {{ $device->name }} ({{ $device->device_uid }})? This action cannot be undone.')"
                                 class="group rounded-lg p-2 hover:bg-red-50 transition-all" 
                                 title="Delete"
                             >
@@ -167,25 +154,17 @@
 <div class="mt-6">
     {{ $devices->onEachSide(1)->links('vendor.pagination.flowbite') }}
 </div>
-<x-error-modal />
 
 
-@if(session('error') || $errors->any())
+@if (session('error'))
     <script>
-        
-        window.addEventListener('load', () => {
-            @if(session('error'))
-                const errorMsg = "{!! addslashes(session('error')) !!}";
-            @else
-                const errorMsg = "{!! addslashes($errors->first()) !!}";
-            @endif
-            
+        document.addEventListener('DOMContentLoaded', () => {
+            const errorMsg = "{!! addslashes(session('error')) !!}";
             if (typeof openGlobalErrorModal === 'function') {
-                openGlobalErrorModal(errorMsg, 'Deletion Failed');
-            } else {
-                console.error('openGlobalErrorModal function is not defined.');
+                openGlobalErrorModal(errorMsg, 'Action Failed');
             }
         });
     </script>
 @endif
+
 @endsection

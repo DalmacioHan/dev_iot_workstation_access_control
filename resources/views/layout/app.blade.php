@@ -126,6 +126,7 @@
 <x-toast-modal />
 <x-error-modal />
 <x-confirm-modal />
+<x-delete-modal />
 </div>
 @stack('modals')
 <!-- FLOWBITE JS -->
