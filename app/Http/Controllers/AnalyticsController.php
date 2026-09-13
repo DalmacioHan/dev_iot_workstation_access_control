@@ -39,12 +39,13 @@ class AnalyticsController extends Controller
         $rangeEnd = fn (string $range): Carbon => $now->copy()->endOfDay();
 
         //Card data
-        $popularWorkstation = PcAccessLogs::select('workstation_id', PcAccessLogs::raw('count(*) as total'))
+        $popularWorkstation = PcAccessLogs::select('workstations.pc_code', PcAccessLogs::raw('count(*) as total'))
+            ->join('workstations', 'pc_access_logs.workstation_id', '=', 'workstations.id')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
-            ->with('workstation')
-            ->groupBy('workstation_id')
-            ->orderBy('total', 'desc')
+            ->groupBy('workstations.pc_code')
+            ->orderBy('workstations.pc_code', 'desc')
             ->first();
+
         $activeDevices = Device::where('is_active', true)->count();
         $totalEvents = PcAccessLogs::whereBetween('occurred_at', [$todayStart, $todayEnd])->count();
         $failedEvents = PcAccessLogs::where('result', 'FAIL')

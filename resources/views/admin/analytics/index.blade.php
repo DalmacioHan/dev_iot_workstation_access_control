@@ -34,8 +34,8 @@
                         </svg>
                     </div>
 <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularDevice?->name ?? $onlineDevices }}</div>
-                        <div class="mt-1 text-sm text-body">Popular Device</div>
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularWorkstation->pc_code ?? 'N/A' }}</div>
+                        <div class="mt-1 text-sm text-body">Popular Workstation</div>
                     </div>
                 </div>
             </div>
