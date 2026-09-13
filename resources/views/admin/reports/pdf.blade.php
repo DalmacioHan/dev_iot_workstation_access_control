@@ -1,237 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Access Control Report</title>
+    <meta charset="utf-8">
     <style>
-        @page {
-            margin: 14mm 10mm 14mm;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: #333;
             margin: 0;
+            padding: 0;
+        }
+
+        /* Main Data Table Styles */
+        .main-content {
+            margin-top: 0px;
+        }
+        
+        .report-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
             color: #1e293b;
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 8px;
         }
 
-        .header {
-            border-bottom: 3px solid #1d4ed8;
-            padding-bottom: 12px;
-        }
-
-        .brand {
-            color: #1d4ed8;
-            font-size: 9px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 5px 0 3px;
-            color: #0f172a;
-            font-size: 22px;
-        }
-
-        .subtitle {
-            color: #64748b;
-            font-size: 10px;
-        }
-
-        .meta {
+        table.data-table {
             width: 100%;
-            margin: 16px 0;
             border-collapse: collapse;
         }
-
-        .meta td {
-            width: 25%;
-            padding: 8px 10px;
+        
+        table.data-table th, table.data-table td {
             border: 1px solid #cbd5e1;
-            background: #f8fafc;
-            vertical-align: top;
-        }
-
-        .meta-label {
-            display: block;
-            margin-bottom: 3px;
-            color: #64748b;
-            font-size: 7px;
-            font-weight: bold;
-            letter-spacing: .8px;
-            text-transform: uppercase;
-        }
-
-        .meta-value {
-            color: #0f172a;
-            font-size: 9px;
-        }
-
-        .summary {
-            margin: 0 0 10px;
-            color: #475569;
-            font-size: 9px;
-        }
-
-        table.report {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .report thead {
-            display: table-header-group;
-        }
-
-        .report th {
-            padding: 6px 5px;
-            border: 1px solid #1d4ed8;
-            background: #1d4ed8;
-            color: #ffffff;
-            font-size: 6px;
-            letter-spacing: .6px;
+            padding: 6px 8px;
             text-align: left;
+            font-size: 10.5px;
+        }
+
+        table.data-table th:first-child, table.data-table td:first-child {
+            width: 30px;
+            text-align: center;
+        }
+        
+        table.data-table th {
+            background-color: #f8fafc;
+            font-weight: bold;
             text-transform: uppercase;
+            font-size: 9px;
+            color: #475569;
         }
-
-        .report td {
-            padding: 5px;
-            border: 1px solid #cbd5e1;
-            color: #334155;
-            overflow-wrap: break-word;
-            vertical-align: top;
-        }
-
-        .report tbody tr:nth-child(even) td {
-            background: #f1f5f9;
-        }
-
-        .report .id {
-            width: 5%;
-        }
-
-        .report .date {
-            width: 15%;
-        }
-
-        .report .course {
-            width: 19%;
-        }
-
-        .report .workstation {
-            width: 14%;
-        }
-
-        .report .event {
-            width: 14%;
-        }
-
-        .report .result {
-            width: 12%;
-        }
-
-        .report .reason {
-            width: 21%;
-        }
-
-        .empty {
-            padding: 18px !important;
-            color: #64748b !important;
-            text-align: center;
-        }
-
-        .footer {
-            position: fixed;
-            right: 0;
-            bottom: -8mm;
-            left: 0;
-            border-top: 1px solid #cbd5e1;
-            padding-top: 5px;
-            color: #64748b;
-            font-size: 7px;
-            text-align: center;
-        }
-
-        .page-number:after {
-            content: counter(page);
+        
+        table.data-table tr:nth-child(even) {
+            background-color: #f1f5f9;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="brand">Access Control Division</div>
-        <h1>Workstation Access Report</h1>
-        <div class="subtitle">Detailed audit record of workstation access activity</div>
-    </header>
+    <div class="main-content">
+        <div class="report-title">Workstation Access Control Report</div>
 
-    <table class="meta">
-        <tr>
-            <td>
-                <span class="meta-label">Generated</span>
-                <span class="meta-value">{{ $generatedAt->format('F d, Y h:i A') }}</span>
-            </td>
-            <td>
-                <span class="meta-label">Records</span>
-                <span class="meta-value">{{ number_format($logs->count()) }}</span>
-            </td>
-            <td>
-                <span class="meta-label">Date From</span>
-                <span class="meta-value">{{ $filters['date_from'] ?? 'All dates' }}</span>
-            </td>
-            <td>
-                <span class="meta-label">Date To</span>
-                <span class="meta-value">{{ $filters['date_to'] ?? 'All dates' }}</span>
-            </td>
-        </tr>
-    </table>
-
-    <p class="summary">
-        Applied filters:
-        Course: {{ $filters['course'] ?? 'All' }} |
-        Workstation: {{ $filters['workstation'] ?? 'All' }} |
-        Event: {{ $filters['event'] ?? 'All' }} |
-        Result: {{ $filters['result'] ?? 'All' }} |
-        Reason: {{ $filters['reason'] ?? 'All' }}
-    </p>
-
-    <table class="report">
-        <thead>
-            <tr>
-                <th class="id">ID</th>
-                <th class="date">Date &amp; Time</th>
-                <th class="course">Course</th>
-                <th class="workstation">Workstation</th>
-                <th class="event">Event</th>
-                <th class="result">Result</th>
-                <th class="reason">Reason</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($logs as $log)
+        <table class="data-table">
+            <thead>
                 <tr>
-                    <td>{{ $log->id }}</td>
-                    <td>{{ $log->occurred_at }}</td>
-                    <td>{{ $log->course ?: '-' }}</td>
-                    <td>{{ $log->workstation ?: '-' }}</td>
-                    <td>{{ $log->event_type ?: '-' }}</td>
-                    <td>{{ $log->result ?: '-' }}</td>
-                    <td>{{ $log->reason ?: '-' }}</td>
+                    <th>No.</th>
+                    @if ($columns['student_name'])
+                        <th>Name</th>
+                    @endif
+                    @if ($columns['course'])
+                        <th>Course</th>
+                    @endif
+                    @if ($columns['workstation'])
+                        <th>Workstation</th>
+                    @endif
+                    @if ($columns['date_time'])
+                        <th>Date and Time</th>
+                    @endif
+                    @if ($columns['event'])
+                        <th>Event</th>
+                    @endif
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="7" class="empty">No access logs matched the selected filters.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-
-    <div class="footer">
-        Confidential access control record &nbsp;|&nbsp; Generated {{ $generatedAt->format('Y-m-d H:i') }} &nbsp;|&nbsp; Page <span class="page-number"></span>
+            </thead>
+            <tbody>
+                @foreach ($logs as $index => $log)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        @if ($columns['student_name'])
+                            <td>{{ $log->student_name }}</td>
+                        @endif
+                        @if ($columns['course'])
+                            <td>{{ $log->course }}</td>
+                        @endif
+                        @if ($columns['workstation'])
+                            <td>{{ $log->workstation }}</td>
+                        @endif
+                        @if ($columns['date_time'])
+                            <td>{{ $log->occurred_at }}</td>
+                        @endif
+                        @if ($columns['event'])
+                            <td>{{ $log->event_type }}</td>
+                        @endif
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+
 </body>
 </html>

@@ -12,7 +12,7 @@ class DeviceController extends Controller
     public function index(Request $request)
     {
         
-        $query = Device::withCount('deviceWorkstations');
+        $query = Device::query();
 
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -76,10 +76,8 @@ class DeviceController extends Controller
     public function show(Device $device ){
         
         $device= Device::where('id',$device->id)->first();
-        $deviceSlot= $device->deviceWorkstations()->with('workstation')->get();
-        $assignedWorkstations= Workstations::wherehas('deviceWorkstations', function($q) use ($device) {
-            $q->where('device_id', $device->id);
-        })->get();
+        $deviceSlot= $device->workstations()->with('workstation')->get();
+        $assignedWorkstations= Workstations::wherehas('device')->get();
         
         return view('admin.device.view', compact('device', 'deviceSlot','assignedWorkstations'));
     }

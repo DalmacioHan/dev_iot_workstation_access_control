@@ -66,7 +66,7 @@
                                 >
                                     @forelse ($devicesName as $devices)
                                         @if ($loop->first)
-                                            <option value="" disabled {{ old('device_uid') ? '' : 'selected' }}>Select device</option>
+                                            <option value="{{ $devices->id }}" disabled {{ old('device_uid') ? '' : 'selected' }}>Select device</option>
                                         @endif
                                         <option value="{{ $devices->id }}" {{ old('device_id') == $devices->id ? 'selected' : '' }}>
                                             {{ $devices->name ?? $devices->device_name }}
@@ -79,31 +79,14 @@
 
                             </div>
 
-                            <div>
-                                <label for="pc_port" class="block mb-2 text-sm font-medium text-heading">PC Port</label>
-                                <select
-                                    id="pc_port"
-                                    name="pc_port"
-                                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                    required
-
-                                >
-                                    <option value="" disabled {{ old('pc_port') ? '' : 'selected' }}>Select port</option>
-                                    <option value="1" {{ old('pc_port') == '1' ? 'selected' : '' }}>Port 1</option>
-                                    <option value="2" {{ old('pc_port') == '2' ? 'selected' : '' }}>Port 2</option>
-                                </select>
-                                @error('pc_port') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
-                            </div>
                         </div>
 
                         <div class="mt-auto pt-6 space-y-3">
                             <div id="portNotice" class="hidden rounded-base border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">
-                                Selected port is already used for this device.
+                                Selected Device is already u
                             </div>
 
-                            <div class="rounded-base border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-                                Notice: Only <span class="font-semibold">two workstations</span> can be connected to one device.
-                            </div>
+                            
 
                             <button
                                 id="submitBtn"
@@ -120,37 +103,5 @@
         </div>
     </div>
 <x-success-modal />
-    <script>
-        const deviceSelect = document.getElementById('device_id');
-        const portSelect = document.getElementById('pc_port');
-        const submitBtn = document.getElementById('submitBtn');
-        const portNotice = document.getElementById('portNotice');
-
-        function checkAvailability() {
-            if (noDevices) {
-                submitBtn.disabled = true;
-                portNotice.classList.add('hidden');
-                return;
-            }
-
-            const deviceId = deviceSelect.value;
-            const port = portSelect.value; // "1" or "2"
-
-            if (!deviceId || !port) {
-                submitBtn.disabled = false;
-                portNotice.classList.add('hidden');
-                return;
-            }
-
-            const used = (usedPortsByDevice[deviceId] || []).map(String);
-            const taken = used.includes(port);
-
-            submitBtn.disabled = taken;
-            portNotice.classList.toggle('hidden', !taken);
-        }
-
-        deviceSelect.addEventListener('change', checkAvailability);
-        portSelect.addEventListener('change', checkAvailability);
-        checkAvailability();
-    </script>
+   
 @endsection

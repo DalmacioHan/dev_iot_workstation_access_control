@@ -65,24 +65,24 @@
             <tbody class="divide-y divide-gray-100">
                 @foreach ($deviceWorkstations as $dw)
                 <tr class="bg-white">
-                    <td class="px-8 py-7 font-medium text-gray-900">{{ $dw->workstation->pc_code }}</td>
+                    <td class="px-8 py-7 font-medium text-gray-900">{{ $dw->pc_code }}</td>
                     <td class="px-8 py-7">
-                        <span class="{{ $dw->workstation->is_active ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100' }} px-2 py-1 rounded-full">
-                        {{ $dw->workstation->is_active ? 'Active' : 'Inactive' }}
+                        <span class="{{ $dw->is_active ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100' }} px-2 py-1 rounded-full">
+                        {{ $dw->is_active ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
-                    <td class="px-8 py-7 text-gray-900">{{ $dw->device->device_uid }}</td>
+                    <td class="px-8 py-7 text-gray-900">{{ $dw->device?->device_uid ?? 'Unassigned' }}</td>
                     <td class="px-8 py-7">
                         <div class="flex items-center justify-center gap-3">
 
-                            <a href="{{ route('workstation.view', $dw->workstation->id) }}" class="group rounded-lg p-2 hover:bg-blue-50 transition-all" title="View Details">
+                            <a href="{{ route('workstation.view', $dw->id) }}" class="group rounded-lg p-2 hover:bg-blue-50 transition-all" title="View Details">
                                 <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                 </svg>
                             </a>
 
-                            <a href="{{ route('workstation.edit', $dw->workstation->id) }}" class="group rounded-lg p-2 hover:bg-amber-50 transition-all" title="Edit">
+                            <a href="{{ route('workstation.edit', $dw->id) }}" class="group rounded-lg p-2 hover:bg-amber-50 transition-all" title="Edit">
                                 <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -91,7 +91,7 @@
                             
                             <button 
                                 type="button" 
-                                onclick="openDeleteModal('{{ route('workstation.destroy', $dw->workstation->id) }}', 'Are you sure you want to delete workstation {{ $dw->workstation->pc_code }}?')"
+                                onclick="openDeleteModal('{{ route('workstation.destroy', $dw->id) }}', 'Are you sure you want to delete workstation {{ $dw->pc_code }}?')"
                                 class="group rounded-lg p-2 hover:bg-red-50 transition-all" 
                                 title="Delete"
                             >

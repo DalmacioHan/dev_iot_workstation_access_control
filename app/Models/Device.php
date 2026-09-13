@@ -23,27 +23,12 @@ class Device extends Model
         'token_expires_at' => 'datetime',
     ];
 
-    public function deviceWorkstations()
+
+    public function workstations()
     {
-        
-        return $this->hasMany(DeviceWorkstation::class);
+        return $this->hasMany(Workstations::class, 'device_id', 'id');
     }
 
-
-    public function getIsFullAttribute(): bool
-    {
-        return $this->device_workstations_count >= 2;
-    }
-
-    /**
-     * Logic to calculate remaining ports
-     */
-    public function getRemainingPortsAttribute(): int
-    {
-        $limit = 2;
-        $count = $this->device_workstations_count ?? 0;
-        return max(0, $limit - $count);
-    }
 
     /**
      * Generate and store a new API token

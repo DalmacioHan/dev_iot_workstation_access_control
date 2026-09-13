@@ -55,11 +55,11 @@
             <div>
                 <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Slot Usage</p>
                 <p class="mt-1 text-2xl font-bold text-gray-900">
-                    {{ $device->deviceWorkstations()->count() }} 
-                    <span class="text-lg font-normal text-gray-400">/ 2 slots used</span>
+                    {{ $device->workstations()->count() }} 
+                    <span class="text-lg font-normal text-gray-400">/ 1 slots used</span>
                 </p>
                 <p class="text-xs text-gray-500 mt-0.5">
-                    {{ 2 - $device->deviceWorkstations()->count() }} available
+                    {{ 1 - $device->workstations()->count() }} available
                 </p>
             </div>
 

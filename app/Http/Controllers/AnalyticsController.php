@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PcAccessLogs;
+use App\Models\Device;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -44,6 +45,7 @@ class AnalyticsController extends Controller
             ->groupBy('workstation_id')
             ->orderBy('total', 'desc')
             ->first();
+        $activeDevices = Device::where('is_active', true)->count();
         $totalEvents = PcAccessLogs::whereBetween('occurred_at', [$todayStart, $todayEnd])->count();
         $failedEvents = PcAccessLogs::where('result', 'FAIL')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
@@ -68,7 +70,7 @@ class AnalyticsController extends Controller
         $courseRangeLabel = $rangeLabels[$courseRange];
 
         return view('admin.analytics.index', compact(
-            'totalEvents', 'failedEvents', 'popularWorkstation',
+            'activeDevices', 'totalEvents', 'failedEvents', 'popularWorkstation',
             'topStudents', 'topCourses', 'rangeLabels',
             'studentRange', 'courseRange',
             'studentRangeLabel', 'courseRangeLabel'));

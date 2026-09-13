@@ -11,10 +11,9 @@ class PcAccessLogSeeder extends Seeder
 {
     public function run()
     {
-        // --- 1. Paste at least 60 student entries here
-        // Format: ID, surname, first name, middle name
+      
         $students = [
-            // 60 students from your provided set!
+            
             ['2510219-1','Abasolo','Justine','Pantino'],
             ['2510491-2','Abenoja','Mary Joyce','Ganzo'],
             ['2510949-1','Aguilar','Polaris','De Guzman'],
@@ -73,39 +72,55 @@ class PcAccessLogSeeder extends Seeder
             ['2510760-2','Niñez','Mary Ann','Masendo'],
             ['2510671-1','Oberes','Charles','Amer'],
             ['2510693-1','Ortiz','Achilles Simone','Abiñon'],
-            // <-- you can add further from your large list as needed
+            
         ];
 
-        $courses = [
-            'BS in Civil Engineering',
-            'BS in Mechanical Engineering',
-            'BS in Computer Engineering',
-            'BS in Electrical Engineering',
-            'Bachelor of Industrial Technology (Majors: Automotive, Drafting, Electrical, Electronics, Food Preparation & Services, HVAC)',
-            'BS in Information Technology (Majors: Networking, Programming)',
-            'Bachelor of Elementary Education (BEEd)',
-            'Bachelor of Technology and Livelihood Education (Majors: Home Economics, Industrial Arts, ICT)',
-            'BS in Hospitality Management',
-            'BS in Tourism Management',
-            'BS in Food Technology',
-            'BS in Criminology',
-            'Doctor of Philosophy in Technology Management',
-            'Master in Teaching and Learning Innovation (Majors: English, Math, Science, Filipino)',
-            'Master of Arts in Teaching (Majors: English, Filipino, Mathematics, Natural Science)',
-            'Master in Management',
-            'Master in Technology Education',
-            'Master of Science in Information Technology'
-        ];
+
+            $courses = [
+                'BS in Civil Engineering',
+                'BS in Mechanical Engineering',
+                'BS in Computer Engineering',
+                'BS in Electrical Engineering',
+                'Bachelor of Industrial Technology Major in Automotive',
+                'Bachelor of Industrial Technology Major in Drafting',
+                'Bachelor of Industrial Technology Major in Electrical',
+                'Bachelor of Industrial Technology Major in Electronics',
+                'Bachelor of Industrial Technology Major in Food Preparation & Services',
+                'Bachelor of Industrial Technology Major in HVAC',
+                'BS in Information Technology Major in Networking',
+                'BS in Information Technology Major in Programming',
+                'Bachelor of Elementary Education (BEEd)',
+                'Bachelor of Technology and Livelihood Education Major in Home Economics',
+                'Bachelor of Technology and Livelihood Education Major in Industrial Arts',
+                'Bachelor of Technology and Livelihood Education Major in ICT',
+                'BS in Hospitality Management',
+                'BS in Tourism Management',
+                'BS in Food Technology',
+                'BS in Criminology',
+                'Doctor of Philosophy in Technology Management',
+                'Master in Teaching and Learning Innovation Major in English',
+                'Master in Teaching and Learning Innovation Major in Math',
+                'Master in Teaching and Learning Innovation Major in Science',
+                'Master in Teaching and Learning Innovation Major in Filipino',
+                'Master of Arts in Teaching Major in English',
+                'Master of Arts in Teaching Major in Filipino',
+                'Master of Arts in Teaching Major in Mathematics',
+                'Master of Arts in Teaching Major in Natural Science',
+                'Master in Management',
+                'Master in Technology Education',
+                'Master of Science in Information Technology',
+            ];
+        
 
     
         $workstationIds = Workstations::pluck('id')->toArray();
 
-        // ---- SEEDING START DATE ----
-        $startDate = Carbon::create(2026, 8, 21)->startOfDay();
-        $endDate = Carbon::create(2026, 8, 28)->endOfDay();
+       
+        $startDate = Carbon::create(2026, 9,7 )->startOfDay();
+        $endDate = Carbon::create(2026, 9, 12)->endOfDay();
 
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
-            // Random logs (24–36) with unique students per day
+            
             $logsToday = rand(24, 36);
             $studentsToday = collect($students)->shuffle()->take($logsToday)->values();
             foreach ($studentsToday as $student) {
@@ -130,7 +145,7 @@ class PcAccessLogSeeder extends Seeder
                     'workstation_id'       => $workstation_id,
                     'event_type'           => 'LOGIN',
                     'result'               => rand(0, 9) > 0 ? 'SUCCESS' : 'FAIL',
-                    'reason'               => rand(0, 9) > 0 ? 'Authorized' : 'Not Authorized',
+                    'reason'               => 'Authorized',
                     'student_external_id'  => $studentId,
                     'student_name'         => $studentName,
                     'course'               => $course,

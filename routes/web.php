@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
     Route::get('/reports',[ReportsController::class,'index'])->name('reports');
     Route::get('/reports/csv',[ReportsController::class,'exportCsv'])->name('reports.csv');
+    Route::get('/reports/preview-pdf', [ReportsController::class, 'previewPdf'])->name('reports.preview');
     Route::get('/reports/pdf',[ReportsController::class,'exportPdf'])->name('reports.pdf');
     // Workstation  Routes
     Route::get('/workstation',[WorkstationController::class,'index'])->name('workstation');

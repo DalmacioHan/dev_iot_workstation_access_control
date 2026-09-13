@@ -35,4 +35,21 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | MIS (University Student Information) API
+    |--------------------------------------------------------------------------
+    |
+    | The kiosk desktop app validates RFID cards through this Laravel backend,
+    | which in turn proxies the student lookup to the university MIS. Today it
+    | points at the simulated LibraryApi; swap MIS_API_BASE_URL to the real
+    | UISA/MIS later without touching any other code.
+    |
+    */
+
+    'mis' => [
+        'url' => env('MIS_API_BASE_URL', 'http://localhost:5080'),
+        'timeout' => env('MIS_API_TIMEOUT', 3),
+    ],
+
 ];

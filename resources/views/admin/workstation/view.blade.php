@@ -83,21 +83,21 @@
                 <p class="text-xs uppercase tracking-wide text-gray-400 font-semibold">Last Logged Student</p>
                 <p class="mt-2 text-base font-semibold text-gray-800 font-mono">
                     {{-- //query the log table and get the latest log entry for this workstation and display the student id and name if the workstation is currently in use, otherwise display "Not in Use" --}}
-                    {{ $workstation->most_recent_student ?? 'Available' }}
+                    {{ $workstation->most_recent_student ?? ' Not Available' }}
                 </p>
             </div>
 
             <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
-                <p class="text-xs uppercase tracking-wide text-gray-400 font-semibold">PC PORT</p>
+                <p class="text-xs uppercase tracking-wide text-gray-400 font-semibold">APP USAGE</p>
                 <p class="mt-2 text-base font-semibold text-gray-800">
-                    {{ $workstation->location ?? '' }}
+                    {{ $workstation->location ?? 'Not Available' }}
                 </p>
             </div>
 
             <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-400 font-semibold">STUDENT COURSE</p>
                 <p class="mt-2 text-base font-semibold text-gray-800">
-                    {{ $workstation->pc_port ?? '—' }}
+                    {{ $workstation->p ?? 'wapa ni uwu' }}
                 </p>
             </div>
         </div>

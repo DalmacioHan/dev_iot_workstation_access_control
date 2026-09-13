@@ -3,10 +3,6 @@
 @section('title','Add Device')
 
 @section('content')
-@php
-    $controlHeight = 'h-[52px]';
-@endphp
-
 {{-- Top right Back button --}}
 <div class="mb-6 flex w-full justify-end">
     <a href="{{ route('device') }}" class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200">
@@ -56,19 +52,18 @@
                 @csrf
                 <div>
                     <label for="device_uid" class="mb-2 block text-base font-medium text-gray-900">Device Code <span class="text-red-600">*</span></label>
-                    <input type="text" id="device_uid" name="device_uid" value="{{ old('device_uid') }}" placeholder="12345" class="block w-full {{ $controlHeight }} rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600" required />
+                    <input type="text" id="device_uid" name="device_uid" value="{{ old('device_uid') }}" placeholder="12345" class="block w-full h-[52px] rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600" required />
                     @error('device_uid') <div class="text-red-500 text-sm mt-1">{{ $message }}</div> @enderror
                     <p class="mt-2 text-sm text-gray-500">Unique code printed/stored on the ESP.</p>
                 </div>
                 <div>
                     <label for="name" class="mb-2 block text-base font-medium text-gray-900">Device Name <span class="text-red-600">*</span></label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Main Door ESP" class="block w-full {{ $controlHeight }} rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600" required />
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Main Door ESP" class="block w-full h-13 rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600" required />
                     @error('name') <div class="text-red-500 text-sm mt-1">{{ $message }}</div> @enderror
                 </div>
-                <div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <button type="submit" class="inline-flex w-full {{ $controlHeight }} items-center justify-center rounded-xl bg-blue-800 px-6 text-base font-medium text-white shadow-sm hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">Save Device</button>
-                    <a href="{{ route('device') }}" class="inline-flex w-full {{ $controlHeight }} items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-base font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200">Cancel</a>
+                    <button type="submit" class="inline-flex w-full h-13 items-center justify-center rounded-xl bg-blue-800 px-6 text-base font-medium text-white shadow-sm hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">Save Device</button>
+                    <a href="{{ route('device') }}" class="inline-flex w-full h-[52px] items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-base font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-200">Cancel</a>
                 </div>
             </form>
         </div>

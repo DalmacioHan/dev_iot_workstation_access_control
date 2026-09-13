@@ -7,48 +7,68 @@
 @endphp
 
 @section('content')
-
-    <!--card-->
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 mb-4">
-        <!-- POPULAR WORKSTATION -->
-        <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-            <div class="flex items-center justify-between">
-                <div class="w-10 h-10 rounded-xl bg-yellow-300 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                    </svg>
-                </div>
-                <div class="text-right ms-3">
-                    <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularWorkstation ? $popularWorkstation->workstation->pc_code : 'N/A' }}</div>
-                    <div class="mt-1 text-sm text-body">Popular Workstation</div>
-                </div>
-            </div>
-        </div>
-        <!-- TOTAL ACCESS EVENTS -->
-        <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-            <div class="flex items-center justify-between">
-                <div class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
-                    </svg>
-                </div>
-                <div class="text-right ms-3">
-                    <div class="text-3xl font-semibold text-heading leading-none" id="total-access-events">{{ $totalEvents }}</div>
-                    <div class="mt-1 text-sm text-body">Access Events</div>
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-12 mb-4">
+        <div class="xl:col-span-1">
+            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 5h16v10H4V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M9 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 15v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="text-right ms-3">
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $activeDevices }}</div>
+                        <div class="mt-1 text-sm text-body">Active Devices</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- TOTAL FAILED ACCESS EVENTS -->
-        <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-            <div class="flex items-center justify-between">
-                <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shrink-0">
-                    <svg class="w-[25px] h-[25px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                    </svg>
+        <div class="xl:col-span-1">
+            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-300 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+                    </div>
+<div class="text-right ms-3">
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularDevice?->name ?? $onlineDevices }}</div>
+                        <div class="mt-1 text-sm text-body">Popular Device</div>
+                    </div>
                 </div>
-                <div class="text-right ms-3">
-                    <div class="text-3xl font-semibold text-heading leading-none" id="total-failed-attempts">{{ $failedEvents }}</div>
-                    <div class="mt-1 text-sm text-body">Failed Access Events</div>
+            </div>
+        </div>
+        <div class="xl:col-span-1">
+            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
+                        </svg>
+                    </div>
+                    <div class="text-right ms-3">
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-access-events">{{ $totalEvents }}</div>
+                        <div class="mt-1 text-sm text-body">Access Events</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="xl:col-span-1">
+            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 9v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M10 3h4l7 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10l7-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="text-right ms-3">
+                        <div class="text-3xl font-semibold text-heading leading-none" id="total-failed-attempts">{{ $failedEvents }}</div>
+                        <div class="mt-1 text-sm text-body">Failed Access Events</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -142,7 +162,87 @@
             </div>
         </div>
     </div>
+
 @endsection
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const getBrandTertiaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-strong').trim() || "#1E40AF";
+    const getNeutralPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-neutral-primary').trim() || "#FFFFFF";
+    const brandTertiaryColor = getBrandTertiaryColor();
+    const neutralPrimaryColor = getNeutralPrimaryColor();
+    const bluePalette = [
+        "#1447E6",
+        "#2563EB",
+        "#3B82F6",
+        "#60A5FA",
+        "#93C5FD",
+    ];
 
+    /* ════════════ PIE Courses ════════════ */
+    const pieChartOptions = {
+        series: courseCounts,
+        colors: bluePalette,
+        chart: { height: 280, width: "100%", type: "pie" },
+        stroke: { colors: [neutralPrimaryColor], lineCap: "" },
+        plotOptions: { pie: { labels: { show: true }, size: "100%", dataLabels: { offset: -25 } } },
+        labels: courseLabels,
+        dataLabels: { enabled: true, style: { fontFamily: "Inter, sans-serif" } },
+        legend: { show: false },
+        yaxis: { labels: { formatter: function (value) { return value + "%" } } },
+        xaxis: { labels: { formatter: function (value) { return value  + "%" } }, axisTicks: { show: false }, axisBorder: { show: false } }
+    };
+
+    if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
+        const pieChart = new ApexCharts(document.getElementById("pie-chart"), pieChartOptions);
+        pieChart.render();
+    }
+
+    /* ════════════ COLUMN Students ════════════ */
+    const getBrandColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand').trim() || "#1447E6";
+    const getBrandSecondaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-subtle').trim() || "#93C5FD";
+    const brandColor = getBrandColor();
+    const brandSecondaryColor = getBrandSecondaryColor();
+
+    const columnChartOptions = {
+        colors: [brandColor, brandSecondaryColor],
+        series: [
+        {
+            name: "Male",
+            color: brandColor,
+            data: maleData.map((y, i) => ({ x: columnChartDays[i], y }))
+        },
+        {
+            name: "Female",
+            color: brandSecondaryColor,
+            data: femaleData.map((y, i) => ({ x: columnChartDays[i], y }))
+        }
+        ],
+        chart: {
+        type: "bar",
+        height: "280px",
+        fontFamily: "Inter, sans-serif",
+        toolbar: { show: false },
+        },
+        plotOptions: { bar: { horizontal: false, columnWidth: "70%", borderRadiusApplication: "end", borderRadius: 8 } },
+        tooltip: { shared: true, intersect: false, style: { fontFamily: "Inter, sans-serif" } },
+        states: { hover: { filter: { type: "darken", value: 1 } } },
+        stroke: { show: true, width: 0, colors: ["transparent"] },
+        grid: { show: false, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
+        dataLabels: { enabled: false },
+        legend: { show: false },
+        xaxis: {
+        categories: columnChartDays,
+        floating: false,
+        labels: { show: true, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
+        axisBorder: { show: false }, axisTicks: { show: false },
+        },
+        yaxis: { show: false },
+        fill: { opacity: 1 }
+    };
+
+    if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
+        const columnChart = new ApexCharts(document.getElementById("column-chart"), columnChartOptions);
+        columnChart.render();
+    }
+    });
 </script>

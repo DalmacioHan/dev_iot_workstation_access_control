@@ -10,8 +10,6 @@ class PcAccessLogs extends Model
     protected $fillable = [
         'occurred_at',
         'received_at',
-        'device_uid',
-        'pc_port',
         'rfid_uid',
         'workstation_id',
         'event_type',
@@ -21,7 +19,6 @@ class PcAccessLogs extends Model
         'student_external_id',
         'student_name',
         'course',
-        'metadata'
     ];
 
     public function workstation()
