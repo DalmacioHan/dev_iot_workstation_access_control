@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 
 use Database\Seeders\DeviceSeeder;
-use Database\Seeders\DeviceWorkstationSeeder;
 use Database\Seeders\PcAccessLogSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\WorkstationSeeder;
@@ -26,7 +25,6 @@ class DatabaseSeeder extends Seeder
         UserSeeder::class,
         DeviceSeeder::class,
         WorkstationSeeder::class,
-        DeviceWorkstationSeeder::class,
         PcAccessLogSeeder::class,
     ]);
     }

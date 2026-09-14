@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\DeviceWorkstation;
 use App\Models\PcAccessLogs;
 use App\Models\PcAppUsage;
+use App\Models\Workstations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -43,9 +43,7 @@ class AccessController extends Controller
             ? \Illuminate\Support\Carbon::parse($validated['occurred_at'])
             : now();
 
-        $mapping = DeviceWorkstation::where('device_id', $device->id)
-            ->where('pc_port', $pcPort)
-            ->first();
+        $mapping = Workstations::where('device_id', $device->id)->first();
 
         [$student, $reason] = $this->lookupStudentInMis($cardId);
 
@@ -53,7 +51,7 @@ class AccessController extends Controller
             $this->writeLog([
                 'occurred_at'    => $occurredAt,
                 'rfid_uid'       => $cardId,
-                'workstation_id' => $mapping?->workstation_id,
+                'workstation_id' => $mapping?->id,
                 'event_type'     => 'denied',
                 'result'         => 'denied',
                 'reason'         => $reason,
@@ -69,9 +67,9 @@ class AccessController extends Controller
 
         $this->writeLog([
             'occurred_at'    => $occurredAt,
-            'rfid_uid'       => $cardId,
-            'workstation_id' => $mapping?->workstation_id,
-            'event_type'     => 'time_in',
+'rfid_uid'       => $cardId,
+                'workstation_id' => $mapping?->id,
+                'event_type'     => 'time_in',
             'result'         => 'allowed',
             'reason'         => 'Authorized',
             'session_id'     => $sessionId,
