@@ -21,12 +21,13 @@ class ReportsController extends Controller
             ->orderBy('course')
             ->pluck('course');
 
-        $devices = Device::query()
-            ->whereNotNull('name')
-            ->where('name', '!=', '')
+            $devices = Device::query()
+            ->select('device_uid', 'workstation_name') 
+            ->whereNotNull('workstation_name')
+            ->where('workstation_name', '!=', '')
             ->distinct()
-            ->orderBy('name')
-            ->pluck('name');
+            ->orderBy('workstation_name')
+            ->pluck('workstation_name', 'device_uid'); 
 
         $events = PcAccessLogs::query()
             ->whereNotNull('event_type')
@@ -201,7 +202,7 @@ class ReportsController extends Controller
                 'pc_access_logs.occurred_at',
                 'pc_access_logs.student_name',
                 'pc_access_logs.course',
-                'devices.name as device',
+                'devices.workstation_name as workstation_name',
                 'pc_access_logs.event_type',
                 'pc_access_logs.result',
                 'pc_access_logs.reason'
@@ -221,7 +222,7 @@ class ReportsController extends Controller
         }
 
         if ($request->filled('device')) {
-            $query->where('devices.name', $request->device);
+            $query->where('devices.w', $request->device);
         }
 
         if ($request->filled('event')) {

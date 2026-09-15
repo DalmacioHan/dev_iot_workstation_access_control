@@ -69,7 +69,7 @@
                         <th>Course</th>
                     @endif
                     @if ($columns['device'])
-                        <th>Device</th>
+                        <th>Workstation</th>
                     @endif
                     @if ($columns['date_time'])
                         <th>Date and Time</th>
@@ -90,7 +90,7 @@
                             <td>{{ $log->course }}</td>
                         @endif
                         @if ($columns['device'])
-                            <td>{{ $log->device }}</td>
+                            <td>{{ $log->workstation_name }}</td>
                         @endif
                         @if ($columns['date_time'])
                             <td>{{ $log->occurred_at }}</td>

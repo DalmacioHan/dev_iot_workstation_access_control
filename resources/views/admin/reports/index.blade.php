@@ -102,7 +102,7 @@
                 </label>
                 <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer">
                     <input type="checkbox" name="cols[device]" value="1" {{ $columns['device'] ? 'checked' : '' }} class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
-                    Device
+                    Workstation
                 </label>
                 <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer">
                     <input type="checkbox" name="cols[date_time]" value="1" {{ $columns['date_time'] ? 'checked' : '' }} class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
@@ -142,7 +142,7 @@
                             <th scope="col" class="px-6 py-4">Course</th>
                         @endif
                         @if ($columns['device'])
-                            <th scope="col" class="px-6 py-4">Device</th>
+                            <th scope="col" class="px-6 py-4">WorkStation</th>
                         @endif
                         @if ($columns['date_time'])
                             <th scope="col" class="px-6 py-4">Date and Time</th>
@@ -162,7 +162,7 @@
                                 <td class="px-6 py-4 text-slate-600">{{ $log->course }}</td>
                             @endif
                             @if ($columns['device'])
-                                <td class="px-6 py-4 font-medium text-slate-800">{{ $log->device}}</td>
+                                <td class="px-6 py-4 font-medium text-slate-800">{{ $log->workstation_name }}</td>
                             @endif
                             @if ($columns['date_time'])
                                 <td class="px-6 py-4">
