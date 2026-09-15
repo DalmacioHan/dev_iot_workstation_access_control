@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
-use App\Models\DeviceWorkstation;
 use App\Models\PcAccessLogs;
 use App\Models\PcAppUsage;
 use App\Models\Workstations;
@@ -77,9 +76,9 @@ class AdminController extends Controller
         $failedAttempts    = PcAccessLogs::where('result', 'denied')->count();
 
         // Device with the most access events (via the workstation mapping).
-        $popularDevice = PcAccessLogs::join('device_workstations', 'device_workstations.workstation_id', '=', 'pc_access_logs.workstation_id')
-            ->selectRaw('device_workstations.device_id, COUNT(*) as events')
-            ->groupBy('device_workstations.device_id')
+        $popularDevice = PcAccessLogs::join('workstations', 'workstations.id', '=', 'pc_access_logs.workstation_id')
+            ->selectRaw('workstations.device_id, COUNT(*) as events')
+            ->groupBy('workstations.device_id')
             ->orderByDesc('events')
             ->first();
         $popularDevice = $popularDevice ? Device::find($popularDevice->device_id) : null;
@@ -146,7 +145,7 @@ class AdminController extends Controller
     public function reports(Request $request)
     {
         $courses      = PcAccessLogs::whereNotNull('course')->distinct()->orderBy('course')->pluck('course');
-        $workstations = Workstations::orderBy('name')->get(['id', 'name']);
+        $workstations = Workstations::orderBy('pc_code')->get(['id', 'pc_code']);
         $events       = PcAccessLogs::distinct()->orderBy('event_type')->pluck('event_type');
         $reasons      = PcAccessLogs::whereNotNull('reason')->distinct()->orderBy('reason')->pluck('reason');
 

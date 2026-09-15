@@ -21,6 +21,11 @@ class PcAccessLogs extends Model
         'course',
     ];
 
+    protected $casts = [
+        'occurred_at' => 'datetime',
+        'received_at' => 'datetime',
+    ];
+
     public function workstation()
     {
         return $this->belongsTo(Workstations::class);

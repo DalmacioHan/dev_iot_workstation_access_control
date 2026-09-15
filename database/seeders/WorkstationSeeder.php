@@ -14,12 +14,14 @@ class WorkstationSeeder extends Seeder
     public function run()
     {
         Workstations::create([
-            'pc_code' => 'PC01',
-            'is_active' => 1,
+            'pc_code'    => 'PC01',
+            'device_id'  => 1,
+            'is_active'  => 1,
         ]);
         Workstations::create([
-            'pc_code' => 'PC02',
-            'is_active' => 1,
+            'pc_code'    => 'PC02',
+            'device_id'  => 2,
+            'is_active'  => 1,
         ]);
     }
 }
