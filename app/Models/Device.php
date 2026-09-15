@@ -40,6 +40,11 @@ class Device extends Model
         return $token;
     }
 
+    public function accessLogs()
+    {
+        return $this->hasMany(PcAccessLogs::class);
+    }
+
     /**
      * Check if token is valid
      */
