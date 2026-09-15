@@ -8,7 +8,6 @@ namespace Database\Seeders;
 use Database\Seeders\DeviceSeeder;
 use Database\Seeders\PcAccessLogSeeder;
 use Database\Seeders\UserSeeder;
-use Database\Seeders\WorkstationSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -24,7 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
         UserSeeder::class,
         DeviceSeeder::class,
-        WorkstationSeeder::class,
         PcAccessLogSeeder::class,
     ]);
     }

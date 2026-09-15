@@ -7,7 +7,7 @@ class Device extends Model
 {
     protected $fillable = [
     'device_uid',
-    'name',
+    'workstation_name',
     'pairing_code',
     'is_active',
     'last_seen_at',
@@ -22,12 +22,6 @@ class Device extends Model
         'token_created_at' => 'datetime',
         'token_expires_at' => 'datetime',
     ];
-
-
-    public function workstations()
-    {
-        return $this->hasMany(Workstations::class, 'device_id', 'id');
-    }
 
 
     /**

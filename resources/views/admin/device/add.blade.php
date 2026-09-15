@@ -57,9 +57,9 @@
                     <p class="mt-2 text-sm text-gray-500">Unique code printed/stored on the ESP.</p>
                 </div>
                 <div>
-                    <label for="name" class="mb-2 block text-base font-medium text-gray-900">Device Name <span class="text-red-600">*</span></label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Main Door ESP" class="block w-full h-13 rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600" required />
-                    @error('name') <div class="text-red-500 text-sm mt-1">{{ $message }}</div> @enderror
+                    <label for="workstation_name" class="mb-2 block text-base font-medium text-gray-900">Workstation Name <span class="text-red-600">*</span></label>
+                    <input type="text" id="workstation_name" name="workstation_name" value="{{ old('workstation_name') }}" placeholder="PC 1" class="block w-full h-13 rounded-xl border border-gray-200 bg-white px-4 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600" required />
+                    @error('workstation_name') <div class="text-red-500 text-sm mt-1">{{ $message }}</div> @enderror
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <button type="submit" class="inline-flex w-full h-13 items-center justify-center rounded-xl bg-blue-800 px-6 text-base font-medium text-white shadow-sm hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-200">Save Device</button>

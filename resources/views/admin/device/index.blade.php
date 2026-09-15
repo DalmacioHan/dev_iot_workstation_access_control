@@ -65,9 +65,8 @@
             <thead class="bg-white text-base font-semibold text-black border-b border-gray-200">
                 <tr>
                     <th scope="col" class="px-8 py-6">Device Code</th>
-                    <th scope="col" class="px-8 py-6">Device Name</th>
+                    <th scope="col" class="px-8 py-6">Workstation Name</th>
                     <th scope="col" class="px-8 py-6 text-center">Status</th>
-                    <th scope="col" class="px-8 py-6 text-center">Port Capacity</th>
                     <th scope="col" class="px-8 py-6 text-center">Actions</th>
                 </tr>
             </thead>
@@ -75,31 +74,11 @@
                 @forelse($devices as $device)
                 <tr class="{{ $loop->even ? 'bg-gray-50/40' : 'bg-white' }} transition-colors hover:bg-blue-50/30">
                     <td class="px-8 py-7 font-medium text-gray-900">{{ $device->device_uid }}</td>
-                    <td class="px-8 py-7 font-medium text-gray-900">{{ $device->name }}</td>
+                    <td class="px-8 py-7 font-medium text-gray-900">{{ $device->workstation_name }}</td>
                     <td class="px-8 py-7 text-center">
                         <span class="inline-flex items-center rounded-full px-4 py-1 text-sm font-medium {{ $device->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
                             {{ $device->is_active ? 'Active' : 'Inactive' }}
                         </span>
-                    </td>
-                    
-                    <td class="px-8 py-7 text-center">
-                        @php
-                            $maxPorts = 1;
-                            $usedPorts = $device->workstations->count();
-                            $percentage = ($usedPorts / $maxPorts) * 100;
-                            $colorClass = $usedPorts >= $maxPorts ? 'text-red-700' : ($usedPorts > 0 ? 'text-yellow-700' : 'text-blue-700');
-                            $bgClass = $usedPorts >= $maxPorts ? 'bg-red-100' : ($usedPorts > 0 ? 'bg-yellow-100' : 'bg-blue-100');
-                            $barColor = $usedPorts >= $maxPorts ? 'bg-red-500' : ($usedPorts > 0 ? 'bg-yellow-500' : 'bg-blue-500');
-                        @endphp
-
-                        <div class="flex flex-col items-center gap-2">
-                            <span class="inline-flex items-center rounded-full {{ $bgClass }} px-4 py-1 text-sm font-medium {{ $colorClass }}">
-                                {{ $usedPorts }}/{{ $maxPorts }} Slots
-                            </span>
-                            <div class="h-1.5 w-24 overflow-hidden rounded-full bg-gray-100">
-                                <div class="h-full {{ $barColor }} transition-all duration-500" style="width: {{ $percentage }}%"></div>
-                            </div>
-                        </div>
                     </td>
                     <td class="px-8 py-7">
                         <div class="flex items-center justify-center gap-3">
@@ -120,7 +99,7 @@
                             
                             <button 
                                 type="button" 
-                                onclick="openDeleteModal('{{ route('device.destroy', $device->id) }}', 'Are you sure you want to delete {{ $device->name }} ({{ $device->device_uid }})? This action cannot be undone.')"
+                                onclick="openDeleteModal('{{ route('device.destroy', $device->id) }}', 'Are you sure you want to delete {{ $device->workstation_name }} ({{ $device->device_uid }})? This action cannot be undone.')"
                                 class="group rounded-lg p-2 hover:bg-red-50 transition-all" 
                                 title="Delete"
                             >

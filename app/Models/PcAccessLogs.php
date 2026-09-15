@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Workstations;
 use Illuminate\Database\Eloquent\Model;
 
 class PcAccessLogs extends Model
@@ -11,7 +10,7 @@ class PcAccessLogs extends Model
         'occurred_at',
         'received_at',
         'rfid_uid',
-        'workstation_id',
+        'device_id',
         'event_type',
         'result',
         'reason',
@@ -26,8 +25,8 @@ class PcAccessLogs extends Model
         'received_at' => 'datetime',
     ];
 
-    public function workstation()
+    public function device()
     {
-        return $this->belongsTo(Workstations::class);
+        return $this->belongsTo(Device::class);
     }
 }
