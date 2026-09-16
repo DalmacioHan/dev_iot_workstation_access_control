@@ -29,4 +29,9 @@ class PcAccessLogs extends Model
     {
         return $this->belongsTo(Device::class);
     }
+    public function appUsages()
+{
+    // Explicitly state the foreign key and local key since they aren't 'id'
+    return $this->hasMany(PcAppUsage::class, 'session_id', 'session_id');
+}
 }
