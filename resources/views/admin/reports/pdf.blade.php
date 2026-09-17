@@ -56,7 +56,7 @@
 </head>
 <body>
     <div class="main-content">
-        <div class="report-title">Workstation Access Control Report</div>
+        <div class="report-title">Device Access Control Report</div>
 
         <table class="data-table">
             <thead>
@@ -68,7 +68,7 @@
                     @if ($columns['course'])
                         <th>Course</th>
                     @endif
-                    @if ($columns['workstation'])
+                    @if ($columns['device'])
                         <th>Workstation</th>
                     @endif
                     @if ($columns['date_time'])
@@ -89,8 +89,8 @@
                         @if ($columns['course'])
                             <td>{{ $log->course }}</td>
                         @endif
-                        @if ($columns['workstation'])
-                            <td>{{ $log->workstation }}</td>
+                        @if ($columns['device'])
+                            <td>{{ $log->workstation_name }}</td>
                         @endif
                         @if ($columns['date_time'])
                             <td>{{ $log->occurred_at }}</td>

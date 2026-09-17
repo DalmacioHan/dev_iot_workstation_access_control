@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
-use App\Models\DeviceWorkstation;
 use App\Models\PcAccessLogs;
 use App\Models\PcAppUsage;
-use App\Models\Workstations;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -18,15 +16,6 @@ class AdminController extends Controller
         $totalDevices = Device::count();
         $activeDevices = Device::where('is_active', 1)->count();
         $onlineDevices = Device::where('last_seen_at', '>=', now()->subMinutes(5))->count();
-
-        // Workstation stats
-        $totalWorkstations = Workstations::count();
-        $activeWorkstations = Workstations::where('is_active', 1)->count();
-
-        // Each device provides one slot; each device-workstation mapping occupies one.
-        $totalSlots = $totalDevices ;
-        
-        $slotUtilization = $totalSlots > 0 ? round(($totalWorkstations / $totalSlots) * 100) : 0;
 
         $weekStart = Carbon::today()->startOfWeek(Carbon::MONDAY);
 
@@ -63,7 +52,6 @@ class AdminController extends Controller
 
         return view('admin.dashboard', compact(
             'totalDevices', 'activeDevices', 'onlineDevices',
-            'totalWorkstations', 'activeWorkstations', 'slotUtilization',
             'weeklyVisitors', 'male', 'female', 'columnChartDays',
             'courseDistribution', 'totalStudents'
         ));
@@ -76,10 +64,9 @@ class AdminController extends Controller
         $totalAccessEvents = PcAccessLogs::count();
         $failedAttempts    = PcAccessLogs::where('result', 'denied')->count();
 
-        // Device with the most access events (via the workstation mapping).
-        $popularDevice = PcAccessLogs::join('device_workstations', 'device_workstations.workstation_id', '=', 'pc_access_logs.workstation_id')
-            ->selectRaw('device_workstations.device_id, COUNT(*) as events')
-            ->groupBy('device_workstations.device_id')
+        // Device with the most access events.
+        $popularDevice = PcAccessLogs::selectRaw('device_id, COUNT(*) as events')
+            ->groupBy('device_id')
             ->orderByDesc('events')
             ->first();
         $popularDevice = $popularDevice ? Device::find($popularDevice->device_id) : null;
@@ -146,11 +133,11 @@ class AdminController extends Controller
     public function reports(Request $request)
     {
         $courses      = PcAccessLogs::whereNotNull('course')->distinct()->orderBy('course')->pluck('course');
-        $workstations = Workstations::orderBy('name')->get(['id', 'name']);
+        $devices = Device::orderBy('name')->get(['id', 'name']);
         $events       = PcAccessLogs::distinct()->orderBy('event_type')->pluck('event_type');
         $reasons      = PcAccessLogs::whereNotNull('reason')->distinct()->orderBy('reason')->pluck('reason');
 
-        $query = PcAccessLogs::with('workstation')->latest('occurred_at');
+        $query = PcAccessLogs::with('device')->latest('occurred_at');
 
         if ($request->filled('date_from')) {
             $query->whereDate('occurred_at', '>=', $request->input('date_from'));
@@ -161,8 +148,8 @@ class AdminController extends Controller
         if ($request->filled('course')) {
             $query->where('course', $request->input('course'));
         }
-        if ($request->filled('workstation')) {
-            $query->where('workstation_id', $request->input('workstation'));
+        if ($request->filled('device')) {
+            $query->where('device_id', $request->input('device'));
         }
         if ($request->filled('event')) {
             $query->where('event_type', $request->input('event'));
@@ -176,6 +163,6 @@ class AdminController extends Controller
 
         $logs = $query->limit(500)->get();
 
-        return view('admin.reports.index', compact('courses', 'workstations', 'events', 'reasons', 'logs'));
+        return view('admin.reports.index', compact('courses', 'devices', 'events', 'reasons', 'logs'));
     }
 }

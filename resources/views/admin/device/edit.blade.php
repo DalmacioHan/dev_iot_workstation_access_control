@@ -45,14 +45,14 @@
             </label>
             <input
                 type="text"
-                id="name"
-                name="name"
-                value="{{ old('name', $device->name) }}"
-                placeholder="{{ $device->name  }}"
+                id="workstation_name"
+                name="workstation_name"
+                value="{{ old('workstation_name', $device->workstation_name) }}"
+                placeholder="{{ $device->workstation_name }}"
                 class="block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-base text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600"
                 required
             />
-            @error('name')
+            @error('workstation_name')
                 <div class="text-red-500 text-xs mt-1 font-medium">{{ $message }}</div>
             @enderror
         </div>

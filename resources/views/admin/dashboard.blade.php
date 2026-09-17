@@ -38,7 +38,7 @@
                 <div class="mt-1 text-sm text-body">Online Devices</div>
             </div>
         </div>
-        <div class="mt-2 text-xs text-body" id="online-devices-sub">{{ $totalDevices - $onlineDevices }} offline</div>
+        <div class="mt-2 text-xs text-body" id="online-devices-sub">wapa ni offline</div>
     </div>
 
     {{-- Card 3 --}}
@@ -52,11 +52,11 @@
                 </svg>
             </div>
             <div class="text-right ms-3">
-                <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $totalWorkstations }}</div>
-                <div class="mt-1 text-sm text-body">Total WorkStations</div>
+                <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">wapani</div>
+                <div class="mt-1 text-sm text-body">Total Devices</div>
             </div>
         </div>
-        <div class="mt-2 text-xs text-body" id="total-workstations-sub">{{ $activeWorkstations }} active</div>
+        <div class="mt-2 text-xs text-body" id="total-devices-sub">Active devices</div>
     </div>
 
     {{-- Card 4 --}}
@@ -70,7 +70,7 @@
                 </svg>
             </div>
             <div class="text-right ms-3">
-                <div class="text-3xl font-semibold text-heading leading-none" id="slot-utilization">{{ $slotUtilization }}%</div>
+                <div class="text-3xl font-semibold text-heading leading-none" id="slot-utilization">wapani%</div>
                 <div class="mt-1 text-sm text-body">Slot Utilization</div>
             </div>
         </div>
@@ -83,7 +83,7 @@
 {{-- =============================== --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     
-    <!-- First Widget - Library Workstation Usage -->
+    <!-- First Widget - Device Usage -->
     <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
         <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
         <div class="flex items-center">
@@ -91,7 +91,7 @@
             <svg class="w-6 h-6 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/></svg>
             </div>
             <div>
-            <h5 class="text-3xl font-bold text-heading">Library Workstation Usage</h5>
+            <h5 class="text-3xl font-bold text-heading">Library Device Usage</h5>
             <p class="text-sm text-body">{{ $weeklyVisitors }} visitors this week</p>
             </div>
         </div>

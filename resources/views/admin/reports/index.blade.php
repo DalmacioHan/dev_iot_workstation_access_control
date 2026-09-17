@@ -10,7 +10,7 @@
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h1 class="text-3xl font-bold tracking-tight text-slate-900">Reports Dashboard</h1>
-            <p class="mt-1 text-sm text-slate-600">Review workstation access activity, monitor usage patterns, and filter audit trails.</p>
+            <p class="mt-1 text-sm text-slate-600">Review device access activity, monitor usage patterns, and filter audit trails.</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-3">
@@ -67,11 +67,11 @@
             </div>
 
             <div>
-                <label for="workstation" class="block mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Workstation</label>
-                <select id="workstation" name="workstation" class="block w-full h-11 rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 text-sm text-slate-900 shadow-sm focus:bg-white focus:ring-2 focus:ring-sky-500/20">
-                    <option value="">All Workstations</option>
-                    @foreach ($workstations as $workstation)
-                        <option value="{{ $workstation }}" {{ request('workstation') == $workstation ? 'selected' : '' }}>{{ $workstation }}</option>
+                <label for="device" class="block mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Device</label>
+                <select id="device" name="device" class="block w-full h-11 rounded-xl border border-slate-300 bg-slate-50/50 px-3.5 text-sm text-slate-900 shadow-sm focus:bg-white focus:ring-2 focus:ring-sky-500/20">
+                    <option value="">All Devices</option>
+                    @foreach ($devices as $device)
+                        <option value="{{ $device }}" {{ request('device') == $device ? 'selected' : '' }}>{{ $device }}</option>
                     @endforeach
                 </select>
             </div>
@@ -101,7 +101,7 @@
                     Course
                 </label>
                 <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer">
-                    <input type="checkbox" name="cols[workstation]" value="1" {{ $columns['workstation'] ? 'checked' : '' }} class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                    <input type="checkbox" name="cols[device]" value="1" {{ $columns['device'] ? 'checked' : '' }} class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
                     Workstation
                 </label>
                 <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer">
@@ -141,8 +141,8 @@
                         @if ($columns['course'])
                             <th scope="col" class="px-6 py-4">Course</th>
                         @endif
-                        @if ($columns['workstation'])
-                            <th scope="col" class="px-6 py-4">Workstation</th>
+                        @if ($columns['device'])
+                            <th scope="col" class="px-6 py-4">WorkStation</th>
                         @endif
                         @if ($columns['date_time'])
                             <th scope="col" class="px-6 py-4">Date and Time</th>
@@ -161,8 +161,8 @@
                             @if ($columns['course'])
                                 <td class="px-6 py-4 text-slate-600">{{ $log->course }}</td>
                             @endif
-                            @if ($columns['workstation'])
-                                <td class="px-6 py-4 font-medium text-slate-800">{{ $log->workstation}}</td>
+                            @if ($columns['device'])
+                                <td class="px-6 py-4 font-medium text-slate-800">{{ $log->workstation_name }}</td>
                             @endif
                             @if ($columns['date_time'])
                                 <td class="px-6 py-4">

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
-use App\Models\Workstations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -39,14 +38,14 @@ class DeviceController extends Controller
 {
     $validated = $request->validate([
         'device_uid' => 'required|string|max:100|unique:devices,device_uid',
-        'name'       => 'required|string|max:255',
+        'workstation_name'=> 'required|string|max:255',
     ]);
     
     $pairingCode = strtoupper(Str::random(6));
 
     Device::create([
         'device_uid'   => $validated['device_uid'],
-        'name'         => $validated['name'],
+        'workstation_name'=> $validated['workstation_name'],
         'pairing_code' => $pairingCode,
         'is_active'    => false, 
     ]);
@@ -59,27 +58,24 @@ class DeviceController extends Controller
     public function update(Request $request, Device $device){
         
         $request->validate([
-            'name' => 'required',
+            'workstation_name' => 'required',
             'is_active' => 'required|boolean',
         ]);
 
         $device->update([
-            'name' => $request->input('name'),
+            'workstation_name' => $request->input('workstation_name'),
             'is_active' => $request->input('is_active'),
         ]);
 
-        return redirect()->route('device.edit', $device)->with('success', 'Device updated successfully.');
+        
+
+        return redirect()->route('device', $device)->with('success', 'Device updated successfully.');
     }
     public function edit(Device $device){
         return view('admin.device.edit', compact('device'));
     }
     public function show(Device $device ){
-        
-        $device= Device::where('id',$device->id)->first();
-        $deviceSlot= $device->workstations()->with('workstation')->get();
-        $assignedWorkstations= Workstations::wherehas('device')->get();
-        
-        return view('admin.device.view', compact('device', 'deviceSlot','assignedWorkstations'));
+        return view('admin.device.view', compact('device'));
     }
     public function destroy($id)
     {
@@ -87,13 +83,10 @@ class DeviceController extends Controller
         $device = Device::findOrFail($id);
         if ($device->is_active) { 
             return redirect()->route('device')
-                ->with('error', "Cannot delete device '{$device->name}' because it is currently Active. Please deactivate it before attempting to delete.");
+                ->with('error', "Cannot delete device '{$device->workstation_name}' because it is currently Active. Please deactivate it before attempting to delete.");
         }
 
-        if ($device->deviceWorkstations->count() > 0) {
-            return redirect()->route('device')
-                ->with('error', "Cannot delete device '{$device->name}' because it is currently assigned to one or more workstations. Please unassign it from all workstations before attempting to delete.");
-        }
+        
         $device->delete();
 
         return redirect()->route('device')->with('success', "Device '{$device->device_uid}' was successfully deleted.");

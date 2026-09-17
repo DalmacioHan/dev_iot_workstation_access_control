@@ -25,7 +25,7 @@
                     Device Profile Generated!
                 </h3>
                 <p class="mt-3 text-base text-gray-500">
-                    The workstation database instance has been initialized. Provide this one-time pairing token to the IoT endpoint hardware client.
+                    The device database instance has been initialized. Provide this one-time pairing token to the IoT endpoint hardware client.
                 </p>
             </div>
 

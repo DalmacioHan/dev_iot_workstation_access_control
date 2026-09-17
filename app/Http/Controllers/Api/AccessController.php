@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\DeviceWorkstation;
 use App\Models\PcAccessLogs;
 use App\Models\PcAppUsage;
 use Illuminate\Http\Request;
@@ -43,17 +42,13 @@ class AccessController extends Controller
             ? \Illuminate\Support\Carbon::parse($validated['occurred_at'])
             : now();
 
-        $mapping = DeviceWorkstation::where('device_id', $device->id)
-            ->where('pc_port', $pcPort)
-            ->first();
-
         [$student, $reason] = $this->lookupStudentInMis($cardId);
 
         if ($student === null) {
             $this->writeLog([
                 'occurred_at'    => $occurredAt,
                 'rfid_uid'       => $cardId,
-                'workstation_id' => $mapping?->workstation_id,
+                'device_id'      => $device->id,
                 'event_type'     => 'denied',
                 'result'         => 'denied',
                 'reason'         => $reason,
@@ -69,9 +64,9 @@ class AccessController extends Controller
 
         $this->writeLog([
             'occurred_at'    => $occurredAt,
-            'rfid_uid'       => $cardId,
-            'workstation_id' => $mapping?->workstation_id,
-            'event_type'     => 'time_in',
+'rfid_uid'       => $cardId,
+                'device_id'      => $device->id,
+                'event_type'     => 'time_in',
             'result'         => 'allowed',
             'reason'         => 'Authorized',
             'session_id'     => $sessionId,
@@ -118,7 +113,7 @@ class AccessController extends Controller
             'occurred_at'         => $occurredAt,
             'received_at'         => now(),
             'rfid_uid'            => $entry->rfid_uid,
-            'workstation_id'      => $entry->workstation_id,
+            'device_id'           => $entry->device_id,
             'event_type'          => 'time_out',
             'result'              => 'allowed',
             'reason'              => 'Session ended',
@@ -233,7 +228,7 @@ class AccessController extends Controller
         PcAccessLogs::create(array_merge([
             'occurred_at'    => $data['occurred_at'],
             'rfid_uid'       => $data['rfid_uid'],
-            'workstation_id' => $data['workstation_id'],
+            'device_id'      => $data['device_id'],
             'event_type'     => $data['event_type'],
             'result'         => $data['result'],
             'reason'         => $data['reason'] ?? null,

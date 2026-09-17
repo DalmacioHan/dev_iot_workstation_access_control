@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PcAccessLogs;
-use App\Models\Workstations;
+use App\Models\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelPdf\Facades\Pdf;
@@ -21,12 +21,13 @@ class ReportsController extends Controller
             ->orderBy('course')
             ->pluck('course');
 
-        $workstations = Workstations::query()
-            ->whereNotNull('pc_code')
-            ->where('pc_code', '!=', '')
+            $devices = Device::query()
+            ->select('device_uid', 'workstation_name') 
+            ->whereNotNull('workstation_name')
+            ->where('workstation_name', '!=', '')
             ->distinct()
-            ->orderBy('pc_code')
-            ->pluck('pc_code');
+            ->orderBy('workstation_name')
+            ->pluck('workstation_name', 'device_uid'); 
 
         $events = PcAccessLogs::query()
             ->whereNotNull('event_type')
@@ -59,7 +60,7 @@ class ReportsController extends Controller
         return view('admin.reports.index', compact(
             'logs',
             'courses',
-            'workstations',
+            'devices',
             'events',
             'results',
             'reasons',
@@ -78,7 +79,7 @@ class ReportsController extends Controller
             $headers = [
                 'ID',
                 'Date & Time',
-                'Workstation',
+                'Device',
                 'Event',
                 'Result',
                 'Reason',
@@ -97,7 +98,7 @@ class ReportsController extends Controller
                     $row = [
                         $log->id,
                         $log->occurred_at,
-                        $log->workstation,
+                        $log->device,
                         $log->event_type,
                         $log->result,
                         $log->reason,
@@ -152,7 +153,7 @@ class ReportsController extends Controller
                 'date_from',
                 'date_to',
                 'course',
-                'workstation',
+                'device',
                 'event',
                 'result',
                 'reason',
@@ -176,7 +177,7 @@ class ReportsController extends Controller
             return [
                 'student_name' => true,
                 'course' => true,
-                'workstation' => true,
+                'device' => true,
                 'date_time' => true,
                 'event' => true,
             ];
@@ -187,7 +188,7 @@ class ReportsController extends Controller
         return [
             'student_name' => array_key_exists('student_name', $requestedColumns),
             'course' => array_key_exists('course', $requestedColumns),
-            'workstation' => array_key_exists('workstation', $requestedColumns),
+            'device' => array_key_exists('device', $requestedColumns),
             'date_time' => array_key_exists('date_time', $requestedColumns),
             'event' => array_key_exists('event', $requestedColumns),
         ];
@@ -201,12 +202,12 @@ class ReportsController extends Controller
                 'pc_access_logs.occurred_at',
                 'pc_access_logs.student_name',
                 'pc_access_logs.course',
-                'workstations.pc_code as workstation',
+                'devices.workstation_name as workstation_name',
                 'pc_access_logs.event_type',
                 'pc_access_logs.result',
                 'pc_access_logs.reason'
             )
-            ->join('workstations', 'pc_access_logs.workstation_id', '=', 'workstations.id');
+            ->join('devices', 'pc_access_logs.device_id', '=', 'devices.id');
 
         if ($request->filled('date_from')) {
             $query->whereDate('pc_access_logs.occurred_at', '>=', $request->date_from);
@@ -220,8 +221,8 @@ class ReportsController extends Controller
             $query->where('pc_access_logs.course', $request->course);
         }
 
-        if ($request->filled('workstation')) {
-            $query->where('workstations.pc_code', $request->workstation);
+        if ($request->filled('device')) {
+            $query->where('devices.w', $request->device);
         }
 
         if ($request->filled('event')) {

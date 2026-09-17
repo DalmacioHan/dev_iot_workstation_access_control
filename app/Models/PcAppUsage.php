@@ -19,4 +19,8 @@ class PcAppUsage extends Model
     protected $casts = [
         'occurred_at' => 'datetime',
     ];
+    public function accessLog()
+    {
+        return $this->belongsTo(PcAccessLog::class, 'session_id', 'session_id');
+    }
 }

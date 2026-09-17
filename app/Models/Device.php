@@ -7,7 +7,7 @@ class Device extends Model
 {
     protected $fillable = [
     'device_uid',
-    'name',
+    'workstation_name',
     'pairing_code',
     'is_active',
     'last_seen_at',
@@ -24,12 +24,6 @@ class Device extends Model
     ];
 
 
-    public function workstations()
-    {
-        return $this->hasMany(Workstations::class, 'device_id', 'id');
-    }
-
-
     /**
      * Generate and store a new API token
      */
@@ -44,6 +38,11 @@ class Device extends Model
         ]);
 
         return $token;
+    }
+
+    public function accessLogs()
+    {
+        return $this->hasMany(PcAccessLogs::class);
     }
 
     /**

@@ -39,11 +39,11 @@ class AnalyticsController extends Controller
         $rangeEnd = fn (string $range): Carbon => $now->copy()->endOfDay();
 
         //Card data
-        $popularWorkstation = PcAccessLogs::select('workstations.pc_code', PcAccessLogs::raw('count(*) as total'))
-            ->join('workstations', 'pc_access_logs.workstation_id', '=', 'workstations.id')
+        $popularDevice = PcAccessLogs::select('device_id', PcAccessLogs::raw('count(*) as total'))
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
-            ->groupBy('workstations.pc_code')
-            ->orderBy('workstations.pc_code', 'desc')
+            ->with('device')
+            ->groupBy('device_id')
+            ->orderBy('total', 'desc')
             ->first();
 
         $activeDevices = Device::where('is_active', true)->count();
@@ -71,7 +71,7 @@ class AnalyticsController extends Controller
         $courseRangeLabel = $rangeLabels[$courseRange];
 
         return view('admin.analytics.index', compact(
-            'activeDevices', 'totalEvents', 'failedEvents', 'popularWorkstation',
+            'activeDevices', 'totalEvents', 'failedEvents', 'popularDevice',
             'topStudents', 'topCourses', 'rangeLabels',
             'studentRange', 'courseRange',
             'studentRangeLabel', 'courseRangeLabel'));

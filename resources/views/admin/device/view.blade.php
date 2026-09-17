@@ -18,7 +18,7 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-100 pb-6 mb-6">
             <div>
                 <div class="flex items-center space-x-3 flex-wrap gap-y-2">
-                    <h1 class="text-3xl font-bold text-gray-900">{{ $device->name }}</h1>
+                    <h1 class="text-3xl font-bold text-gray-900">{{ $device->workstation_name }}</h1>
                     
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">
                         Active
@@ -50,19 +50,8 @@
             </div>
         </div>
 
-        {{-- Optimized Metric Row --}}
+        {{-- Device metrics --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl">
-            <div>
-                <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Slot Usage</p>
-                <p class="mt-1 text-2xl font-bold text-gray-900">
-                    {{ $device->workstations()->count() }} 
-                    <span class="text-lg font-normal text-gray-400">/ 1 slots used</span>
-                </p>
-                <p class="text-xs text-gray-500 mt-0.5">
-                    {{ 1 - $device->workstations()->count() }} available
-                </p>
-            </div>
-
             <div>
                 <p class="text-xs font-medium text-gray-400 uppercase tracking-wider">Last Seen</p>
                 <p class="mt-1 text-2xl font-bold text-gray-900">
@@ -72,48 +61,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900">Assigned Workstations</h2>
-            </div>
-            <div class="divide-y divide-gray-100">
-                <table class="min-w-full divide-y divide-gray-100 text-left">
-                    <thead class="bg-gray-50/50">
-                        <tr>
-                            <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Code</th>
-                            <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Created</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 bg-white">
-                    @forelse(($assignedWorkstations ?? []) as $workstation)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ $workstation->pc_code}}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
-                                        Active
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $workstation->created_at ? $workstation->created_at->format('M d, Y') : now()->format('M d, Y') }}
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="px-6 py-8 text-center text-sm text-gray-400 italic">
-                                    No workstations assigned to this device yet.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+    <div class="grid grid-cols-1 gap-6">
         <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100">
                 <h2 class="text-xl font-bold text-gray-900">Recent Device Events</h2>
