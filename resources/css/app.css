@@ -1,25 +1,15 @@
-@import 'tailwindcss';
+
+@import "tailwindcss";
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
-@source "../../node_modules/flowbite";
-
-@font-face {
-    font-family: 'Bebas Neue';
-    src: url('/fonts/BebasNeue.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
+@source "../node_modules/flowbite";
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
-
 @theme {
-    --font-sans: 'Bebas Neue', 'poppins';
+    --font-sans: 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-body: 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mono: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace';
 }
 
-body {
-    font-family: 'Bebas Neue', 'poppins';
-}

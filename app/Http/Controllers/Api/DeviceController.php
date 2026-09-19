@@ -43,6 +43,7 @@ class DeviceController extends Controller
             'token'   => $token,
         ], Response::HTTP_OK);
     }
+    
     public function heartbeat(Request $request)
     {
         
