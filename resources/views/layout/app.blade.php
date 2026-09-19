@@ -1,127 +1,578 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title')</title>
+
+    <title>@yield('title', 'Dashboard') | OLH</title>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+
+    {{-- Flowbite --}}
+    <link
+        href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"
+        rel="stylesheet"
+    />
+
 </head>
-<body>
 
-<!-- TOP NAVBAR - Always visible -->
-<nav class="fixed top-0 z-50 w-full bg-neutral-primary-soft border-b border-default">
-<div class="px-3 py-3 lg:px-5 lg:pl-3">
-    <div class="flex items-center justify-between">
-        <div class="flex items-center justify-start rtl:justify-end">
-        <!-- HAMBURGER BUTTON - Only visible on mobile -->
-        <button
-            data-drawer-target="logo-sidebar"
-            data-drawer-toggle="logo-sidebar"
-            aria-controls="logo-sidebar"
-            type="button"
-            class="inline-flex items-center p-2 text-sm text-heading rounded-lg sm:hidden hover:bg-neutral-secondary-medium focus:outline-none focus:ring-2 focus:ring-neutral-tertiary">
-            <span class="sr-only">Open sidebar</span>
-            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-            </svg>
-        </button>
+<body class="bg-gray-50 text-gray-900 antialiased">
 
-        <!-- LOGO - Always visible in navbar -->
-        <a href="{{route('dashboard')}}" class="flex ms-2 md:me-24">
-        <img src="{{ asset('image/library_logo.jpg') }}" class="h-8 w-8 me-3 rounded-full object-cover" alt="OLH Logo" />
-        <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">OLH</span>
-        </a>
+    {{-- =========================================================
+        TOP NAVBAR
+    ========================================================== --}}
+    <nav
+        class="fixed top-0 z-50 w-full border-b border-gray-200 bg-white"
+    >
+        <div class="px-4 py-3 lg:px-6">
+
+            <div class="flex items-center justify-between">
+
+                <div class="flex items-center">
+
+                    <button
+                        data-drawer-target="logo-sidebar"
+                        data-drawer-toggle="logo-sidebar"
+                        aria-controls="logo-sidebar"
+                        type="button"
+                        class="mr-3 inline-flex h-10 w-10 items-center justify-center rounded-xl text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:hidden"
+                    >
+                        <span class="sr-only">
+                            Open sidebar
+                        </span>
+                        <svg
+                            class="h-5 w-5"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                        </svg>
+                    </button>
+
+
+
+                    <a
+                        href="{{ route('dashboard') }}"
+                        class="flex items-center gap-3"
+                    >
+
+                        <div
+                            class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-blue-600 shadow-sm"
+                        >
+                            <img
+                                src="{{ asset('image/library_logo.jpg') }}"
+                                class="h-full w-full object-cover"
+                                alt="OLH Logo"
+                            >
+                        </div>
+
+                        <div class="hidden sm:block">
+                            <p class="text-base font-bold tracking-tight text-gray-900">
+                                OLH
+                            </p>
+
+                            <p class="text-[11px] font-medium text-gray-400">
+                                Library Management
+                            </p>
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+                {{-- RIGHT SIDE --}}
+                <div class="flex items-center gap-3">
+
+                    
+                    {{-- Divider --}}
+                    <div class="hidden h-8 w-px bg-gray-200 sm:block"></div>
+
+                    {{-- USER MENU --}}
+                    <div class="relative">
+                        <button
+                            type="button"
+                            class="flex items-center gap-3 rounded-xl p-1.5 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            aria-expanded="false"
+                            data-dropdown-toggle="dropdown-user"
+                        >
+                            {{-- Avatar --}}
+                            <img
+                                class="h-9 w-9 rounded-xl object-cover ring-2 ring-gray-100"
+                                src="{{ Auth::user()->profile_picture
+                                    ? asset('storage/' . Auth::user()->profile_picture)
+                                    : asset('image/default_user.png') }}"
+                                alt="{{ Auth::user()->name }}"
+                            >
+                            {{-- User information --}}
+                            <div class="hidden text-left md:block">
+
+                                <p class="max-w-[140px] truncate text-sm font-semibold text-gray-900">
+                                    {{ Auth::user()->name }}
+                                </p>
+
+                                <p class="max-w-[140px] truncate text-xs text-gray-400">
+                                    {{ Auth::user()->email }}
+                                </p>
+
+                            </div>
+
+                            {{-- Chevron --}}
+                            <svg
+                                class="hidden h-4 w-4 text-gray-400 md:block"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="m6 9 6 6 6-6"
+                                />
+                            </svg>
+
+                        </button>
+
+
+                        {{-- DROPDOWN --}}
+                        <div
+                            id="dropdown-user"
+                            class="z-50 hidden w-64 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl"
+                        >
+
+                            {{-- User header --}}
+                            <div class="border-b border-gray-100 bg-gray-50/70 px-4 py-4">
+
+                                <div class="flex items-center gap-3">
+
+                                    <img
+                                        class="h-10 w-10 rounded-xl object-cover"
+                                        src="{{ Auth::user()->profile_picture
+                                            ? asset('storage/' . Auth::user()->profile_picture)
+                                            : asset('image/default_user.png') }}"
+                                        alt="{{ Auth::user()->name }}"
+                                    >
+
+                                    <div class="min-w-0">
+
+                                        <p class="truncate text-sm font-semibold text-gray-900">
+                                            {{ Auth::user()->name }}
+                                        </p>
+
+                                        <p class="truncate text-xs text-gray-500">
+                                            {{ Auth::user()->email }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            {{-- Menu --}}
+                            <ul class="p-2 text-sm text-gray-700">
+
+                                <li>
+                                    <a
+                                        href="{{ route('dashboard') }}"
+                                        class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
+                                    >
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                                            />
+                                        </svg>
+
+                                        Dashboard
+                                    </a>
+                                </li>
+
+
+                                <li>
+                                    <a
+                                        href="{{ route('account') }}"
+                                        class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
+                                    >
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M15 19a4 4 0 0 0-8 0M11 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7-3v6m3-3h-6"
+                                            />
+                                        </svg>
+
+                                        Manage Account
+                                    </a>
+                                </li>
+
+
+                                <li>
+                                    <a
+                                        href="{{ route('logout') }}"
+                                        class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-red-600 transition hover:bg-red-50"
+                                    >
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5m5 5H3"
+                                            />
+                                        </svg>
+
+                                        Sign out
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+    </nav>
 
-        <!-- USER MENU -->
-        <div class="flex items-center">
-        <div class="flex items-center ms-3">
-            <div>
-            <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                    <span class="sr-only">Open user menu</span>
-                    <img class="w-8 h-8 rounded-full object-cover"
-                    src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('image/default_user.png') }}"
-                    alt="user photo">
-            </button>
+
+    {{-- =========================================================
+        SIDEBAR
+    ========================================================== --}}
+    <aside
+        id="logo-sidebar"
+        class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-20 transition-transform sm:translate-x-0"
+        aria-label="Sidebar"
+    >
+
+        <div class="flex h-full flex-col px-4 pb-5">
+
+            {{-- Sidebar heading --}}
+            <div class="mb-5 px-2">
+
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                    Main Menu
+                </p>
+
             </div>
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-user">
-            <div class="px-4 py-3" role="none">
-                <p class="text-sm text-gray-900" role="none">{{ Auth::user()->name }}</p>
-                <p class="text-sm font-medium text-gray-900 truncate" role="none">{{ Auth::user()->email }}</p>
-            </div>
-            <ul class="py-1" role="none">
-                <li><a href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a></li>
-                <li><a href="{{route('account')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Account</a></li>
-                <li><a href="{{route('logout')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a></li>
+
+
+            {{-- NAVIGATION --}}
+            <ul class="space-y-1.5">
+
+                {{-- =================================================
+                    DASHBOARD
+                ================================================== --}}
+                <li>
+
+                    <a
+                        href="{{ route('dashboard') }}"
+                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ request()->routeIs('dashboard')
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    >
+
+                        <span
+                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            {{ request()->routeIs('dashboard')
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
+                        >
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Dashboard
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                {{-- =================================================
+                    ANALYTICS
+                ================================================== --}}
+                <li>
+
+                    <a
+                        href="{{ route('analytics') }}"
+                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ request()->routeIs('analytics')
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    >
+
+                        <span
+                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            {{ request()->routeIs('analytics')
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
+                        >
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9V4"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Analytics
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                {{-- =================================================
+                    DEVICES
+                ================================================== --}}
+                <li>
+
+                    <a
+                        href="{{ route('device') }}"
+                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ request()->routeIs('device*')
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    >
+
+                        <span
+                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            {{ request()->routeIs('device*')
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
+                        >
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect
+                                    x="4"
+                                    y="4"
+                                    width="16"
+                                    height="16"
+                                    rx="2"
+                                    stroke-width="1.8"
+                                />
+
+                                <rect
+                                    x="9"
+                                    y="9"
+                                    width="6"
+                                    height="6"
+                                    stroke-width="1.8"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-width="1.8"
+                                    d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Device
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                {{-- =================================================
+                    REPORTS
+                ================================================== --}}
+                <li>
+
+                    <a
+                        href="{{ route('reports') }}"
+                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ request()->routeIs('reports*')
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    >
+
+                        <span
+                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            {{ request()->routeIs('reports*')
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
+                        >
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M14 2v6h6M8 13h8M8 17h6M8 9h2"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Reports
+                        </span>
+
+                    </a>
+
+                </li>
+
             </ul>
+
+
+            {{-- =====================================================
+                SIDEBAR BOTTOM
+            ====================================================== --}}
+            <div class="mt-auto">
+
+                <div class="mb-3 h-px bg-gray-100"></div>
+
+                <div class="rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+
+                    <div class="flex items-start gap-3">
+
+                        <div
+                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white"
+                        >
+                            <svg
+                                class="h-4 w-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"
+                                />
+                            </svg>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold text-gray-800">
+                                OLH Library
+                            </p>
+
+                            <p class="mt-0.5 text-[11px] leading-4 text-gray-500">
+                                Device and student activity management.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-        </div>
-    </div>
-</div>
-</nav>
 
-<!-- SIDEBAR - Hidden on mobile, slides in when toggled -->
-<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
-<div class="h-full px-3 pb-4 overflow-y-auto bg-neutral-primary-soft">
-    <ul class="space-y-2">
-        <li>
-        <a href="{{route('dashboard')}}" class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-            <!-- Dashboard icon (stroke, blue on hover) -->
-            <svg class="w-5 h-5 transition duration-75 group-hover:text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-            </svg>
-            <span class="ms-3">Dashboard</span>
-        </a>
-        </li>
-        <li>
-        <a href="{{route('analytics')}}" class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-            <!-- Analytics icon (stroke, blue on hover) -->
-            <svg class="w-5 h-5 transition duration-75 group-hover:text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 21" stroke="currentColor">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.24 7.194a24.16 24.16 0 0 1 3.72-3.062m0 0c3.443-2.277 6.732-2.969 8.24-1.46 2.054 2.053.03 7.407-4.522 11.959-4.552 4.551-9.906 6.576-11.96 4.522C1.223 17.658 1.89 14.412 4.121 11m6.838-6.868c-3.443-2.277-6.732-2.969-8.24-1.46-2.054 2.053-.03 7.407 4.522 11.959m3.718-10.499a24.16 24.16 0 0 1 3.719 3.062M17.798 11c2.23 3.412 2.898 6.658 1.402 8.153-1.502 1.503-4.771.822-8.2-1.433m1-6.808a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
-            </svg>
-            <span class="flex-1 ms-3 whitespace-nowrap">Analytics</span>
-        </a>
-        </li>
-        <li>
-        <a href="{{route('device')}}" class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-            <!-- Device icon (stroke, blue on hover) -->
-            <svg class="w-5 h-5 transition duration-75 group-hover:text-fg-brand" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <rect x="4" y="4" width="16" height="16" rx="2" />
-                <rect x="9" y="9" width="6" height="6" />
-                <path d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2" />
-            </svg>
-            <span class="flex-1 ms-3 whitespace-nowrap">Device</span>
-        </a>
-        </li>
-        <li>
-        <a href="{{route('reports')}}" class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-            <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z"/>
-            <path d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z"/>
-            </svg>
-            <span class="flex-1 ms-3 whitespace-nowrap">Reports</span>
-        </a>
-        </li>
-    </ul>
-</div>
-</aside>
+        </div>
 
-<!-- MAIN CONTENT -->
-<div class="p-4 sm:ml-64 mt-14">
-@yield('content')
-<x-success-modal />
-<x-toast-modal />
-<x-error-modal />
-<x-confirm-modal />
-<x-delete-modal />
-</div>
-@stack('modals')
-<!-- FLOWBITE JS -->
-<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
+    </aside>
+
+
+
+    <main class="min-h-screen bg-gray-50 pt-20 sm:ml-64">
+
+        <div class="p-4 sm:p-6 lg:p-8">
+
+            @yield('content')
+
+        </div>
+
+
+        {{-- GLOBAL MODALS --}}
+        <x-success-modal />
+        <x-toast-modal />
+        <x-error-modal />
+        <x-confirm-modal />
+        <x-delete-modal />
+
+    </main>
+
+    @stack('modals')
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+
+
+
 </body>
+
 </html>

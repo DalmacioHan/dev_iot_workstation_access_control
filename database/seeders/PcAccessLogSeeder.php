@@ -80,12 +80,12 @@ class PcAccessLogSeeder extends Seeder
                 'BS in Mechanical Engineering',
                 'BS in Computer Engineering',
                 'BS in Electrical Engineering',
-                'Bachelor of Industrial Technology Major in Automotive',
-                'Bachelor of Industrial Technology Major in Drafting',
-                'Bachelor of Industrial Technology Major in Electrical',
-                'Bachelor of Industrial Technology Major in Electronics',
-                'Bachelor of Industrial Technology Major in Food Preparation & Services',
-                'Bachelor of Industrial Technology Major in HVAC',
+                'BIT Major in Automotive',
+                'BIT Major in Drafting',
+                'BIT Major in Electrical',
+                'BIT Major in Electronics',
+                'BIT Major in Food Preparation & Services',
+                'BIT Major in HVAC',
                 'BS in Information Technology Major in Networking',
                 'BS in Information Technology Major in Programming',
                 'Bachelor of Elementary Education (BEEd)',
@@ -115,8 +115,8 @@ class PcAccessLogSeeder extends Seeder
         $deviceIds = \App\Models\Device::pluck('id')->toArray();
 
        
-        $startDate = Carbon::create(2026, 9,7 )->startOfDay();
-        $endDate = Carbon::create(2026, 9, 12)->endOfDay();
+        $startDate = Carbon::create(2026, 9,13 )->startOfDay();
+        $endDate = Carbon::create(2026, 9, 20)->endOfDay();
 
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
             

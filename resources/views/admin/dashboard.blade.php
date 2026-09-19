@@ -1,237 +1,565 @@
+```blade
 @extends('layout.app')
 
-@section('title','dashboard')
+@section('title', 'Dashboard')
 
 @section('content')
 
+<div class="min-w-0 max-w-full space-y-6 overflow-x-hidden">
 
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-    {{-- Card 1 --}}
-    <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-        <div class="flex items-center justify-between">
-            <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 7a5 5 0 0 1 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M12 11a1 1 0 1 1 0 2a1 1 0 0 1 0-2Z" fill="currentColor"/>
-                    <path d="M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="text-right ms-3">
-                <div class="text-3xl font-semibold text-heading leading-none" id="total-devices">{{ $totalDevices }}</div>
-                <div class="mt-1 text-sm text-body">Total Devices</div>
-            </div>
+
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <p class="text-sm font-medium text-blue-600">
+                Overview
+            </p>
+
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                Library Dashboard
+            </h1>
+
+            <p class="mt-1 text-sm text-gray-500">
+                Monitor your devices, usage and student activity.
+            </p>
         </div>
-        <div class="mt-2 text-xs text-body" id="total-devices-sub">{{ $activeDevices }} active</div>
+
+
     </div>
 
-    {{-- Card 2 --}}
-    <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-        <div class="flex items-center justify-between">
-            <div class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 12h4l2-5 4 10 2-5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div class="text-right ms-3">
-                <div class="text-3xl font-semibold text-heading leading-none" id="online-devices">{{ $onlineDevices }}</div>
-                <div class="mt-1 text-sm text-body">Online Devices</div>
+
+    
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[150px]">
+
+        <div
+            class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 p-6 text-white shadow-sm lg:row-span-2"
+        >
+            {{-- Decorative circles --}}
+            <div class="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10"></div>
+            <div class="pointer-events-none absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/5"></div>
+
+            <div class="relative flex h-full flex-col justify-between">
+
+                <div>
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-blue-100">
+                                Total Devices
+                            </p>
+
+                            <p class="mt-2 text-5xl font-bold tracking-tight">
+                                {{ number_format($totalDevices ?? 0) }}
+                            </p>
+                        </div>
+
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
+                            <svg
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
+                                />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="mb-2 flex items-center justify-between text-xs">
+                        <span class="text-blue-100">
+                            Active devices
+                        </span>
+
+                        <span class="font-semibold text-white">
+                            {{ number_format($activeDevices ?? 0) }}
+                        </span>
+                    </div>
+
+                    <div class="h-2 overflow-hidden rounded-full bg-white/20">
+                        <div
+                            class="h-full rounded-full bg-white transition-all"
+                            style="width: {{ ($totalDevices ?? 0) > 0 ? (($activeDevices ?? 0) / $totalDevices) * 100 : 0 }}%"
+                        ></div>
+                    </div>
+
+                    <div class="mt-3 flex items-center justify-between text-xs text-blue-100">
+                        <span>
+                            {{ number_format($activeDevices ?? 0) }} active
+                        </span>
+
+                        <span>
+                            {{ ($totalDevices ?? 0) > 0 ? round((($activeDevices ?? 0) / $totalDevices) * 100) : 0 }}%
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div class="mt-2 text-xs text-body" id="online-devices-sub">wapa ni offline</div>
+
+
+        <div class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium text-gray-500">
+                        Total Logins Today
+                    </p>
+
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
+                        {{ number_format($totalLoginsToday ?? 0) }}
+                    </p>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"
+                        />
+                    </svg>
+
+                </div>
+
+            </div>
+
+            <p class="mt-5 text-xs text-gray-500">
+                Successful RFID access today
+            </p>
+
+        </div>
+
+
+
+        <div class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium text-gray-500">
+                        Unique Students
+                    </p>
+
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
+                        {{ number_format($uniqueStudentsToday ?? 0) }}
+                    </p>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
+                        />
+                    </svg>
+
+                </div>
+
+            </div>
+
+            <p class="mt-5 text-xs text-gray-500">
+                Students accessing the library today
+            </p>
+
+        </div>
+
+
+
+        <div class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium text-gray-500">
+                        Avg. Session Duration
+                    </p>
+
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
+                        {{ $avgSessionDuration ?? '0m' }}
+                    </p>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 7v5l3 2"
+                        />
+                    </svg>
+
+                </div>
+
+            </div>
+
+            <p class="mt-5 text-xs text-gray-500">
+                Average usage session
+            </p>
+
+        </div>
+
     </div>
 
-    {{-- Card 3 --}}
-    <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-        <div class="flex items-center justify-between">
-            <div class="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 5h16v10H4V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M9 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M12 15v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+
+    {{-- =========================================================
+        MAIN BENTO CONTENT
+    ========================================================== --}}
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+
+        {{-- =====================================================
+            LIBRARY DEVICE USAGE
+        ====================================================== --}}
+        <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm lg:col-span-2">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">
+                        Library Device Usage
+                    </h2>
+
+                    <p class="mt-1 text-sm text-gray-500">
+                        Weekly activity across library devices.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-4">
+
+                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                        <span class="h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+                        Male
+                    </div>
+
+                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                        <span class="h-2.5 w-2.5 rounded-full bg-blue-300"></span>
+                        Female
+                    </div>
+
+                </div>
+
             </div>
-            <div class="text-right ms-3">
-                <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">wapani</div>
-                <div class="mt-1 text-sm text-body">Total Devices</div>
+
+            <div class="mt-6">
+                <div id="column-chart"></div>
             </div>
+
         </div>
-        <div class="mt-2 text-xs text-body" id="total-devices-sub">Active devices</div>
+
+
+      
+        <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
+
+            <div>
+                <h2 class="text-lg font-bold text-gray-900">
+                    Course Distribution
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-500">
+                    Student distribution by course.
+                </p>
+            </div>
+
+            <div class="mt-2 flex items-end gap-2">
+
+                <span class="text-3xl font-bold text-gray-900">
+                    {{ number_format($totalStudents ?? 0) }}
+                </span>
+
+                <span class="mb-1 text-sm text-gray-500">
+                    students
+                </span>
+
+            </div>
+
+            <div class="mt-4">
+                <div id="pie-chart"></div>
+            </div>
+
+        </div>
+
     </div>
 
-    {{-- Card 4 --}}
-    <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-        <div class="flex items-center justify-between">
-            <div class="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 9v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M10 3h4l7 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10l7-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div class="text-right ms-3">
-                <div class="text-3xl font-semibold text-heading leading-none" id="slot-utilization">wapani%</div>
-                <div class="mt-1 text-sm text-body">Slot Utilization</div>
-            </div>
-        </div>
-        <div class="mt-2 text-xs text-body">Overall capacity</div>
-    </div>
 </div>
 
-{{-- =============================== --}}
-{{-- LIBRARY USAGE & COURSE WIDGETS  --}}
-{{-- =============================== --}}
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    
-    <!-- First Widget - Device Usage -->
-    <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
-        <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
-        <div class="flex items-center">
-            <div class="w-12 h-12 bg-neutral-primary-medium border border-default-medium flex items-center justify-center rounded-full me-3">
-            <svg class="w-6 h-6 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/></svg>
-            </div>
-            <div>
-            <h5 class="text-3xl font-bold text-heading">Library Device Usage</h5>
-            <p class="text-sm text-body">{{ $weeklyVisitors }} visitors this week</p>
-            </div>
-        </div>
-        </div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-        <div class="flex justify-between items-center mb-4">
-        <span class="text-body text-sm font-normal">Weekly Total Visitors</span>
-        <span class="text-heading text-lg font-semibold">{{ $weeklyVisitors }}</span>
-        </div>
-        
-        <div id="column-chart" class="mb-4"></div>
-        
-        <div class="flex justify-between items-center pt-4 border-t border-light">
-        <a href="#" class="inline-flex items-center text-fg-brand bg-transparent border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary font-medium rounded-base text-sm px-3 py-2 focus:outline-none">
-            View Report
-            <svg class="w-4 h-4 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
-        </a>
-        </div>
-    </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
-    <!-- Second Widget - Courses -->
-    <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-6">
-        <div class="flex justify-between items-start pb-4 mb-4 border-b border-light">
-        <div>
-            <div class="flex items-center mb-2">
-            <h5 class="text-3xl font-bold text-heading">Course Distribution</h5>
-            </div>
-            <p class="text-sm text-body">Top courses this month</p>
-        </div>
+    /* =========================================================
+                LIBRARY DEVICE USAGE - COLUMN CHART
+    ========================================================== */
 
-        </div>
+    const maleData = @json($male ?? []);
+    const femaleData = @json($female ?? []);
+    const columnChartDays = @json($columnChartDays ?? []);
 
-        <div class="flex justify-between items-center mb-4">
-        <span class="text-body text-sm font-normal">Total Students</span>
-        <span class="text-heading text-lg font-semibold">{{ $totalStudents }}</span>
-        </div>
+    const columnChartElement = document.querySelector('#column-chart');
 
-        <div id="pie-chart" class="mb-4"></div>
+    if (columnChartElement) {
 
-        <div class="flex justify-between items-center pt-4 border-t border-light">
-        <a href="#" class="inline-flex items-center text-fg-brand bg-transparent border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary font-medium rounded-base text-sm px-3 py-2 focus:outline-none">
-            Course Report
-            <svg class="w-4 h-4 ms-1.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
-        </a>
-        </div>
-    </div>
-    </div>
-@php
-    $sortedCourses = collect($courseDistribution)->sortDesc();
-    $pieChartCourses = $sortedCourses->take(max(3, min($sortedCourses->count(), 5)));
-@endphp
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Laravel data: dynamic and from the database, including when only one visitor is available
-    const maleData = @json($male);
-    const femaleData = @json($female);
-    const columnChartDays = @json($columnChartDays);
-    const courseLabels = @json($pieChartCourses->keys()->all());
-    const courseCounts = @json($pieChartCourses->values()->all());
+        const columnChartOptions = {
+            series: [
+                {
+                    name: 'Male',
+                    color: '#2563EB',
+                    data: maleData
+                },
+                {
+                    name: 'Female',
+                    color: '#93C5FD',
+                    data: femaleData
+                }
+            ],
 
-    // COLUMN CHART
-    const getBrandColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand').trim() || "#1447E6";
-    const getBrandSecondaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-subtle').trim() || "#93C5FD";
-    const brandColor = getBrandColor();
-    const brandSecondaryColor = getBrandSecondaryColor();
+            chart: {
+                type: 'bar',
+                height: 280,
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                toolbar: {
+                    show: false
+                }
+            },
 
-    const columnChartOptions = {
-        colors: [brandColor, brandSecondaryColor],
-        series: [
-        {
-            name: "Male",
-            color: brandColor,
-            data: maleData.map((y, i) => ({ x: columnChartDays[i], y }))
-        },
-        {
-            name: "Female",
-            color: brandSecondaryColor,
-            data: femaleData.map((y, i) => ({ x: columnChartDays[i], y }))
-        }
-        ],
-        chart: {
-        type: "bar",
-        height: "280px",
-        fontFamily: "Inter, sans-serif",
-        toolbar: { show: false },
-        },
-        plotOptions: { bar: { horizontal: false, columnWidth: "70%", borderRadiusApplication: "end", borderRadius: 8 } },
-        tooltip: { shared: true, intersect: false, style: { fontFamily: "Inter, sans-serif" } },
-        states: { hover: { filter: { type: "darken", value: 1 } } },
-        stroke: { show: true, width: 0, colors: ["transparent"] },
-        grid: { show: false, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
-        dataLabels: { enabled: false },
-        legend: { show: false },
-        xaxis: {
-        categories: columnChartDays,
-        floating: false,
-        labels: { show: true, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
-        axisBorder: { show: false }, axisTicks: { show: false },
-        },
-        yaxis: { show: false },
-        fill: { opacity: 1 }
-    };
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '45%',
+                    borderRadius: 6,
+                    borderRadiusApplication: 'end'
+                }
+            },
 
-    if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
-        const columnChart = new ApexCharts(document.getElementById("column-chart"), columnChartOptions);
+            dataLabels: {
+                enabled: false
+            },
+
+            stroke: {
+                show: false
+            },
+
+            xaxis: {
+                categories: columnChartDays,
+
+                labels: {
+                    style: {
+                        colors: '#6B7280',
+                        fontSize: '12px'
+                    }
+                },
+
+                axisBorder: {
+                    show: false
+                },
+
+                axisTicks: {
+                    show: false
+                }
+            },
+
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: '#9CA3AF',
+                        fontSize: '12px'
+                    }
+                }
+            },
+
+            grid: {
+                borderColor: '#F3F4F6',
+                strokeDashArray: 4,
+                xaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+
+            legend: {
+                show: false
+            },
+
+            tooltip: {
+                theme: 'light',
+                shared: true,
+                intersect: false
+            },
+
+            states: {
+                hover: {
+                    filter: {
+                        type: 'lighten',
+                        value: 0.05
+                    }
+                }
+            }
+        };
+
+        const columnChart = new ApexCharts(
+            columnChartElement,
+            columnChartOptions
+        );
+
         columnChart.render();
     }
 
-    // PIE CHART
-    const getBrandTertiaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-strong').trim() || "#1E40AF";
-    const getNeutralPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-neutral-primary').trim() || "#FFFFFF";
-    const brandTertiaryColor = getBrandTertiaryColor();
-    const neutralPrimaryColor = getNeutralPrimaryColor();
-    const bluePalette = [
-        "#1447E6",
-        "#2563EB",
-        "#3B82F6",
-        "#60A5FA",
-        "#93C5FD",
-    ];
 
-    const pieChartOptions = {
-        series: courseCounts,
-        colors: bluePalette,
-        chart: { height: 315, width: "100%", type: "pie" },
-        stroke: { colors: [neutralPrimaryColor], lineCap: "" },
-        plotOptions: { pie: { labels: { show: true }, size: "100%", dataLabels: { offset: -25 } } },
-        labels: courseLabels,
-        dataLabels: { enabled: true, style: { fontFamily: "Inter, sans-serif" } },
-        legend: { show: false },
-        yaxis: { labels: { formatter: function (value) { return value + "%" } } },
-        xaxis: { labels: { formatter: function (value) { return value  + "%" } }, axisTicks: { show: false }, axisBorder: { show: false } }
-    };
+    /* =========================================================
+        COURSE DISTRIBUTION - PIE CHART
+    ========================================================== */
 
-    if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
-        const pieChart = new ApexCharts(document.getElementById("pie-chart"), pieChartOptions);
+    @php
+        $sortedCourses = collect($courseDistribution ?? [])->sortDesc();
+
+        $pieChartCourses = $sortedCourses->take(
+            max(3, min($sortedCourses->count(), 3   ))
+        );
+    @endphp
+
+    const courseLabels = @json($pieChartCourses->keys()->all());
+    const courseCounts = @json($pieChartCourses->values()->all());
+
+    const pieChartElement = document.querySelector('#pie-chart');
+
+    if (pieChartElement) {
+
+        const pieChartOptions = {
+            series: courseCounts,
+
+            labels: courseLabels,
+
+            chart: {
+                type: 'donut',
+                height: 300,
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif'
+            },
+
+            colors: [
+                '#1D4ED8',
+                '#2563EB',
+                '#3B82F6',
+                '#60A5FA',
+                '#93C5FD'
+            ],
+
+            stroke: {
+                width: 3,
+                colors: ['#ffffff']
+            },
+
+            dataLabels: {
+                enabled: false
+            },
+
+            legend: {
+                position: 'bottom',
+                horizontalAlign: 'center',
+
+                fontSize: '12px',
+
+                labels: {
+                    colors: '#6B7280'
+                },
+
+                markers: {
+                    width: 8,
+                    height: 8,
+                    radius: 4
+                },
+
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 4
+                }
+            },
+
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '80%',
+
+                        labels: {
+                            show: true,
+
+                            name: {
+                                show: true,
+                                fontSize: '12px',
+                                color: '#6B7280'
+                            },
+
+                            value: {
+                                show: true,
+                                fontSize: '24px',
+                                fontWeight: 700,
+                                color: '#111827'
+                            },
+
+                            total: {
+                                show: true,
+                                label: 'Students',
+                                color: '#6B7280',
+                                fontSize: '12px',
+                                formatter: function () {
+                                    return courseCounts
+                                        .reduce((sum, value) => sum + Number(value), 0);
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            tooltip: {
+                theme: 'light',
+
+                y: {
+                    formatter: function (value) {
+                        return Number(value).toLocaleString() + ' students';
+                    }
+                }
+            }
+        };
+
+        const pieChart = new ApexCharts(
+            pieChartElement,
+            pieChartOptions
+        );
+
         pieChart.render();
     }
 
-    });
-    </script>
+});
+</script>
 
 @endsection
+

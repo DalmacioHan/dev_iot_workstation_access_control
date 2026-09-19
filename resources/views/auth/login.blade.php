@@ -1,156 +1,271 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Login</title>
+<title>Login</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 
 <body class="min-h-screen bg-slate-950">
 
-    <!-- Whole Page Background -->
-    <section 
-        class="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-4 py-8"
-        style="background-image: url('{{ asset('image/library_bg.jpg') }}');">
 
-        <!-- Dark Overlay -->
-        <div class="absolute inset-0 bg-slate-950/55"></div>
+<section
+    class="relative flex min-h-screen items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat px-4 py-8 sm:px-6"
+    style="background-image: url('{{ asset('image/library_bg.jpg') }}');"
+>
 
-        <!-- Main Glass Container -->
-        <div class="relative z-10 -mt-8 w-full max-w-5xl overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl backdrop-blur-sm">
+    {{-- Background Overlay --}}
+    <div class="absolute inset-0 bg-slate-950/65"></div>
 
-            <div class="grid min-h-[500px] grid-cols-1 lg:grid-cols-2">
+    {{-- Subtle Gradient --}}
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-950/40 via-slate-950/20 to-slate-950/70"></div>
 
-                <!-- Left Side Branding -->
-                <div class="flex items-center px-8 py-10 sm:px-12 lg:px-16">
-                    <div class="max-w-md text-white">
+    {{-- Main Container --}}
+    <div class="relative z-10 w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/20 bg-white/10 shadow-2xl shadow-black/30 backdrop-blur-md">
 
-                        <!-- Logo and System Name -->
-                        <div class="mb-7 flex items-center gap-3">
-                            <img 
+        <div class="grid min-h-[560px] grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]">
+
+            {{-- Branding Panel --}}
+            <div class="relative flex items-center overflow-hidden px-7 py-12 sm:px-12 lg:px-16">
+
+                {{-- Decorative Glow --}}
+                <div class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"></div>
+                <div class="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-indigo-500/15 blur-3xl"></div>
+
+                <div class="relative max-w-lg text-white">
+
+                    {{-- Logo --}}
+                    <div class="mb-8 flex items-center gap-3">
+                        <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-lg backdrop-blur-sm">
+                            <img
                                 src="{{ asset('image/library_logo.jpg') }}"
                                 alt="Open Learning Hub Logo"
-                                class="h-11 w-11 rounded-full border border-white/40 object-cover shadow-lg">
-
-                            <h2 class="text-xl font-bold tracking-wide drop-shadow">
-                                Open Learning Hub
-                            </h2>
+                                class="h-full w-full object-cover"
+                            >
                         </div>
 
-                        <!-- Main Heading -->
-                        <h1 class="text-4xl font-extrabold leading-tight tracking-tight drop-shadow-lg sm:text-5xl">
-                            EXPLORE<br>
-                            LEARNING
+                        <div>
+                            <p class="text-lg font-bold tracking-wide">
+                                Open Learning Hub
+                            </p>
+                            <p class="text-xs font-medium text-blue-100/80">
+                                Digital Access Portal
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Heading --}}
+                    <div class="max-w-md">
+                        <p class="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-blue-200">
+                            Welcome Back
+                        </p>
+
+                        <h1 class="text-4xl font-extrabold leading-[1.05] tracking-tight drop-shadow-lg sm:text-5xl lg:text-6xl">
+                            Access.
+                            <br>
+                            Study.
+                            <br>
+                            Excel.
                         </h1>
 
-                        <!-- Short Description -->
-                        <p class="mt-5 text-base font-semibold text-white drop-shadow">
-                            Access your learning space with ease.
+                        <p class="mt-6 max-w-md text-base leading-relaxed text-white/75 sm:text-lg">
+                            Securely access library computers, track your digital resource usage, 
+                            and connect to your course materials from one central hub.
                         </p>
-
-                        <p class="mt-3 max-w-sm text-sm leading-relaxed text-white/85 drop-shadow">
-                            Sign in to manage your account, access available resources,
-                            and continue your learning activities.
-                        </p>
-
                     </div>
+
+
                 </div>
+            </div>
 
-                <!-- Right Side Login Card -->
-                <div class="flex items-center justify-center px-6 py-10 sm:px-8">
+            {{-- Login Panel --}}
+            <div class="flex items-center justify-center bg-slate-950/20 px-5 py-10 sm:px-10 lg:px-12">
 
-                    <!-- Login Glass Card -->
-                    <div class="w-full max-w-sm rounded-3xl border border-white/30 bg-slate-900/25 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+                <div class="w-full max-w-md">
 
-                        <div class="mb-6 text-center">
-                            <h1 class="text-2xl font-bold text-white drop-shadow">
-                                Login Account
-                            </h1>
+                    {{-- Login Card --}}
+                    <div class="rounded-3xl border border-white/20 bg-white/[0.12] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
 
-                            <p class="mt-2 text-sm text-white/80">
-                                Welcome back, please sign in to continue
+                        {{-- Card Header --}}
+                        <div class="mb-7">
+                            
+
+                            <h2 class="text-2xl font-bold tracking-tight text-white">
+                                Welcome back
+                            </h2>
+
+                            <p class="mt-1.5 text-sm text-white/65">
+                                Sign in to continue to your account.
                             </p>
                         </div>
 
+                        {{-- Validation Error --}}
                         @if ($errors->any())
-                            <div class="mb-5 rounded-xl border border-red-300/40 bg-red-500/25 px-4 py-3 text-sm text-white">
-                                {{ $errors->first() }}
+                            <div class="mb-5 flex gap-3 rounded-2xl border border-red-300/30 bg-red-500/15 px-4 py-3.5 text-sm text-red-100">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+
+                                <div>
+                                    <p class="font-semibold">
+                                        Unable to sign in
+                                    </p>
+                                    <p class="mt-0.5 text-xs text-red-100/80">
+                                        {{ $errors->first() }}
+                                    </p>
+                                </div>
                             </div>
                         @endif
 
-                        <form class="space-y-4" method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('login') }}" class="space-y-5">
                             @csrf
 
-                            <!-- Username -->
+                            {{-- Username --}}
                             <div>
-                                <label for="name" class="mb-2 block text-sm font-semibold text-white">
+                                <label
+                                    for="name"
+                                    class="mb-2 block text-sm font-semibold text-white"
+                                >
                                     Username
                                 </label>
 
-                                <input 
-                                    type="text"
-                                    name="name" 
-                                    id="name"
-                                    placeholder="admin12345"
-                                    required
-                                    class="w-full rounded-xl border border-white/40 bg-white/90 px-4 py-2.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-500 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/30">
+                                <div class="relative">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                                        <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.25a8.25 8.25 0 0115 0"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        value="{{ old('name') }}"
+                                        placeholder="admin12345"
+                                        autocomplete="username"
+                                        required
+                                        autofocus
+                                        class="block h-12 w-full rounded-xl border border-white/20 bg-white/90 pl-11 pr-4 text-sm font-medium text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-400/20"
+                                    >
+                                </div>
                             </div>
 
-                            <!-- Password -->
+                            {{-- Password --}}
                             <div>
                                 <div class="mb-2 flex items-center justify-between">
-                                    <label for="password" class="block text-sm font-semibold text-white">
+                                    <label
+                                        for="password"
+                                        class="block text-sm font-semibold text-white"
+                                    >
                                         Password
                                     </label>
 
-                                    <a href="#" class="text-xs text-white/80 hover:text-white hover:underline">
+                                    <a
+                                        href="#"
+                                        class="text-xs font-medium text-blue-200 transition hover:text-white hover:underline"
+                                    >
                                         Forgot password?
                                     </a>
                                 </div>
 
-                                <input 
-                                    type="password" 
-                                    name="password" 
-                                    id="password" 
-                                    placeholder="••••••••"
-                                    required
-                                    class="w-full rounded-xl border border-white/40 bg-white/90 px-4 py-2.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-500 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/30">
+                                <div class="relative">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                                        <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M16.5 10.5V7.75a4.5 4.5 0 10-9 0v2.75m-.75 0h10.5A1.75 1.75 0 0119 12.25v6A1.75 1.75 0 0117.25 20H6.75A1.75 1.75 0 015 18.25v-6a1.75 1.75 0 011.75-1.75z"
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        placeholder="••••••••"
+                                        autocomplete="current-password"
+                                        required
+                                        class="block h-12 w-full rounded-xl border border-white/20 bg-white/90 pl-11 pr-4 text-sm font-medium text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-400/20"
+                                    >
+                                </div>
                             </div>
 
-                            <!-- Submit Button -->
-                            <button 
+                            {{-- Submit --}}
+                            <button
                                 type="submit"
-                                class="w-full rounded-xl bg-blue-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                LOG IN
+                                class="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white shadow-lg shadow-blue-900/30 transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300/30"
+                            >
+                                <span>Sign In</span>
+
+                                <svg
+                                    class="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 12h14m-5-5l5 5-5 5"
+                                    />
+                                </svg>
                             </button>
 
-                            <!-- Divider -->
-                            <div class="flex items-center gap-4">
-                                <div class="h-px flex-1 bg-white/30"></div>
-                                <span class="text-xs text-white/70">or</span>
-                                <div class="h-px flex-1 bg-white/30"></div>
+                            {{-- Divider --}}
+                            <div class="flex items-center gap-4 py-1">
+                                <div class="h-px flex-1 bg-white/15"></div>
+                                <span class="text-xs font-medium text-white/45">
+                                    OR
+                                </span>
+                                <div class="h-px flex-1 bg-white/15"></div>
                             </div>
 
-                            <!-- Register Link -->
-                            <p class="text-center text-sm text-white/85">
-                                Don’t have an account?
-                                <a href="{{ route('register') }}" class="font-bold text-white hover:underline">
-                                    Register here
-                                </a>
-                            </p>
+                            {{-- Register --}}
+                            <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-center">
+                                <p class="text-sm text-white/65">
+                                    Don't have an account?
+                                    <a
+                                        href="{{ route('register') }}"
+                                        class="ml-1 font-bold text-white transition hover:text-blue-200 hover:underline"
+                                    >
+                                        Create one
+                                    </a>
+                                </p>
+                            </div>
                         </form>
-
                     </div>
+
+                    {{-- Footer --}}
+                    <p class="mt-5 text-center text-xs text-white/40">
+                        Secure access to Open Learning Hub
+                    </p>
                 </div>
-
             </div>
-        </div>
 
-    </section>
+        </div>
+    </div>
+
+</section>
+
 
 </body>
 </html>
