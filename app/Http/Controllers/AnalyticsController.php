@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\PcAccessLogs;
 use App\Models\Device;
+use App\Models\PcAppUsage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -39,15 +39,23 @@ class AnalyticsController extends Controller
         $rangeEnd = fn (string $range): Carbon => $now->copy()->endOfDay();
 
         //Card data
-        $popularDevice = PcAccessLogs::select('device_id', PcAccessLogs::raw('count(*) as total'))
+        $popularWorkstation = PcAccessLogs::select('device_id', PcAccessLogs::raw('COUNT(*) as total'))
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->with('device')
             ->groupBy('device_id')
             ->orderBy('total', 'desc')
-            ->first();
-        $activeDevices = Device::where('is_active', true)->count();
-        $totalEvents = PcAccessLogs::whereBetween('occurred_at', [$todayStart, $todayEnd])->count();
+            ->take(1)
+            ->get();
+        $topApplication = PcAppUsage::select('app_name', PcAppUsage::raw('COUNT(*) as total'))
+            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->groupBy('app_name')
+            ->orderBy('total', 'desc')
+            ->take(1)
+            ->get();
         $failedEvents = PcAccessLogs::where('result', 'FAIL')
+            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->count();
+        $successfulEvents = PcAccessLogs::where('result', 'SUCCESS')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
 
@@ -70,7 +78,7 @@ class AnalyticsController extends Controller
         $courseRangeLabel = $rangeLabels[$courseRange];
 
         return view('admin.analytics.index', compact(
-            'activeDevices', 'totalEvents', 'failedEvents', 'popularDevice',
+            'failedEvents', 'popularWorkstation', 'successfulEvents', 'topApplication',
             'topStudents', 'topCourses', 'rangeLabels',
             'studentRange', 'courseRange',
             'studentRangeLabel', 'courseRangeLabel'));

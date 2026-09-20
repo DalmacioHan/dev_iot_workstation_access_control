@@ -1,248 +1,190 @@
 @extends('layout.app')
 
-@section('title','Analytics')
-
-@php
-    $controlHeight = 'h-[52px]';
-@endphp
+@section('title', 'Analytics')
 
 @section('content')
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-12 mb-4">
-        <div class="xl:col-span-1">
-            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-                <div class="flex items-center justify-between">
-                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
-                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 5h16v10H4V5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M9 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M12 15v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $activeDevices }}</div>
-                        <div class="mt-1 text-sm text-body">Active Devices</div>
-                    </div>
-                </div>
+
+<div class="min-w-0 max-w-full space-y-6 overflow-x-hidden">
+
+    {{-- Page Header --}}
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
+                </svg>
+                Analytics
             </div>
+
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                Usage Analytics
+            </h1>
+
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                Review access patterns across students, courses, applications, and workstations.
+            </p>
         </div>
-        <div class="xl:col-span-1">
-            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-                <div class="flex items-center justify-between">
-                    <div class="w-10 h-10 rounded-xl bg-yellow-300 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
-                    </div>
-<div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-workstations-top">{{ $popularDevice?->name ?? $onlineDevices }}</div>
-                        <div class="mt-1 text-sm text-body">Popular Device</div>
-                    </div>
+    </div>
+
+    {{-- Summary Metrics --}}
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                    <p class="text-sm font-medium text-slate-500">Top Application</p>
+                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $topApplication->first()->app_name ?? 'N/A' }}">
+                        {{ $topApplication->first()->app_name ?? 'N/A' }}
+                    </p>
+                    <p class="mt-1 text-xs text-slate-400">Most used today</p>
                 </div>
-            </div>
-        </div>
-        <div class="xl:col-span-1">
-            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-                <div class="flex items-center justify-between">
-                    <div class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
-                        </svg>
-                    </div>
-                    <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-access-events">{{ $totalEvents }}</div>
-                        <div class="mt-1 text-sm text-body">Access Events</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="xl:col-span-1">
-            <div class="w-full bg-neutral-primary-soft border border-default rounded-lg shadow-xs p-4">
-                <div class="flex items-center justify-between">
-                    <div class="w-10 h-10 rounded-xl bg-orange-600 flex items-center justify-center shrink-0">
-                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 9v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M10 3h4l7 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10l7-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div class="text-right ms-3">
-                        <div class="text-3xl font-semibold text-heading leading-none" id="total-failed-attempts">{{ $failedEvents }}</div>
-                        <div class="mt-1 text-sm text-body">Failed Access Events</div>
-                    </div>
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
+                    </svg>
                 </div>
             </div>
         </div>
 
-    </div>
-    <!--table-->
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-12 mb-4">
-        <!-- Card 1: Top 10 Students -->
-        <div class="rounded-lg border border-gray-200 bg-white">
-            <div>
-                <div class="w-full bg-neutral-primary-soft p-5 border-b border-light flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-black uppercase">Top 10 Students</h3>
-                    <div class="relative">
-                        <button id="topStudentsDropdownButton" data-dropdown-toggle="topStudentsDropdown" data-dropdown-placement="bottom" class="text-sm font-medium text-body hover:text-heading inline-flex items-center" type="button">
-                            {{ $studentRangeLabel }}
-                            <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
-                        </button>
-                        <!-- Absolute placement and high z-index added -->
-                        <div id="topStudentsDropdown" class="z-50 hidden absolute right-0 top-full mt-2 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
-                            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="topStudentsDropdownButton">
-                                @foreach($rangeLabels as $range => $label)
-                                    <li><a href="{{ route('analytics', ['students_range' => $range, 'courses_range' => $courseRange]) }}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">{{ $label }}</a></li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                    <p class="text-sm font-medium text-slate-500">Popular Workstation</p>
+                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularWorkstation->first()->device->workstation_name ?? 'N/A' }}">
+                        {{ $popularWorkstation->first()->device->workstation_name ?? 'N/A' }}
+                    </p>
+                    <p class="mt-1 text-xs text-slate-400">Highest access today</p>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-700">
-                        <thead class="bg-white uppercase text-black border-b border-gray-200">
-                            <tr>
-                                <th scope="col" class="px-5 py-5">#</th>
-                                <th scope="col" class="px-5 py-5">Student Name</th>
-                                <th scope="col" class="px-5 py-5 text-center">Access</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($topStudents as $index => $student)
-                                <tr class="border-b border-gray-200">
-                                    <td class="px-5 py-5">{{ $index + 1 }}</td>
-                                    <td class="px-5 py-5">{{ $student->student_name }}</td>
-                                    <td class="px-5 py-5 text-center">{{ $student->total }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3h6l1 3h3a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h3l1-3Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8M8 16h5" />
+                    </svg>
                 </div>
             </div>
         </div>
 
-        <!-- Card 2: Top 10 Courses -->
-        <div class="rounded-lg border border-gray-200 bg-white">
-            <div>
-                <div class="w-full bg-neutral-primary-soft p-5 border-b border-light flex items-center justify-between">
-                    <h3 class="text-lg font-bold text-black text-left uppercase">Top 10 Courses</h3>
-                    <div class="relative">
-                        <button id="topCoursesDropdownButton" data-dropdown-toggle="topCoursesDropdown" data-dropdown-placement="bottom" class="text-sm font-medium text-body hover:text-heading inline-flex items-center" type="button">
-                            {{ $courseRangeLabel }}
-                            <svg class="w-4 h-4 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
-                        </button>
-                        <!-- Absolute placement and high z-index added -->
-                        <div id="topCoursesDropdown" class="z-50 hidden absolute right-0 top-full mt-2 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
-                            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="topCoursesDropdownButton">
-                                @foreach($rangeLabels as $range => $label)
-                                    <li><a href="{{ route('analytics', ['students_range' => $studentRange, 'courses_range' => $range]) }}" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">{{ $label }}</a></li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Successful Access</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) }}</p>
+                    <p class="mt-1 text-xs text-slate-400">Successful events today</p>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-700">
-                        <thead class="bg-white uppercase text-black border-b border-gray-200">
-                            <tr>
-                                <th scope="col" class="px-5 py-5">#</th>
-                                <th scope="col" class="px-5 py-2">Course Name</th>
-                                <th scope="col" class="px-5 py-5 text-center">Access</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($topCourses as $index => $course)
-                                <tr class="border-b border-gray-200">
-                                    <td class="px-5 py-5">{{ $index + 1 }}</td>
-                                    <td class="px-5 py-2">{{ $course->course }}</td>
-                                    <td class="px-5 py-5 text-center">{{ $course->total }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l4 4L19 6" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Failed Access</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($failedEvents) }}</p>
+                    <p class="mt-1 text-xs text-slate-400">Failed events today</p>
+                </div>
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 4h.01M10.3 3.9l-7.1 12.3A1.5 1.5 0 004.5 18.5h15a1.5 1.5 0 001.3-2.3L13.7 3.9a1.9 1.9 0 00-3.4 0Z" />
+                    </svg>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Ranked Activity --}}
+    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Top 10 Students</h2>
+                    <p class="mt-1 text-sm text-slate-500">Students with the most access events.</p>
+                </div>
+
+                <div class="relative self-start sm:self-auto">
+                    <button id="topStudentsDropdownButton" data-dropdown-toggle="topStudentsDropdown" data-dropdown-placement="bottom-end" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        {{ $studentRangeLabel }}
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
+                    </button>
+                    <div id="topStudentsDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                        @foreach($rangeLabels as $range => $label)
+                            <a href="{{ route('analytics', ['students_range' => $range, 'courses_range' => $courseRange]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[420px] text-left text-sm text-slate-600">
+                    <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 font-semibold">#</th>
+                            <th scope="col" class="px-6 py-4 font-semibold">Student Name</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($topStudents as $index => $student)
+                            <tr class="transition-colors hover:bg-blue-50/30">
+                                <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800">{{ $student->student_name }}</td>
+                                <td class="px-6 py-4 text-center font-semibold text-blue-700">{{ number_format($student->total) }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="3" class="px-6 py-12 text-center text-sm text-slate-400">No student activity found for this period.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Top 10 Courses</h2>
+                    <p class="mt-1 text-sm text-slate-500">Courses with the most access events.</p>
+                </div>
+
+                <div class="relative self-start sm:self-auto">
+                    <button id="topCoursesDropdownButton" data-dropdown-toggle="topCoursesDropdown" data-dropdown-placement="bottom-end" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        {{ $courseRangeLabel }}
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
+                    </button>
+                    <div id="topCoursesDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                        @foreach($rangeLabels as $range => $label)
+                            <a href="{{ route('analytics', ['students_range' => $studentRange, 'courses_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[420px] text-left text-sm text-slate-600">
+                    <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 font-semibold">#</th>
+                            <th scope="col" class="px-6 py-4 font-semibold">Course Name</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($topCourses as $index => $course)
+                            <tr class="transition-colors hover:bg-blue-50/30">
+                                <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800">{{ $course->course }}</td>
+                                <td class="px-6 py-4 text-center font-semibold text-blue-700">{{ number_format($course->total) }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="3" class="px-6 py-12 text-center text-sm text-slate-400">No course activity found for this period.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 @endsection
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const getBrandTertiaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-strong').trim() || "#1E40AF";
-    const getNeutralPrimaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-neutral-primary').trim() || "#FFFFFF";
-    const brandTertiaryColor = getBrandTertiaryColor();
-    const neutralPrimaryColor = getNeutralPrimaryColor();
-    const bluePalette = [
-        "#1447E6",
-        "#2563EB",
-        "#3B82F6",
-        "#60A5FA",
-        "#93C5FD",
-    ];
-
-    /* ════════════ PIE Courses ════════════ */
-    const pieChartOptions = {
-        series: courseCounts,
-        colors: bluePalette,
-        chart: { height: 280, width: "100%", type: "pie" },
-        stroke: { colors: [neutralPrimaryColor], lineCap: "" },
-        plotOptions: { pie: { labels: { show: true }, size: "100%", dataLabels: { offset: -25 } } },
-        labels: courseLabels,
-        dataLabels: { enabled: true, style: { fontFamily: "Inter, sans-serif" } },
-        legend: { show: false },
-        yaxis: { labels: { formatter: function (value) { return value + "%" } } },
-        xaxis: { labels: { formatter: function (value) { return value  + "%" } }, axisTicks: { show: false }, axisBorder: { show: false } }
-    };
-
-    if (document.getElementById("pie-chart") && typeof ApexCharts !== 'undefined') {
-        const pieChart = new ApexCharts(document.getElementById("pie-chart"), pieChartOptions);
-        pieChart.render();
-    }
-
-    /* ════════════ COLUMN Students ════════════ */
-    const getBrandColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand').trim() || "#1447E6";
-    const getBrandSecondaryColor = () => getComputedStyle(document.documentElement).getPropertyValue('--color-fg-brand-subtle').trim() || "#93C5FD";
-    const brandColor = getBrandColor();
-    const brandSecondaryColor = getBrandSecondaryColor();
-
-    const columnChartOptions = {
-        colors: [brandColor, brandSecondaryColor],
-        series: [
-        {
-            name: "Male",
-            color: brandColor,
-            data: maleData.map((y, i) => ({ x: columnChartDays[i], y }))
-        },
-        {
-            name: "Female",
-            color: brandSecondaryColor,
-            data: femaleData.map((y, i) => ({ x: columnChartDays[i], y }))
-        }
-        ],
-        chart: {
-        type: "bar",
-        height: "280px",
-        fontFamily: "Inter, sans-serif",
-        toolbar: { show: false },
-        },
-        plotOptions: { bar: { horizontal: false, columnWidth: "70%", borderRadiusApplication: "end", borderRadius: 8 } },
-        tooltip: { shared: true, intersect: false, style: { fontFamily: "Inter, sans-serif" } },
-        states: { hover: { filter: { type: "darken", value: 1 } } },
-        stroke: { show: true, width: 0, colors: ["transparent"] },
-        grid: { show: false, strokeDashArray: 4, padding: { left: 2, right: 2, top: -14 } },
-        dataLabels: { enabled: false },
-        legend: { show: false },
-        xaxis: {
-        categories: columnChartDays,
-        floating: false,
-        labels: { show: true, style: { fontFamily: "Inter, sans-serif", cssClass: 'text-xs font-normal fill-body' } },
-        axisBorder: { show: false }, axisTicks: { show: false },
-        },
-        yaxis: { show: false },
-        fill: { opacity: 1 }
-    };
-
-    if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
-        const columnChart = new ApexCharts(document.getElementById("column-chart"), columnChartOptions);
-        columnChart.render();
-    }
-    });
-</script>
