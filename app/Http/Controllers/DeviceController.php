@@ -74,9 +74,10 @@ class DeviceController extends Controller
     public function edit(Device $device){
         return view('admin.device.edit', compact('device'));
     }
-    public function show(Device $device ){
-        return view('admin.device.view', compact('device'));
-    }
+public function show(Device $device ){
+    $commands = $device->remoteCommands()->latest('id')->limit(5)->get();
+    return view('admin.device.view', compact('device', 'commands'));
+}
     public function destroy($id)
     {
     
@@ -90,5 +91,39 @@ class DeviceController extends Controller
         $device->delete();
 
         return redirect()->route('device')->with('success', "Device '{$device->device_uid}' was successfully deleted.");
+    }
+
+    public function lockDevice(Request $request, Device $device)
+    {
+        $validated = $request->validate([
+            'message' => 'nullable|string|max:500',
+        ]);
+
+        $device->remoteCommands()->create([
+            'command' => 'lock',
+            'message' => trim($validated['message'] ?? '') ?: null,
+            'status'  => 'pending',
+        ]);
+
+        $name = $device->workstation_name ?? $device->device_uid;
+
+        return redirect()->back()->with('success', "Remote lock command sent to '{$name}'. It will take effect on the PC's next check (within a few seconds if online).");
+    }
+
+    public function announceDevice(Request $request, Device $device)
+    {
+        $validated = $request->validate([
+            'message' => 'required|string|max:500',
+        ]);
+
+        $device->remoteCommands()->create([
+            'command' => 'announcement',
+            'message' => trim($validated['message']),
+            'status'  => 'pending',
+        ]);
+
+        $name = $device->workstation_name ?? $device->device_uid;
+
+        return redirect()->back()->with('success', "Announcement sent to '{$name}'. It will display on the PC within a few seconds if online.");
     }
 }

@@ -45,6 +45,11 @@ class Device extends Model
         return $this->hasMany(PcAccessLogs::class);
     }
 
+    public function remoteCommands()
+    {
+        return $this->hasMany(DeviceCommand::class);
+    }
+
     /**
      * Check if token is valid
      */

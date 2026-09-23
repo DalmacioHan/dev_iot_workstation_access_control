@@ -37,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/device/{device}/update', [DeviceController::class, 'update'])->name('device.update');
     Route::get('/device/{device}', [DeviceController::class, 'show'])->name('device.show');
     Route::delete('/device/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
+    Route::post('/device/{device}/lock', [DeviceController::class, 'lockDevice'])->name('device.lock');
+    Route::post('/device/{device}/announce', [DeviceController::class, 'announceDevice'])->name('device.announce');
     // Account Route
     Route::get('/account',[AccountController::class,'index'])->name('account');
     Route::post('/account/send-code',[AccountController::class,'sendCode'])->name('account.send-code');

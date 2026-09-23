@@ -16,6 +16,10 @@ Route::middleware('device.auth')->group(function () {
     // heartbeat route
     Route::post('/device/ping',[DeviceController::class,'heartbeat']);
 
+    // remote command delivery (kiosk polls every ~10s) + ack
+    Route::post('/device/commands',[DeviceController::class,'commands']);
+    Route::post('/device/ack',[DeviceController::class,'ack']);
+
     // RFID scan / session endpoints used by the desktop kiosk
     Route::post('/access/scan', [AccessController::class, 'scan']);
     Route::post('/access/logout', [AccessController::class, 'logout']);

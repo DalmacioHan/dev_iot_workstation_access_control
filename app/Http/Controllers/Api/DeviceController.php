@@ -59,4 +59,62 @@ class DeviceController extends Controller
             'last_seen_at'=>$device->last_seen_at->toIso8601String()
         ], Response::HTTP_OK);
     }
+
+    /**
+     * Lightweight poll the kiosk calls frequently (~10s). Returns the
+     * latest pending remote command (e.g. a staff-issued lock) or null.
+     * Does NOT touch last_seen_at - that stays on the 60s heartbeat.
+     */
+    public function commands(Request $request)
+    {
+        $device = $request->get('authenticated_device');
+
+        $command = $device->remoteCommands()
+                          ->where('status', 'pending')
+                          ->orderBy('id')
+                          ->first();
+
+        return response()->json([
+            'success' => true,
+            'command' => $command ? [
+                'id'      => $command->id,
+                'type'    => $command->command,
+                'message' => $command->message,
+            ] : null,
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Marks a delivered command as completed so it is not re-sent.
+     */
+    public function ack(Request $request)
+    {
+        $validated = $request->validate([
+            'command_id' => 'required|integer',
+        ]);
+
+        $device = $request->get('authenticated_device');
+
+        $command = $device->remoteCommands()
+                          ->where('id', $validated['command_id'])
+                          ->where('status', 'pending')
+                          ->first();
+
+        if (!$command) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No pending command with that id.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $command->update([
+            'status'          => 'completed',
+            'acknowledged_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Command acknowledged.',
+        ], Response::HTTP_OK);
+    }
 }
