@@ -50,6 +50,7 @@ return [
     'mis' => [
         'url' => env('MIS_API_BASE_URL', 'http://localhost:5080'),
         'timeout' => env('MIS_API_TIMEOUT', 3),
+        'key' => env('MIS_API_KEY', ''),
     ],
 
 ];

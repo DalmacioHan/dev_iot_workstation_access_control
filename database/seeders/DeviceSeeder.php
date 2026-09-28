@@ -15,12 +15,13 @@ class DeviceSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 10; $i++) {
-            Device::create([
-                'device_uid'    => 'DVC' . str_pad($i, 3, '0', STR_PAD_LEFT),
-                'is_active'     => $i % 2, // alternate
-                // Generate a random date in last 30 days
-                'last_seen_at'  => Carbon::now()->subDays(rand(0, 29))->subMinutes(rand(0, 1439)),
-            ]);
+            Device::updateOrCreate(
+                ['device_uid' => 'DVC' . str_pad($i, 3, '0', STR_PAD_LEFT)],
+                [
+                    'is_active'    => $i % 2, // alternate
+                    'last_seen_at' => Carbon::now()->subDays(rand(0, 29))->subMinutes(rand(0, 1439)),
+                ]
+            );
         }
     }
 }

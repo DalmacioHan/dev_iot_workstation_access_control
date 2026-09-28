@@ -10,7 +10,11 @@ class PcAccessLogSeeder extends Seeder
 {
     public function run()
     {
-      
+        if (PcAccessLogs::exists()) {
+            $this->command->info('pc_access_logs already seeded - skipping.');
+            return;
+        }
+
         $students = [
             
             ['2510219-1','Abasolo','Justine','Pantino'],

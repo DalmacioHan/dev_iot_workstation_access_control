@@ -185,10 +185,21 @@ class AccessController extends Controller
             . '/api/students/' . rawurlencode($cardId);
 
         try {
-            $response = Http::timeout($timeout)->get($url);
+            $request = Http::timeout($timeout);
+
+            $misKey = (string) config('services.mis.key');
+            if ($misKey !== '') {
+                $request = $request->withHeaders(['X-API-Key' => $misKey]);
+            }
+
+            $response = $request->get($url);
 
             if ($response->notFound()) {
                 return [null, 'Card is not registered in the university MIS.'];
+            }
+
+            if ($response->unauthorized()) {
+                return [null, 'MIS rejected the API key.'];
             }
 
             if ($response->successful()) {
