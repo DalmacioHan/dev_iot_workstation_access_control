@@ -17,7 +17,10 @@ class AdminController extends Controller
         $totalDevices = Device::count();
         $activeDevices = Device::where('is_active', 1)->count();
         $onlineDevices = Device::where('last_seen_at', '>=', Carbon::now()->subMinutes(5))->count();
-        $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())->count('student_external_id');
+
+        $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())
+        ->where('result','allowed')
+        ->count('student_external_id');
         $weekStart = Carbon::today()->startOfWeek(Carbon::MONDAY);
         $uniqueStudentsToday = PcAccessLogs::whereDate('occurred_at', Carbon::today())
             ->distinct('student_external_id')
@@ -73,7 +76,9 @@ class AdminController extends Controller
             ->pluck('count', 'course')
             ->toArray();
 
-        $totalStudents = PcAccessLogs::distinct('student_external_id')->count('student_external_id');
+        $totalStudents = PcAccessLogs::distinct('student_external_id')
+        ->where('result','allowed')
+        ->count('student_external_id');
 
         return view('admin.dashboard', compact(
             'totalDevices', 'activeDevices', 'onlineDevices',
