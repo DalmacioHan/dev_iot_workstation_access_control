@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\adminController as AdminController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
-use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test-toast', function () {
@@ -44,4 +45,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/send-code',[AccountController::class,'sendCode'])->name('account.send-code');
     Route::put('/account/update',[AccountController::class,'update'])->name('account.update');
     Route::delete('/account/delete',[AccountController::class,'destroy'])->name('account.delete');
+    //user management
+    Route::get('/users',[UserController::class,'index'])->name('user');
+    Route::get('/users/add',[UserController::class,'create'])->name('user.create');
+    Route::post('/users/add',[UserController::class,'store'])->name('user.store');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');    
+    Route::get('/users/{user}/edit',[UserController::class,'edit'])->name('user.edit');
+    Route::put('/users/{user}/update',[UserController::class,'update'])->name('user.update');
+    Route::delete('/users/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
 });

@@ -443,6 +443,64 @@
 
                 </li>
 
+                {{-- =================================================
+                    USERS
+                ================================================== --}}
+                <li>
+
+                    <a
+                        href="{{ route('user') }}"
+                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ request()->routeIs('user.*')
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    >
+
+                        <span
+                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            {{ request()->routeIs('user.*')
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
+                        >
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                                />
+
+                                <circle
+                                    cx="9"
+                                    cy="7"
+                                    r="4"
+                                    stroke-width="1.8"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Users
+                        </span>
+
+                    </a>
+
+                </li>
+
 
                 {{-- =================================================
                     REPORTS

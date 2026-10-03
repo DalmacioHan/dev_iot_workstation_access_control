@@ -118,7 +118,7 @@ class PcAccessLogSeeder extends Seeder
     
         $deviceIds = \App\Models\Device::pluck('id')->toArray();
 
-       
+
         $startDate = Carbon::create(2026, 9,13 )->startOfDay();
         $endDate = Carbon::create(2026, 9, 20)->endOfDay();
 
