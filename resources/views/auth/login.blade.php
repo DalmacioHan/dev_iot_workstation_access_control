@@ -177,7 +177,7 @@
                                     </label>
 
                                     <a
-                                        href="#"
+                                        href="{{route('password.request')}}"
                                         class="text-xs font-medium text-blue-200 transition hover:text-white hover:underline"
                                     >
                                         Forgot password?
