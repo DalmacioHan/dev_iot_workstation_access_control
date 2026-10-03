@@ -100,9 +100,6 @@
     @endif
 
 
-    {{-- =========================================================
-        MAIN BENTO GRID
-    ========================================================== --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-5">
 
         {{-- =====================================================
@@ -114,7 +111,7 @@
                 class="relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 p-6 text-white shadow-lg shadow-blue-100 sm:p-8"
             >
 
-                {{-- Decorative shapes --}}
+                
                 <div
                     class="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/10"
                 ></div>
@@ -126,7 +123,7 @@
 
                 <div class="relative">
 
-                    {{-- Icon --}}
+                
                     <div
                         class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20 backdrop-blur"
                     >
@@ -427,7 +424,7 @@
                             for="name"
                             class="mb-2 block text-sm font-semibold text-gray-900"
                         >
-                            Full Name
+                            Username
                             <span class="text-red-500">*</span>
                         </label>
 

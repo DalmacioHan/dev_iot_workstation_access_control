@@ -146,7 +146,7 @@
 
                         <a
                             href="{{ route('user') }}"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                            class="absolute right-3 top-10/12 -translate-y-1/2 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
                             title="Clear search"
                         >
 
