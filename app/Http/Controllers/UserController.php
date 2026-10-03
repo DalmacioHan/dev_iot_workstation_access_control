@@ -33,7 +33,9 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => 'required|string|min:8|confirmed',
+
         ]);
 
         // Create a new user
@@ -42,10 +44,13 @@ class UserController extends Controller
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
         $user->role = 'admin'; // Set a default role
+        if (isset($validatedData['profile_picture'])) {
+            $user->profile_picture = $validatedData['profile_picture']->store('profile_pictures', 'public');
+        }
         $user->save();
 
         // Redirect to the users list with a success message
-        return redirect()->route('user.index')->with('success', 'User created successfully.');
+        return redirect()->route('user')->with('success', 'User created successfully.');
     }
     
     public function destroy(User $user)
@@ -68,6 +73,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'role'=>'required|string|in:super admin,admin',
         ]);
 
@@ -81,6 +87,10 @@ class UserController extends Controller
             $user->password = Hash::make($validatedData['password']);
         }
 
+        // Update the profile picture only if it's provided
+        if (isset($validatedData['profile_picture'])) {
+            $user->profile_picture = $validatedData['profile_picture']->store('profile_pictures', 'public');
+        }
         $user->save();
 
         // Redirect to the users list with a success message
