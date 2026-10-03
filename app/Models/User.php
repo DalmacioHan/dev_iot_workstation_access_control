@@ -44,7 +44,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'reset_code',
     ];
-
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
     /**
      * Get the attributes that should be cast.
      *

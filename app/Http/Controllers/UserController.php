@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->where('id', '!=', auth()->id());
 
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -35,6 +35,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => 'required|string|min:8|confirmed',
+            'role'=>'required|string|in:superadmin,admin',
 
         ]);
 
@@ -43,7 +44,7 @@ class UserController extends Controller
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
-        $user->role = 'admin'; // Set a default role
+        $user->role = $validatedData['role']; 
         if (isset($validatedData['profile_picture'])) {
             $user->profile_picture = $validatedData['profile_picture']->store('profile_pictures', 'public');
         }
