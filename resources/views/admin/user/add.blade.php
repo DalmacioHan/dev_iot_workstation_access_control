@@ -1,4 +1,3 @@
-
 @extends('layout.app')
 
 @section('title', 'Add User')
@@ -14,9 +13,7 @@
 
         <div>
             <div class="mb-2 flex items-center gap-2">
-                <span
-                    class="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600"
-                >
+                <span class="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
                     <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
                     User Management
                 </span>
@@ -30,6 +27,7 @@
                 Create a new user account for the OLH Library system.
             </p>
         </div>
+
 
         <a
             href="{{ route('dashboard') }}"
@@ -59,15 +57,14 @@
         VALIDATION ERRORS
     ========================================================== --}}
     @if ($errors->any())
+
         <div
             class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4"
             role="alert"
         >
             <div class="flex gap-3">
 
-                <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600"
-                >
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600">
                     <svg
                         class="h-5 w-5"
                         fill="none"
@@ -83,6 +80,7 @@
                     </svg>
                 </div>
 
+
                 <div>
                     <h3 class="text-sm font-semibold text-red-800">
                         Please check the form
@@ -97,6 +95,7 @@
 
             </div>
         </div>
+
     @endif
 
 
@@ -111,22 +110,15 @@
                 class="relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 p-6 text-white shadow-lg shadow-blue-100 sm:p-8"
             >
 
-                
-                <div
-                    class="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/10"
-                ></div>
+                <div class="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/10"></div>
 
-                <div
-                    class="absolute -bottom-20 -left-16 h-48 w-48 rounded-full bg-white/5"
-                ></div>
+                <div class="absolute -bottom-20 -left-16 h-48 w-48 rounded-full bg-white/5"></div>
 
 
                 <div class="relative">
 
-                
-                    <div
-                        class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20 backdrop-blur"
-                    >
+                    <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20 backdrop-blur">
+
                         <svg
                             class="h-7 w-7"
                             fill="none"
@@ -153,6 +145,7 @@
                                 d="M19 8v6M22 11h-6"
                             />
                         </svg>
+
                     </div>
 
 
@@ -173,9 +166,7 @@
                         {{-- Step 1 --}}
                         <div class="flex items-start gap-3">
 
-                            <div
-                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-bold text-blue-600"
-                            >
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-bold text-blue-600">
                                 1
                             </div>
 
@@ -195,10 +186,28 @@
                         {{-- Step 2 --}}
                         <div class="flex items-start gap-3">
 
-                            <div
-                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-sm font-bold ring-1 ring-white/20"
-                            >
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-sm font-bold ring-1 ring-white/20">
                                 2
+                            </div>
+
+                            <div>
+                                <p class="text-sm font-semibold">
+                                    Assign a role
+                                </p>
+
+                                <p class="mt-0.5 text-xs leading-5 text-blue-100">
+                                    Choose the access level for the new account.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        {{-- Step 3 --}}
+                        <div class="flex items-start gap-3">
+
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-sm font-bold ring-1 ring-white/20">
+                                3
                             </div>
 
                             <div>
@@ -214,13 +223,11 @@
                         </div>
 
 
-                        {{-- Step 3 --}}
+                        {{-- Step 4 --}}
                         <div class="flex items-start gap-3">
 
-                            <div
-                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-sm font-bold ring-1 ring-white/20"
-                            >
-                                3
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-sm font-bold ring-1 ring-white/20">
+                                4
                             </div>
 
                             <div>
@@ -239,9 +246,7 @@
 
 
                     {{-- Security notice --}}
-                    <div
-                        class="mt-10 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm"
-                    >
+                    <div class="mt-10 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
 
                         <div class="flex gap-3">
 
@@ -265,6 +270,7 @@
                                     d="m9.5 12 1.7 1.7 3.5-3.5"
                                 />
                             </svg>
+
 
                             <div>
                                 <p class="text-xs font-semibold">
@@ -293,16 +299,13 @@
         ====================================================== --}}
         <div class="lg:col-span-3">
 
-            <div
-                class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
-            >
+            <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
 
                 {{-- Card Header --}}
                 <div class="mb-7 flex items-center gap-4">
 
-                    <div
-                        class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
-                    >
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
                         <svg
                             class="h-5 w-5"
                             fill="none"
@@ -329,7 +332,9 @@
                                 d="M19 8v6M22 11h-6"
                             />
                         </svg>
+
                     </div>
+
 
                     <div>
                         <h2 class="text-lg font-bold text-gray-900">
@@ -344,7 +349,9 @@
                 </div>
 
 
-                {{-- FORM --}}
+                {{-- =====================================================
+                    FORM
+                ====================================================== --}}
                 <form
                     action="{{ route('user.store') }}"
                     method="POST"
@@ -355,7 +362,9 @@
                     @csrf
 
 
-                    {{-- Profile Picture --}}
+                    {{-- =================================================
+                        PROFILE PICTURE
+                    ================================================== --}}
                     <div>
 
                         <label
@@ -363,10 +372,12 @@
                             class="mb-2 block text-sm font-semibold text-gray-900"
                         >
                             Profile Picture
+
                             <span class="font-normal text-gray-400">
                                 (Optional)
                             </span>
                         </label>
+
 
                         <div class="flex items-center gap-4">
 
@@ -374,6 +385,7 @@
                                 id="avatar-preview"
                                 class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gray-100 text-gray-400 ring-1 ring-gray-200"
                             >
+
                                 <svg
                                     class="h-7 w-7"
                                     fill="none"
@@ -394,7 +406,9 @@
                                         stroke-width="1.8"
                                     />
                                 </svg>
+
                             </div>
+
 
                             <div class="min-w-0 flex-1">
 
@@ -417,7 +431,9 @@
                     </div>
 
 
-                    {{-- Name --}}
+                    {{-- =================================================
+                        USERNAME
+                    ================================================== --}}
                     <div>
 
                         <label
@@ -428,11 +444,11 @@
                             <span class="text-red-500">*</span>
                         </label>
 
+
                         <div class="relative">
 
-                            <div
-                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
-                            >
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+
                                 <svg
                                     class="h-5 w-5 text-gray-400"
                                     fill="none"
@@ -453,7 +469,9 @@
                                         stroke-width="1.8"
                                     />
                                 </svg>
+
                             </div>
+
 
                             <input
                                 type="text"
@@ -468,6 +486,7 @@
 
                         </div>
 
+
                         @error('name')
                             <p class="mt-1.5 text-xs font-medium text-red-600">
                                 {{ $message }}
@@ -477,7 +496,9 @@
                     </div>
 
 
-                    {{-- Email --}}
+                    {{-- =================================================
+                        EMAIL ADDRESS
+                    ================================================== --}}
                     <div>
 
                         <label
@@ -488,11 +509,11 @@
                             <span class="text-red-500">*</span>
                         </label>
 
+
                         <div class="relative">
 
-                            <div
-                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
-                            >
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+
                                 <svg
                                     class="h-5 w-5 text-gray-400"
                                     fill="none"
@@ -513,7 +534,9 @@
                                         d="m4 7 8 6 8-6"
                                     />
                                 </svg>
+
                             </div>
+
 
                             <input
                                 type="email"
@@ -528,6 +551,7 @@
 
                         </div>
 
+
                         @error('email')
                             <p class="mt-1.5 text-xs font-medium text-red-600">
                                 {{ $message }}
@@ -537,7 +561,118 @@
                     </div>
 
 
-                    {{-- Password Grid --}}
+                    {{-- =================================================
+                        ROLE
+                    ================================================== --}}
+                    <div>
+
+                        <label
+                            for="role"
+                            class="mb-2 block text-sm font-semibold text-gray-900"
+                        >
+                            Role
+                            <span class="text-red-500">*</span>
+                        </label>
+
+
+                        <div class="relative">
+
+                            {{-- Role icon --}}
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+
+                                <svg
+                                    class="h-5 w-5 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="M12 3 5 6v5c0 4.7 2.9 8.6 7 10 4.1-1.4 7-5.3 7-10V6l-7-3Z"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="m9.5 12 1.7 1.7 3.5-3.5"
+                                    />
+                                </svg>
+
+                            </div>
+
+
+                            <select
+                                id="role"
+                                name="role"
+                                required
+                                class="block w-full appearance-none rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-11 text-sm text-gray-900 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                            >
+                                <option
+                                    value=""
+                                    disabled
+                                    @selected(!old('role'))
+                                >
+                                    Select user role
+                                </option>
+
+                                <option
+                                    value="admin"
+                                    @selected(old('role') === 'admin')
+                                >
+                                    Administrator
+                                </option>
+
+                                <option
+                                    value="superadmin"
+                                    @selected(old('role') === 'superadmin')
+                                >
+                                    Super Administrator
+                                </option>
+                            </select>
+
+
+                            {{-- Dropdown arrow --}}
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+
+                                <svg
+                                    class="h-4 w-4 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="m6 9 6 6 6-6"
+                                    />
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+
+                        @error('role')
+                            <p class="mt-1.5 text-xs font-medium text-red-600">
+                                {{ $message }}
+                            </p>
+                        @enderror
+
+
+                        <p class="mt-1.5 text-xs text-gray-400">
+                            Choose the level of access this user will have.
+                        </p>
+
+                    </div>
+
+
+                    {{-- =================================================
+                        PASSWORD GRID
+                    ================================================== --}}
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
                         {{-- Password --}}
@@ -551,11 +686,11 @@
                                 <span class="text-red-500">*</span>
                             </label>
 
+
                             <div class="relative">
 
-                                <div
-                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
-                                >
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+
                                     <svg
                                         class="h-5 w-5 text-gray-400"
                                         fill="none"
@@ -584,7 +719,9 @@
                                             d="M12 15v2"
                                         />
                                     </svg>
+
                                 </div>
+
 
                                 <input
                                     type="password"
@@ -597,6 +734,7 @@
                                 >
 
                             </div>
+
 
                             @error('password')
                                 <p class="mt-1.5 text-xs font-medium text-red-600">
@@ -618,11 +756,11 @@
                                 <span class="text-red-500">*</span>
                             </label>
 
+
                             <div class="relative">
 
-                                <div
-                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
-                                >
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+
                                     <svg
                                         class="h-5 w-5 text-gray-400"
                                         fill="none"
@@ -647,11 +785,14 @@
 
                                         <path
                                             stroke-linecap="round"
+                                            stroke-linejoin="round"
                                             stroke-width="1.8"
                                             d="m9 16 2 2 4-4"
                                         />
                                     </svg>
+
                                 </div>
+
 
                                 <input
                                     type="password"
@@ -670,16 +811,15 @@
                     </div>
 
 
-                    {{-- Password Requirements --}}
-                    <div
-                        class="rounded-2xl border border-gray-100 bg-gray-50 p-4"
-                    >
+                    {{-- =================================================
+                        PASSWORD REQUIREMENTS
+                    ================================================== --}}
+                    <div class="rounded-2xl border border-gray-100 bg-gray-50 p-4">
 
                         <div class="flex gap-3">
 
-                            <div
-                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm ring-1 ring-gray-100"
-                            >
+                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm ring-1 ring-gray-100">
+
                                 <svg
                                     class="h-5 w-5"
                                     fill="none"
@@ -693,7 +833,9 @@
                                         d="M12 3 5 6v5c0 4.7 2.9 8.6 7 10 4.1-1.4 7-5.3 7-10V6l-7-3Z"
                                     />
                                 </svg>
+
                             </div>
+
 
                             <div>
 
@@ -714,10 +856,10 @@
                     </div>
 
 
-                    {{-- Actions --}}
-                    <div
-                        class="flex flex-col-reverse gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:justify-end"
-                    >
+                    {{-- =================================================
+                        ACTIONS
+                    ================================================== --}}
+                    <div class="flex flex-col-reverse gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:justify-end">
 
                         <a
                             href="{{ route('dashboard') }}"
@@ -725,6 +867,7 @@
                         >
                             Cancel
                         </a>
+
 
                         <button
                             type="submit"
@@ -764,6 +907,7 @@
     PROFILE IMAGE PREVIEW
 ========================================================== --}}
 @push('scripts')
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -800,7 +944,7 @@
 
     });
 </script>
+
 @endpush
 
 @endsection
-```

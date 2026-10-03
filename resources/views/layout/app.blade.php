@@ -447,7 +447,7 @@
                     USERS
                 ================================================== --}}
                 <li>
-
+                    @if(auth()->user()->isSuperAdmin())
                     <a
                         href="{{ route('user') }}"
                         class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
@@ -498,6 +498,7 @@
                         </span>
 
                     </a>
+                    @endif
 
                 </li>
 

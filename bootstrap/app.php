@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         
         $middleware->alias([
             'device.auth' => \App\Http\Middleware\AuthenticateDeviceToken::class,
+            'superadmin' => \App\Http\Middleware\EnsureUserIsSuperAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
