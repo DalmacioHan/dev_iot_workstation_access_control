@@ -11,6 +11,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/', 'welcome');
 Route::get('/test-toast', function () {
     return redirect()->route('device')
         ->with('pairing_success', true)
@@ -21,7 +22,7 @@ Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::get('/register',[AuthController::class,'create'])->name('register');
 Route::post('/register',[AuthController::class,'store'])->name('register.store');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/', function () { return redirect('/login');});
+
 
 Route::get('/forgot-password',[ForgotPasswordController::class,'index'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
