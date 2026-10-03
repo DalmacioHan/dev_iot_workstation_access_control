@@ -29,28 +29,8 @@ class AuthController extends Controller
         ->withErrors(['name' => 'Wrong username or password.'])
         ->withInput();
     }
-    public function create()
-    {
-        return view('auth.register');
-    }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name'=>'required|string|max:255|unique:users,name',
-            'email'=> 'required|email|unique:users,email',
-            'password'=>'required|min:6',
-        ]);
 
-        $user=User::create([
-        'name'=>$validated['name'],
-        'email'=>$validated['email'],
-        'password'=>Hash::make($validated['password']),
-    ]);
-        Auth::login($user);
-    return redirect()->route('dashboard');
-    
-    }
     public function logout(Request $request){
     Auth::logout();
 

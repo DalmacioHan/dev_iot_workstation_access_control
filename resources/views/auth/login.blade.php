@@ -230,27 +230,8 @@
                                 </svg>
                             </button>
 
-                            {{-- Divider --}}
-                            <div class="flex items-center gap-4 py-1">
-                                <div class="h-px flex-1 bg-white/15"></div>
-                                <span class="text-xs font-medium text-white/45">
-                                    OR
-                                </span>
-                                <div class="h-px flex-1 bg-white/15"></div>
-                            </div>
 
-                            {{-- Register --}}
-                            <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-center">
-                                <p class="text-sm text-white/65">
-                                    Don't have an account?
-                                    <a
-                                        href="{{ route('register') }}"
-                                        class="ml-1 font-bold text-white transition hover:text-blue-200 hover:underline"
-                                    >
-                                        Create one
-                                    </a>
-                                </p>
-                            </div>
+
                         </form>
                     </div>
 

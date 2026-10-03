@@ -19,8 +19,6 @@ Route::get('/test-toast', function () {
 });
 Route::get('/login',[AuthController::class,'index']);
 Route::post('/login',[AuthController::class,'login'])->name('login');
-Route::get('/register',[AuthController::class,'create'])->name('register');
-Route::post('/register',[AuthController::class,'store'])->name('register.store');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 

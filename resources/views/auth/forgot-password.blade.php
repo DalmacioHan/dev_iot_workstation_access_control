@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -11,379 +11,645 @@
         content="width=device-width, initial-scale=1"
     >
 
-    <title>Forgot Password</title>
-
-    {{-- Tailwind CSS --}}
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    {{-- Flowbite --}}
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.1/flowbite.min.css"
-        rel="stylesheet"
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="ie=edge"
     >
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                    },
-                },
-            },
-        }
-    </script>
+    <title>Forgot Password</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 
-<body class="min-h-screen bg-slate-50 font-sans text-slate-900">
+<body class="min-h-screen bg-slate-950">
+
 
     {{-- =========================================================
-        BACKGROUND
+        PAGE BACKGROUND
     ========================================================== --}}
-    <div class="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10 sm:px-6">
 
-        {{-- Decorative Background --}}
-        <div class="pointer-events-none absolute inset-0">
+    <section
+        class="relative flex min-h-screen items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat px-4 py-8 sm:px-6"
+        style="background-image: url('{{ asset('image/library_bg.jpg') }}');"
+    >
 
-            <div
-                class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl"
-            ></div>
+        {{-- Dark Background Overlay --}}
+        <div
+            class="absolute inset-0 bg-slate-950/65"
+        ></div>
 
-            <div
-                class="absolute -bottom-40 -right-32 h-[28rem] w-[28rem] rounded-full bg-indigo-200/30 blur-3xl"
-            ></div>
 
-            <div
-                class="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/20 blur-3xl"
-            ></div>
+        {{-- Blue / Slate Gradient --}}
+        <div
+            class="absolute inset-0 bg-gradient-to-br from-blue-950/40 via-slate-950/20 to-slate-950/70"
+        ></div>
 
-        </div>
+
+        {{-- Decorative Blue Glow --}}
+        <div
+            class="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
+        ></div>
+
+
+        {{-- Decorative Indigo Glow --}}
+        <div
+            class="pointer-events-none absolute -bottom-32 right-1/4 h-72 w-72 rounded-full bg-indigo-500/15 blur-3xl"
+        ></div>
+
 
 
         {{-- =====================================================
-            FORGOT PASSWORD CARD
+            MAIN CONTAINER
         ====================================================== --}}
-        <div class="relative z-10 w-full max-w-md">
+
+        <div
+            class="relative z-10 w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/20 bg-white/10 shadow-2xl shadow-black/30 backdrop-blur-md"
+        >
 
             <div
-                class="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 shadow-xl shadow-slate-200/60 backdrop-blur-xl"
+                class="grid min-h-[560px] grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
             >
 
-                {{-- =================================================
-                    CARD HEADER
-                ================================================== --}}
-                <div class="px-6 pb-2 pt-8 text-center sm:px-8 sm:pt-10">
 
-                    
-                    {{-- Logo / Lock Icon --}}
+                {{-- =================================================
+                    LEFT BRANDING PANEL
+                ================================================== --}}
+
+                <div
+                    class="relative flex items-center overflow-hidden px-7 py-12 sm:px-12 lg:px-16"
+                >
+
+
+                    {{-- Decorative Glows --}}
+
                     <div
-                        class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-200"
-                    >
-                        <svg
-                            class="h-8 w-8"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            {{-- Lock body --}}
-                            <rect
-                                x="4"
-                                y="10"
-                                width="16"
-                                height="11"
-                                rx="2"
-                                stroke-width="1.8"
-                            />
+                        class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
+                    ></div>
 
-                            {{-- Lock shackle --}}
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M8 10V7a4 4 0 0 1 8 0v3"
-                            />
-
-                            {{-- Keyhole --}}
-                            <circle
-                                cx="12"
-                                cy="15"
-                                r="1.2"
-                                fill="currentColor"
-                                stroke="none"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-width="1.8"
-                                d="M12 16.2v2"
-                            />
-                        </svg>
-                    </div>
+                    <div
+                        class="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-indigo-500/15 blur-3xl"
+                    ></div>
 
 
 
-
-                    <h1 class="mt-6 text-2xl font-bold tracking-tight text-slate-900">
-                        Forgot your password?
-                    </h1>
-
-                    <p class="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">
-                        No problem. Enter your email address below and we'll
-                        send you a link to reset your password.
-                    </p>
-
-                </div>
+                    <div class="relative max-w-lg text-white">
 
 
-                {{-- =================================================
-                    FORM
-                ================================================== --}}
-                <div class="px-6 pb-8 pt-7 sm:px-8 sm:pb-10">
+                        {{-- =============================================
+                            LOGO
+                        ============================================== --}}
 
-
-                    {{-- Success Message --}}
-                    @if (session('status'))
-
-                        <div
-                            class="mb-5 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700"
-                            role="alert"
+                        <a
+                            href="{{ route('login') }}"
+                            class="mb-8 flex items-center gap-3"
                         >
 
-                            <svg
-                                class="mt-0.5 h-5 w-5 shrink-0"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
+                            <div
+                                class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-lg backdrop-blur-sm"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M5 13l4 4L19 7"
-                                />
-                            </svg>
+
+                                <img
+                                    src="{{ asset('image/library_logo.jpg') }}"
+                                    alt="Open Learning Hub Logo"
+                                    class="h-full w-full object-cover"
+                                >
+
+                            </div>
+
 
                             <div>
-                                {{ session('status') }}
+
+                                <p class="text-lg font-bold tracking-wide">
+                                    Open Learning Hub
+                                </p>
+
+                                <p
+                                    class="text-xs font-medium text-blue-100/80"
+                                >
+                                    Digital Access Portal
+                                </p>
+
                             </div>
+
+                        </a>
+
+
+
+                        {{-- =============================================
+                            BRANDING CONTENT
+                        ============================================== --}}
+
+                        <div class="max-w-md">
+
+                            <p
+                                class="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-blue-200"
+                            >
+                                Account Recovery
+                            </p>
+
+
+                            <h1
+                                class="text-4xl font-extrabold leading-[1.05] tracking-tight drop-shadow-lg sm:text-5xl lg:text-6xl"
+                            >
+                                Recover.
+
+                                <br>
+
+                                Reset.
+
+                                <br>
+
+                                Continue.
+                            </h1>
+
+
+                            <p
+                                class="mt-6 max-w-md text-base leading-relaxed text-white/75 sm:text-lg"
+                            >
+                                Reset your password securely and regain access
+                                to Open Learning Hub and your authorized
+                                workstation resources.
+                            </p>
 
                         </div>
 
-                    @endif
 
 
-                    {{-- Error Message --}}
-                    @if ($errors->any())
+                        {{-- =============================================
+                            SECURITY INFORMATION
+                        ============================================== --}}
 
                         <div
-                            class="mb-5 rounded-2xl border border-red-200 bg-red-50 p-4"
-                            role="alert"
+                            class="mt-8 flex max-w-md items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
                         >
 
-                            <div class="flex gap-3">
+                            <div
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-200"
+                            >
 
                                 <svg
-                                    class="mt-0.5 h-5 w-5 shrink-0 text-red-500"
+                                    class="h-5 w-5"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
                                 >
+
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="1.8"
-                                        d="M12 9v3m0 4h.01M10.29 3.86l-7.82 13.5A1 1 0 003.33 19h17.34a1 1 0 00.86-1.64l-7.82-13.5a1 1 0 00-1.72 0Z"
+                                        d="M9 12.75 11.25 15 15 9.75M12 3l7.5 3v5.25c0 4.695-3.177 8.927-7.5 9.75-4.323-.823-7.5-5.055-7.5-9.75V6L12 3Z"
                                     />
+
                                 </svg>
 
+                            </div>
 
-                                <div class="min-w-0">
 
-                                    <p class="text-sm font-semibold text-red-800">
-                                        Please check the following:
-                                    </p>
+                            <div>
 
-                                    <ul class="mt-1.5 list-inside list-disc text-xs text-red-700">
+                                <p
+                                    class="text-sm font-semibold text-white"
+                                >
+                                    Secure password recovery
+                                </p>
 
-                                        @foreach ($errors->all() as $error)
-
-                                            <li>
-                                                {{ $error }}
-                                            </li>
-
-                                        @endforeach
-
-                                    </ul>
-
-                                </div>
+                                <p
+                                    class="mt-1 text-xs leading-5 text-white/55"
+                                >
+                                    A password reset link will only be sent to
+                                    the email address associated with your account.
+                                </p>
 
                             </div>
 
                         </div>
 
-                    @endif
+
+                    </div>
+
+                </div>
 
 
-                    <form
-                        method="POST"
-                        action="{{ route('password.email') }}"
-                        class="space-y-5"
-                    >
 
-                        @csrf
+                {{-- =================================================
+                    RIGHT PASSWORD RESET PANEL
+                ================================================== --}}
 
+                <div
+                    class="flex items-center justify-center border-t border-white/10 bg-slate-950/20 px-5 py-10 sm:px-10 lg:border-l lg:border-t-0 lg:px-12"
+                >
 
-                        {{-- Email --}}
-                        <div>
-
-                            <label
-                                for="email"
-                                class="mb-2 block text-sm font-semibold text-slate-800"
-                            >
-                                Email Address
-                            </label>
+                    <div class="w-full max-w-md">
 
 
-                            <div class="relative">
+                        {{-- =============================================
+                            RESET CARD
+                        ============================================== --}}
 
+                        <div
+                            class="rounded-3xl border border-white/20 bg-white/[0.12] p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+                        >
+
+
+                            {{-- =========================================
+                                CARD HEADER
+                            ========================================== --}}
+
+                            <div class="mb-7">
+
+
+                                {{-- Lock Icon --}}
                                 <div
-                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4"
+                                    class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-300/20 bg-blue-500/15 text-blue-200"
                                 >
 
                                     <svg
-                                        class="h-5 w-5 text-slate-400"
+                                        class="h-6 w-6"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
+                                        aria-hidden="true"
                                     >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
+
+                                        <rect
+                                            x="4"
+                                            y="10"
+                                            width="16"
+                                            height="11"
+                                            rx="2"
                                             stroke-width="1.8"
-                                            d="M4 6h16v12H4z"
                                         />
 
                                         <path
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
                                             stroke-width="1.8"
-                                            d="m4 7 8 6 8-6"
+                                            d="M8 10V7a4 4 0 0 1 8 0v3"
                                         />
+
+                                        <circle
+                                            cx="12"
+                                            cy="15"
+                                            r="1.2"
+                                            fill="currentColor"
+                                            stroke="none"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="1.8"
+                                            d="M12 16.2v2"
+                                        />
+
                                     </svg>
 
                                 </div>
 
 
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value="{{ old('email') }}"
-                                    autocomplete="email"
-                                    required
-                                    autofocus
-                                    placeholder="you@example.com"
-                                    class="block h-13 w-full rounded-xl border border-slate-200 bg-slate-50/70 py-3.5 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 @error('email') border-red-300 bg-red-50/30 focus:border-red-500 focus:ring-red-100 @enderror"
-                                />
+                                <h2
+                                    class="text-2xl font-bold tracking-tight text-white"
+                                >
+                                    Forgot your password?
+                                </h2>
+
+
+                                <p
+                                    class="mt-1.5 text-sm leading-6 text-white/65"
+                                >
+                                    Enter your email address and we'll send you
+                                    a secure link to reset your password.
+                                </p>
 
                             </div>
 
 
-                            @error('email')
 
-                                <p class="mt-2 text-xs font-medium text-red-600">
-                                    {{ $message }}
-                                </p>
+                            {{-- =========================================
+                                SUCCESS MESSAGE
+                            ========================================== --}}
 
-                            @enderror
+                            @if (session('status'))
+
+                                <div
+                                    class="mb-5 flex items-start gap-3 rounded-2xl border border-emerald-300/25 bg-emerald-500/15 px-4 py-3.5 text-sm text-emerald-100"
+                                    role="alert"
+                                >
+
+                                    <svg
+                                        class="mt-0.5 h-5 w-5 shrink-0 text-emerald-300"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M5 13l4 4L19 7"
+                                        />
+
+                                    </svg>
+
+
+                                    <div>
+
+                                        <p
+                                            class="font-semibold text-emerald-100"
+                                        >
+                                            Reset link sent
+                                        </p>
+
+                                        <p
+                                            class="mt-0.5 text-xs leading-5 text-emerald-100/80"
+                                        >
+                                            {{ session('status') }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+
+
+                            {{-- =========================================
+                                ERROR MESSAGE
+                            ========================================== --}}
+
+                            @if ($errors->any())
+
+                                <div
+                                    class="mb-5 flex gap-3 rounded-2xl border border-red-300/30 bg-red-500/15 px-4 py-3.5 text-sm text-red-100"
+                                    role="alert"
+                                >
+
+                                    <svg
+                                        class="mt-0.5 h-5 w-5 shrink-0 text-red-300"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M12 9v3m0 4h.01M10.29 3.86l-7.82 13.5A1 1 0 003.33 19h17.34a1 1 0 00.86-1.64l-7.82-13.5a1 1 0 00-1.72 0Z"
+                                        />
+
+                                    </svg>
+
+
+                                    <div class="min-w-0">
+
+                                        <p
+                                            class="font-semibold text-red-100"
+                                        >
+                                            Unable to continue
+                                        </p>
+
+
+                                        <ul
+                                            class="mt-1 list-inside list-disc text-xs leading-5 text-red-100/80"
+                                        >
+
+                                            @foreach ($errors->all() as $error)
+
+                                                <li>
+                                                    {{ $error }}
+                                                </li>
+
+                                            @endforeach
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+
+
+                            {{-- =========================================
+                                FORM
+                            ========================================== --}}
+
+                            <form
+                                method="POST"
+                                action="{{ route('password.email') }}"
+                                class="space-y-5"
+                            >
+
+                                @csrf
+
+
+
+                                {{-- =====================================
+                                    EMAIL
+                                ====================================== --}}
+
+                                <div>
+
+                                    <label
+                                        for="email"
+                                        class="mb-2 block text-sm font-semibold text-white"
+                                    >
+                                        Email Address
+                                    </label>
+
+
+                                    <div class="relative">
+
+                                        <div
+                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4"
+                                        >
+
+                                            <svg
+                                                class="h-5 w-5 text-slate-400"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="1.8"
+                                                    d="M4 6h16v12H4z"
+                                                />
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="1.8"
+                                                    d="m4 7 8 6 8-6"
+                                                />
+
+                                            </svg>
+
+                                        </div>
+
+
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            value="{{ old('email') }}"
+                                            autocomplete="email"
+                                            required
+                                            autofocus
+                                            placeholder="you@example.com"
+                                            class="block h-12 w-full rounded-xl border border-white/20 bg-white/90 pl-11 pr-4 text-sm font-medium text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-400/20 @error('email') border-red-300 focus:border-red-400 focus:ring-red-400/20 @enderror"
+                                        >
+
+                                    </div>
+
+
+                                    @error('email')
+
+                                        <p
+                                            class="mt-2 text-xs font-medium text-red-200"
+                                        >
+                                            {{ $message }}
+                                        </p>
+
+                                    @enderror
+
+                                </div>
+
+
+
+                                {{-- =====================================
+                                    SUBMIT BUTTON
+                                ====================================== --}}
+
+                                <button
+                                    type="submit"
+                                    class="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white shadow-lg shadow-blue-900/30 transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300/30"
+                                >
+
+                                    <svg
+                                        class="h-5 w-5 transition-transform group-hover:translate-x-0.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M22 2 11 13"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="m22 2-7 20-4-9-9-4 20-7Z"
+                                        />
+
+                                    </svg>
+
+
+                                    <span>
+                                        Send Password Reset Link
+                                    </span>
+
+                                </button>
+
+
+
+                                {{-- =====================================
+                                    DIVIDER
+                                ====================================== --}}
+
+                                <div
+                                    class="flex items-center gap-4 py-1"
+                                >
+
+                                    <div
+                                        class="h-px flex-1 bg-white/15"
+                                    ></div>
+
+                                    <span
+                                        class="text-xs font-medium text-white/40"
+                                    >
+                                        OR
+                                    </span>
+
+                                    <div
+                                        class="h-px flex-1 bg-white/15"
+                                    ></div>
+
+                                </div>
+
+
+
+                                {{-- =====================================
+                                    BACK TO LOGIN
+                                ====================================== --}}
+
+                                <a
+                                    href="{{ route('login') }}"
+                                    class="group flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M15 19l-7-7 7-7"
+                                        />
+
+                                    </svg>
+
+                                    Back to Sign In
+
+                                </a>
+
+
+                            </form>
 
                         </div>
 
 
-                        {{-- Submit --}}
-                        <button
-                            type="submit"
-                            class="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+
+                        {{-- =============================================
+                            FOOTER
+                        ============================================== --}}
+
+                        <p
+                            class="mt-5 text-center text-xs text-white/40"
                         >
-
-                            <svg
-                                class="h-5 w-5 transition-transform group-hover:translate-x-0.5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M22 2 11 13"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="m22 2-7 20-4-9-9-4 20-7Z"
-                                />
-                            </svg>
-
-                            Send Password Reset Link
-
-                        </button>
-
-                    </form>
-
-
-                    {{-- =================================================
-                        BACK TO LOGIN
-                    ================================================== --}}
-                    <div class="mt-7 text-center">
-
-                        <a
-                            href="{{ route('login') }}"
-                            class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700"
-                        >
-
-                            <svg
-                                class="h-4 w-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M15 19l-7-7 7-7"
-                                />
-                            </svg>
-
-                            Back to Sign In
-
-                        </a>
+                            Secure account recovery for Open Learning Hub
+                        </p>
 
                     </div>
 
                 </div>
 
+
             </div>
-
-
-            {{-- Footer --}}
-            <p class="mt-6 text-center text-xs text-slate-400">
-                Secure account recovery
-            </p>
 
         </div>
 
-    </div>
 
+    </section>
 
-    {{-- Flowbite JS --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.1/flowbite.min.js"></script>
 
 </body>
 
