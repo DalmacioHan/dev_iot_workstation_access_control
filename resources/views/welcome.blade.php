@@ -626,13 +626,13 @@
 
                             {{-- WS3 --}}
                             <div
-                                class="workstation-node rounded-2xl border border-amber-200 bg-amber-50/70 p-4 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-100"
+                                class="workstation-node rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm shadow-emerald-100 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-100"
                             >
 
                                 <div class="mb-4 flex items-center justify-between">
 
                                     <svg
-                                        class="h-5 w-5 text-amber-600"
+                                        class="h-5 w-5 text-emerald-600"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -646,7 +646,7 @@
                                     </svg>
 
                                     <span
-                                        class="h-2 w-2 rounded-full bg-amber-500"
+                                        class="device-pulse h-2 w-2 rounded-full bg-emerald-500"
                                     ></span>
 
                                 </div>
@@ -656,8 +656,8 @@
                                     WS-03
                                 </p>
 
-                                <p class="mt-1 text-[10px] font-semibold text-amber-600">
-                                    Reserved
+                                <p class="mt-1 text-[10px] font-semibold text-emerald-600">
+                                    Available
                                 </p>
 
                             </div>

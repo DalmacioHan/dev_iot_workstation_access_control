@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\adminController as AdminController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeviceController;
@@ -30,7 +30,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-// Protected Routes (Must be logged in)
+
 Route::middleware('auth')->group(function () {
     
     // ==========================================
@@ -47,15 +47,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/pdf',[ReportsController::class,'exportPdf'])->name('reports.pdf');
     
     // Device Management
-    Route::get('/device',[DeviceController::class,'index'])->name('device');
-    Route::get('/device/add',[DeviceController::class,'create'])->name('device.create');
-    Route::post('/device/add',[DeviceController::class,'store'])->name('device.store');
-    Route::get('/device/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
-    Route::put('/device/{device}/update', [DeviceController::class, 'update'])->name('device.update');
-    Route::get('/device/{device}', [DeviceController::class, 'show'])->name('device.show');
-    Route::delete('/device/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
-    Route::post('/device/{device}/lock', [DeviceController::class, 'lockDevice'])->name('device.lock');
-    Route::post('/device/{device}/announce', [DeviceController::class, 'announceDevice'])->name('device.announce');
+
+    Route::get('/devices',[DeviceController::class,'index'])->name('device');
+    Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('device.show');
+    Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
+    Route::post('/devices/{device}/lock', [DeviceController::class, 'lockDevice'])->name('device.lock');
+    Route::post('/devices/{device}/announce', [DeviceController::class, 'announceDevice'])->name('device.announce');
     
     // Account (Personal Settings)
     Route::get('/account',[AccountController::class,'index'])->name('account');
@@ -77,5 +74,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/users/{user}/update',[UserController::class,'update'])->name('user.update');
         Route::delete('/users/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
         
+        // Device Management 
+        Route::get('/devices/add',[DeviceController::class,'create'])->name('device.create');
+        Route::post('/devices/add',[DeviceController::class,'store'])->name('device.store');
+        Route::get('/devices/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
+        Route::put('/devices/{device}/update', [DeviceController::class, 'update'])->name('device.update');
     });
 });

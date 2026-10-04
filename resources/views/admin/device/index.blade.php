@@ -26,7 +26,9 @@
                 Manage registered workstations and monitor their current status.
             </p>
         </div>
-
+        
+        {{-- Add Device --}}
+        @if(auth()->user()->isSuperAdmin())
         <a
             href="{{ route('device.create') }}"
             class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-200"
@@ -37,6 +39,7 @@
             </svg>
             Add Device
         </a>
+        @endif
     </div>
 
     {{-- Filters --}}
@@ -251,6 +254,7 @@
                                     </button>
 
                                     {{-- Edit --}}
+                                    @if(auth()->user()->isSuperAdmin())
                                     <a
                                         href="{{ route('device.edit', $device->id) }}"
                                         class="rounded-xl p-2.5 text-slate-400 transition hover:bg-amber-50 hover:text-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-100"
@@ -261,8 +265,10 @@
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                         </svg>
                                     </a>
+                                    @endif
 
                                     {{-- Delete --}}
+                                    @if(auth()->user()->isSuperAdmin())
                                     <button
                                         type="button"
                                         onclick="openDeleteModal('{{ route('device.destroy', $device->id) }}', 'Are you sure you want to delete {{ $device->workstation_name }} ({{ $device->device_uid }})? This action cannot be undone.')"
@@ -274,6 +280,7 @@
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                         </svg>
                                     </button>
+                                    @endif
 
                                 </div>
                             </td>

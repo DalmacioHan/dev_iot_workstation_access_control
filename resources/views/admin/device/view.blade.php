@@ -187,8 +187,10 @@
                                         Send Announcement
                                     </button>
                                 </li>
-
+                                
+                                @if(auth()->user()->isSuperAdmin())
                                 <li>
+                                    
                                     <a
                                         href="{{ route('device.edit', $device->id) }}"
                                         class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
@@ -199,12 +201,14 @@
                                         </svg>
                                         Edit Device
                                     </a>
+                                    @endif
                                 </li>
                             </ul>
                         </div>
                     </div>
 
                     {{-- Edit Device --}}
+                    @if(auth()->user()->isSuperAdmin())
                     <a
                         href="{{ route('device.edit', $device->id) }}"
                         class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-4 focus:ring-white/30"
@@ -215,6 +219,7 @@
                         </svg>
                         Edit Device
                     </a>
+                    @endif
                 </div>
             </div>
 

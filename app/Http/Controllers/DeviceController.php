@@ -31,6 +31,7 @@ class DeviceController extends Controller
     
         return view('admin.device.index', compact('devices'));
     }
+
     public function create(){
         return view('admin.device.add');
     }
@@ -126,4 +127,5 @@ public function show(Device $device ){
 
         return redirect()->back()->with('success', "Announcement sent to '{$name}'. It will display on the PC within a few seconds if online.");
     }
+    
 }

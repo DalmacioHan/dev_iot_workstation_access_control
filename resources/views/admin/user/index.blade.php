@@ -63,6 +63,7 @@
 
 
             {{-- Add User --}}
+            
             <a
                 href="{{ route('user.create') }}"
                 class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-200"
@@ -86,6 +87,7 @@
                 Add User
 
             </a>
+            
 
         </div>
 
@@ -373,8 +375,8 @@
                                         $role = strtolower($user->role ?? 'user');
 
                                         $roleClasses = match ($role) {
-                                            'admin' => 'border-purple-200 bg-purple-50 text-purple-700',
-                                            'librarian' => 'border-emerald-200 bg-emerald-50 text-emerald-700',
+                                            'superadmin' => 'border-purple-200 bg-purple-50 text-purple-700',
+                                            'admin' => 'border-emerald-200 bg-emerald-50 text-emerald-700',
                                             default => 'border-blue-200 bg-blue-50 text-blue-700',
                                         };
                                     @endphp
