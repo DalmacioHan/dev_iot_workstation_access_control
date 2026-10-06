@@ -75,9 +75,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/users/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
         
         // Device Management 
-        Route::get('/devices/add',[DeviceController::class,'create'])->name('device.create');
-        Route::post('/devices/add',[DeviceController::class,'store'])->name('device.store');
-        Route::get('/devices/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
-        Route::put('/devices/{device}/update', [DeviceController::class, 'update'])->name('device.update');
+        Route::get('/device/add',[DeviceController::class,'create'])->name('device.create');
+        Route::post('/device/add',[DeviceController::class,'store'])->name('device.store');
+        Route::get('/device/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
+        Route::put('/device/{device}/update', [DeviceController::class, 'update'])->name('device.update');
     });
 });

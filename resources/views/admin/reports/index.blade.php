@@ -82,28 +82,7 @@
                 Preview PDF
             </a>
 
-
-            {{-- CSV --}}
-            <a
-                href="{{ route('reports.csv', request()->query()) }}"
-                class="inline-flex h-10 items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 focus:outline-none focus:ring-4 focus:ring-gray-100"
-            >
-                <svg
-                    class="h-4 w-4 text-emerald-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2"
-                    />
-                </svg>
-
-                CSV
-            </a>
+            
 
 
             {{-- PDF --}}
