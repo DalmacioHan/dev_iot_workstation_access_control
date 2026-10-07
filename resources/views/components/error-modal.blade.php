@@ -68,3 +68,11 @@
         }
     }
 </script>
+
+@if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            openGlobalErrorModal(@json(session('error')), 'Action Failed');
+        });
+    </script>
+@endif

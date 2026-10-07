@@ -330,6 +330,8 @@
 
     <x-remote-lock-modal />
     <x-remote-announce-modal />
+    
+    <x-error-modal />
 
 </div>
 
