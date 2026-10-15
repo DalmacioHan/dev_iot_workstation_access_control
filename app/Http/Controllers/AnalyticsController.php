@@ -52,18 +52,20 @@ class AnalyticsController extends Controller
             ->orderBy('total', 'desc')
             ->take(1)
             ->get();
-        $failedEvents = PcAccessLogs::where('result', 'FAIL')
+        $failedEvents = PcAccessLogs::where('result', 'denied')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
-        $successfulEvents = PcAccessLogs::where('result', 'SUCCESS')
+        $successfulEvents = PcAccessLogs::where('result', 'allowed')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
 
+        //line chart
+        
         //table data
         $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
             ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
             ->whereNotNull('student_name')
-            ->where('result', 'SUCCESS')
+            ->where('result', 'allowed')
             ->where('student_name', '<>', '')
             ->groupBy('student_name')
             ->orderBy('total', 'desc')
@@ -72,7 +74,7 @@ class AnalyticsController extends Controller
 
         $topCourses = PcAccessLogs::select('course', PcAccessLogs::raw('count(*) as total'))
             ->whereBetween('occurred_at', [$rangeStart($courseRange), $rangeEnd($courseRange)])
-            ->where('result', 'SUCCESS')
+            ->where('result', 'allowed')
             ->groupBy('course')
             ->orderBy('total', 'desc')
             ->take(10)
