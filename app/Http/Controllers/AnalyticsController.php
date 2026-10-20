@@ -60,7 +60,21 @@ class AnalyticsController extends Controller
             ->count();
 
         //line chart
-        
+        $peakHoursByHour = PcAccessLogs::query()
+            ->selectRaw('HOUR(received_at) as hour, COUNT(*) as total')
+            ->whereBetween('received_at', [$todayStart, $todayEnd])
+            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->where('result', 'allowed')
+            ->whereNotNull('student_name')
+            ->where('student_name', '<>', '')
+            ->groupByRaw('HOUR(received_at)')
+            ->orderBy('hour')
+            ->pluck('total', 'hour');
+
+        $peakHours = collect(range(0, 23))->map(function (int $hour) use ($peakHoursByHour): int {
+            return (int) ($peakHoursByHour->get($hour, 0));
+        })->values();
+
         //table data
         $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
             ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
@@ -87,6 +101,8 @@ class AnalyticsController extends Controller
             'failedEvents', 'popularWorkstation', 'successfulEvents', 'topApplication',
             'topStudents', 'topCourses', 'rangeLabels',
             'studentRange', 'courseRange',
-            'studentRangeLabel', 'courseRangeLabel'));
+            'studentRangeLabel', 'courseRangeLabel',
+            'peakHours'
+            ));
     }
 }
