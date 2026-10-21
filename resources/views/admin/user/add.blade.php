@@ -480,7 +480,7 @@
                                 value="{{ old('name') }}"
                                 required
                                 autocomplete="name"
-                                placeholder="Enter full name"
+                                placeholder="Enter Username"
                                 class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-900 placeholder-gray-400 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
                             >
 

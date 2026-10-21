@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::view('/', 'welcome');
-Route::get('/test-toast', function () {
-    return redirect()->route('device')
-        ->with('pairing_success', true)
-        ->with('paired_device_id', "ADMIN123"); // Replace 1 with a real device ID if available
-});
+
 
 // Authentication
 Route::get('/login',[AuthController::class,'index']);
@@ -50,7 +46,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/devices',[DeviceController::class,'index'])->name('device');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('device.show');
-    Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
     Route::post('/devices/{device}/lock', [DeviceController::class, 'lockDevice'])->name('device.lock');
     Route::post('/devices/{device}/announce', [DeviceController::class, 'announceDevice'])->name('device.announce');
     
@@ -79,5 +74,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/device/add',[DeviceController::class,'store'])->name('device.store');
         Route::get('/device/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
         Route::put('/device/{device}/update', [DeviceController::class, 'update'])->name('device.update');
+        Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
     });
 });
