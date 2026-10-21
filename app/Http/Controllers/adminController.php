@@ -19,7 +19,7 @@ class AdminController extends Controller
         $onlineDevices = Device::where('last_seen_at', '>=', Carbon::now()->subMinutes(5))->count();
 
         $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())
-        ->where('result','allowed')
+        ->where('result','SUCCESS')
         ->count('student_external_id');
         $weekStart = Carbon::today()->startOfWeek(Carbon::MONDAY);
         $uniqueStudentsToday = PcAccessLogs::whereDate('occurred_at', Carbon::today())
@@ -31,8 +31,8 @@ class AdminController extends Controller
         $avgSessionDuration = PcAccessLogs::query()
         ->from('pc_access_logs as login')
         ->join('pc_access_logs as logout', 'login.session_id', '=', 'logout.session_id')
-        ->where('login.event_type', 'login')   
-        ->where('logout.event_type', 'logout') 
+        ->where('login.event_type', 'login')
+        ->where('logout.event_type', 'logout')
         ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, login.occurred_at, logout.occurred_at)) as duration')
         ->value('duration');
 
@@ -77,7 +77,7 @@ class AdminController extends Controller
             ->toArray();
 
         $totalStudents = PcAccessLogs::distinct('student_external_id')
-        ->where('result','allowed')
+        ->where('result','SUCCESS')
         ->count('student_external_id');
 
         return view('admin.dashboard', compact(
@@ -87,5 +87,5 @@ class AdminController extends Controller
         ));
     }
 
-    
+
 }
