@@ -67,7 +67,7 @@
             <div class="flex items-start justify-between gap-4">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Successful Access</p>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) }}</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) ?? 'N/A' }}</p>
                     <p class="mt-1 text-xs text-slate-400">Successful events today</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
@@ -82,7 +82,7 @@
             <div class="flex items-start justify-between gap-4">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Failed Access</p>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($failedEvents) }}</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($failedEvents) ?? 'N/A' }}</p>
                     <p class="mt-1 text-xs text-slate-400">Failed events today</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
@@ -93,7 +93,18 @@
             </div>
         </div>
     </div>
-
+    {{-- Peak Hours --}}
+    <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <div class=" border-slate-100 px-6 py-5">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900">Peak Hours</h2>
+                <p class="mt-1 text-sm text-slate-500">Hours with the most access events.</p>
+            </div>
+        </div>
+        <div class="p-6">
+            <div id="peak-hours-chart" class="min-h-70"></div>
+        </div>
+    </div>
     {{-- Ranked Activity --}}
     <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -187,4 +198,78 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const chartElement = document.querySelector('#peak-hours-chart');
+
+    if (!chartElement || typeof ApexCharts === 'undefined') {
+        return;
+    }
+
+    const peakHours = @json($peakHours);
+    const hourLabels = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, '0')}:00`);
+
+    const chart = new ApexCharts(chartElement, {
+        chart: {
+            type: 'line',
+            height: 280,
+            fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+            toolbar: { show: false },
+            zoom: { enabled: false }
+        },
+        series: [{
+            name: 'Access events',
+            data: peakHours
+        }],
+        colors: ['#2563eb'],
+        stroke: {
+            curve: 'smooth',
+            width: 3
+        },
+        markers: {
+            size: 4,
+            strokeWidth: 2,
+            strokeColors: '#ffffff',
+            hover: { size: 6 }
+        },
+        dataLabels: { enabled: false },
+        grid: {
+            borderColor: '#e2e8f0',
+            strokeDashArray: 4,
+            padding: { left: 8, right: 8 }
+        },
+        xaxis: {
+            categories: hourLabels,
+            labels: {
+                rotate: 0,
+                formatter: function (value, timestamp, index) {
+                    return index % 3 === 0 ? value : '';
+                }
+            },
+            axisBorder: { show: true },
+            axisTicks: { show: true }
+        },
+        yaxis: {
+            min: 0,
+            forceNiceScale: true,
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value);
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function (value) {
+                    return `${value} event${value === 1 ? '' : 's'}`;
+                }
+            }
+        }
+    });
+
+    chart.render();
+});
+</script>
 @endsection
