@@ -15,7 +15,10 @@ class MonitoringController extends Controller
         // Fetch Summary Metrics
         $activeDevices   = Device::where('is_active', true)->count();
         $inactiveDevices = Device::where('is_active', false)->count();
-        $grantedAccess   = PcAccessLogs::where('result', 'allowed')->count();
+        $grantedAccess = PcAccessLogs::where('result', 'allowed')
+        ->whereBetween('occurred_at', [now()->startOfWeek(), now()])
+        ->count();
+
         $pendingCommands = DeviceCommand::where('status', 'PENDING')->count();
 
         // Fetch Devices (Formatted for the UI)

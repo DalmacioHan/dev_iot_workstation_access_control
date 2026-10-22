@@ -13,25 +13,6 @@
 
         <div>
 
-            <div class="mb-2">
-
-                <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-
-                    <span class="relative flex h-2 w-2">
-
-                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-
-                        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-
-                    </span>
-
-                    System Monitoring
-
-                </span>
-
-            </div>
-
-
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                 Workstation Monitoring
             </h1>
@@ -46,21 +27,6 @@
 
 
         <div class="flex flex-wrap items-center gap-3">
-
-            <div class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs text-gray-500 shadow-sm">
-
-                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9" stroke-width="1.8" />
-                    <path stroke-linecap="round" stroke-width="1.8" d="M12 7v5l3 2" />
-                </svg>
-
-                Last updated
-
-                <span id="monitor-last-updated" class="font-semibold text-gray-700">
-                    Just now
-                </span>
-
-            </div>
 
 
             <button type="button" id="refresh-monitoring" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
@@ -166,7 +132,7 @@
             </p>
 
             <p class="mt-1 text-sm text-gray-500">
-                Granted access events
+                Granted access events this week
             </p>
 
         </div>
@@ -269,9 +235,7 @@
                             Last Seen
                         </th>
 
-                        <th class="px-6 py-3.5">
-                            Token Expiry
-                        </th>
+
 
                         <th class="px-6 py-3.5">
                             Status
@@ -352,17 +316,7 @@
                             </td>
 
 
-                            <td class="whitespace-nowrap px-6 py-4">
-
-                                <p class="text-xs font-medium text-gray-600">
-                                    {{ $device['token_expires_at'] }}
-                                </p>
-
-                                <p class="mt-0.5 text-[10px] text-gray-400">
-                                    Created {{ $device['token_created_at'] }}
-                                </p>
-
-                            </td>
+                            
 
 
                             <td class="px-6 py-4">

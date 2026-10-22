@@ -632,26 +632,7 @@
                                     Super Administrator
                                 </option>
                             </select>
-
-
-                            {{-- Dropdown arrow --}}
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-
-                                <svg
-                                    class="h-4 w-4 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="m6 9 6 6 6-6"
-                                    />
-                                </svg>
-
-                            </div>
+                        
 
                         </div>
 

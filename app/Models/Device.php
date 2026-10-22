@@ -34,7 +34,7 @@ class Device extends Model
         $this->update([
             'api_token' => $token,
             'token_created_at' => now(),
-            'token_expires_at' => now()->addYear(),
+            'token_expires_at' => null,
         ]);
 
         return $token;
