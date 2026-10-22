@@ -21,6 +21,6 @@ class PcAppUsage extends Model
     ];
     public function accessLog()
     {
-        return $this->belongsTo(PcAccessLog::class, 'session_id', 'session_id');
+        return $this->belongsTo(PcAccessLogs::class, 'session_id', 'session_id');
     }
 }

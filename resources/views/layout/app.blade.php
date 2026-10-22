@@ -444,6 +444,67 @@
                 </li>
 
                 {{-- =================================================
+                    MONITORING
+                ================================================== --}}
+                <li>
+
+                    <a
+                        href="{{ route('monitoring') }}"
+                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ request()->routeIs('monitoring*')
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    >
+
+                        <span
+                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            {{ request()->routeIs('monitoring*')
+                                ? 'bg-blue-600 text-white shadow-sm'
+                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
+                        >
+
+                            {{-- Monitoring / Activity Icon --}}
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect
+                                    x="3"
+                                    y="4"
+                                    width="18"
+                                    height="13"
+                                    rx="2"
+                                    stroke-width="1.8"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M7 11h2l2-4 3 8 2-4h2"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-width="1.8"
+                                    d="M9 21h6M12 17v4"
+                                />
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Monitoring
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                {{-- =================================================
                     USERS
                 ================================================== --}}
                 <li>
@@ -627,6 +688,8 @@
     </main>
 
     @stack('modals')
+
+    @stack('scripts')
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 

@@ -77,7 +77,12 @@ class DeviceController extends Controller
     }
 public function show(Device $device ){
     $commands = $device->remoteCommands()->latest('id')->limit(5)->get();
-    return view('admin.device.view', compact('device', 'commands'));
+    $accessLogs = $device->accessLogs()
+        ->latest('occurred_at')
+        ->limit(5)
+        ->get();
+
+    return view('admin.device.view', compact('device', 'commands', 'accessLogs'));
 }
     public function destroy($id)
     {

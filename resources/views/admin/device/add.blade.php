@@ -152,35 +152,7 @@
                     {{-- Important Notice --}}
                     <div class="mt-auto pt-8">
 
-                        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
 
-                            <div class="flex items-start gap-3">
-
-                                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-amber-600 shadow-sm ring-1 ring-amber-200">
-                                    <svg class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         stroke-width="2">
-                                        <path stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              d="M12 9v3.75m0 3h.007v.008H12v-.008ZM10.343 3.94l-7.5 13A1.5 1.5 0 0 0 4.142 19.2h15.716a1.5 1.5 0 0 0 1.299-2.26l-7.5-13a1.5 1.5 0 0 0-2.598 0Z" />
-                                    </svg>
-                                </div>
-
-                                <div>
-                                    <p class="text-sm font-bold text-amber-900">
-                                        Device code must be unique
-                                    </p>
-
-                                    <p class="mt-1 text-xs leading-5 text-amber-800/80">
-                                        Make sure the code matches the value printed or stored on the ESP device.
-                                    </p>
-                                </div>
-
-                            </div>
-
-                        </div>
 
                     </div>
 
@@ -293,9 +265,7 @@
                                 </div>
                             @enderror
 
-                            <p class="mt-2 text-xs leading-5 text-slate-400">
-                                Enter the unique code printed on or stored inside the ESP device.
-                            </p>
+
 
                         </div>
 

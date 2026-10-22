@@ -245,31 +245,91 @@
                     </div>
                 </div>
 
-                <div class="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                            <svg class="h-5 w-5 text-blue-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 12c0 5.591 3.824 10.29 9 11.622C17.176 22.29 21 17.591 21 12c0-1.47-.267-2.878-.764-4.176z"/>
-                            </svg>
-                        </div>
-
-                        <div>
-                            <p class="text-xs font-medium uppercase tracking-wider text-blue-200">
-                                Connection
-                            </p>
-
-                            <p class="mt-0.5 text-lg font-bold text-white">
-                                @if($device->last_seen_at && $device->last_seen_at->diffInMinutes(now()) < 5)
-                                    Connected
-                                @else
-                                    No Recent Signal
-                                @endif
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </div>
+        </div>
+    </div>
+    {{-- Device Activity --}}
+    <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <div class="flex items-center gap-2">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                  d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Recent Device Events
+                    </h2>
+                </div>
+
+                <p class="mt-1 pl-11 text-sm text-slate-500">
+                    Latest activity reported by this workstation.
+                </p>
+            </div>
+
+            <span class="inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                Activity Log
+            </span>
+        </div>
+
+        <div class="min-h-[180px]">
+            @if($accessLogs->isEmpty())
+                <div class="flex min-h-[180px] flex-col items-center justify-center px-6 py-10 text-center">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                  d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+
+                    <h3 class="mt-4 text-sm font-semibold text-slate-700">
+                        No recent events
+                    </h3>
+
+                    <p class="mt-1 max-w-sm text-sm text-slate-400">
+                        Device activity will appear here when events are reported by the workstation.
+                    </p>
+                </div>
+            @else
+                <ul class="divide-y divide-slate-100">
+                    @foreach($accessLogs as $log)
+                        <li class="flex flex-col gap-2 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide
+                                        {{ strtolower($log->result) === 'allowed'
+                                            ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                                            : 'border-red-200 bg-red-50 text-red-700' }}">
+                                        {{ $log->event_type }}
+                                    </span>
+                                    <span class="text-xs text-slate-400">
+                                        {{ $log->occurred_at?->diffForHumans() }}
+                                    </span>
+                                </div>
+
+                                <p class="mt-1 truncate text-sm font-semibold text-slate-800">
+                                    {{ $log->student_name ?: 'Unknown student' }}
+                                </p>
+
+                                <p class="mt-0.5 truncate text-xs text-slate-400">
+                                    RFID: {{ $log->rfid_uid }}
+                                    
+                                </p>
+                            </div>
+
+                            <span class="inline-flex w-fit shrink-0 items-center rounded-full border px-2.5 py-1 text-xs font-semibold
+                                {{ strtolower($log->result) === 'allowed'
+                                    ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                                    : 'border-red-200 bg-red-50 text-red-700' }}">
+                                {{ ucfirst(strtolower($log->result)) }}
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </div>
 
@@ -366,53 +426,8 @@
         @endif
     </div>
 
-    {{-- Device Activity --}}
-    <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-        <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-                <div class="flex items-center gap-2">
-                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                  d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-
-                    <h2 class="text-lg font-bold text-slate-900">
-                        Recent Device Events
-                    </h2>
-                </div>
-
-                <p class="mt-1 pl-11 text-sm text-slate-500">
-                    Latest activity reported by this workstation.
-                </p>
-            </div>
-
-            <span class="inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                Activity Log
-            </span>
-        </div>
-
-        <div class="min-h-[180px]">
-            {{-- Recent events can be rendered here --}}
-            <div class="flex min-h-[180px] flex-col items-center justify-center px-6 py-10 text-center">
-                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                              d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-
-                <h3 class="mt-4 text-sm font-semibold text-slate-700">
-                    No recent events
-                </h3>
-
-                <p class="mt-1 max-w-sm text-sm text-slate-400">
-                    Device activity will appear here when events are reported by the workstation.
-                </p>
-            </div>
-        </div>
-    </div>
+    
+    
 
 <x-remote-lock-modal />
 <x-remote-announce-modal />
