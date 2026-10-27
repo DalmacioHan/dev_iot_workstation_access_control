@@ -119,8 +119,8 @@ class PcAccessLogSeeder extends Seeder
         $deviceIds = \App\Models\Device::pluck('id')->toArray();
 
 
-        $startDate = Carbon::create(2026, 9,13 )->startOfDay();
-        $endDate = Carbon::create(2026, 9, 20)->endOfDay();
+        $startDate = Carbon::create(2026, 10,26 )->startOfDay();
+        $endDate = Carbon::create(2026, 10, 31)->endOfDay();
 
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
             
@@ -147,7 +147,7 @@ class PcAccessLogSeeder extends Seeder
                     'rfid_uid'             => 'RFID' . rand(1000,9999),
                     'device_id'            => $device_id,
                     'event_type'           => 'LOGIN',
-                    'result'               => rand(0, 9) > 0 ? 'SUCCESS' : 'FAIL',
+                    'result'               => rand(0, 9) > 0 ? 'ALLOWED' : 'FAIL',
                     'reason'               => 'Authorized',
                     'student_external_id'  => $studentId,
                     'student_name'         => $studentName,
