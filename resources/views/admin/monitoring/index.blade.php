@@ -419,9 +419,7 @@
                             Result
                         </th>
 
-                        <th class="px-6 py-3.5">
-                            Reason
-                        </th>
+
 
                         <th class="px-6 py-3.5">
                             Session
@@ -508,13 +506,6 @@
                             </td>
 
 
-                            <td class="px-6 py-4">
-
-                                <p class="max-w-[180px] text-xs leading-5 text-gray-500">
-                                    {{ $log['reason'] ?? '—' }}
-                                </p>
-
-                            </td>
 
 
                             <td class="px-6 py-4">
