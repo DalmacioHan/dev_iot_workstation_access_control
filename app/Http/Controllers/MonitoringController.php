@@ -22,25 +22,33 @@ class MonitoringController extends Controller
         $pendingCommands = DeviceCommand::where('status', 'PENDING')->count();
 
         // Fetch Devices (Formatted for the UI)
-        $devices = Device::latest('last_seen_at')
-            ->get()
-            ->map(function ($device) {
-                return [
-                    'id'               => $device->id,
-                    'device_uid'       => $device->device_uid,
-                    'workstation_name' => $device->workstation_name,
-                    'pairing_code'     => $device->pairing_code,
-                    'is_active'        => (bool) $device->is_active,
-                    'last_seen_at'     => $device->last_seen_at ? $device->last_seen_at->diffForHumans() : 'Never',
-                    'token_created_at' => $device->token_created_at ? $device->token_created_at->format('M d, Y') : 'N/A',
-                    'token_expires_at' => $device->token_expires_at ? $device->token_expires_at->format('M d, Y') : 'N/A',
-                ];
-            });
+       $devices = Device::latest('last_seen_at')
+    ->limit(10)
+    ->get()
+    ->map(function ($device) {
+        return [
+            'id'               => $device->id,
+            'device_uid'       => $device->device_uid,
+            'workstation_name' => $device->workstation_name,
+            'pairing_code'     => $device->pairing_code,
+            'is_active'        => (bool) $device->is_active,
+            'last_seen_at'     => $device->last_seen_at
+                ? $device->last_seen_at->diffForHumans()
+                : 'Never',
+            'token_created_at' => $device->token_created_at
+                ? $device->token_created_at->format('M d, Y')
+                : 'N/A',
+            'token_expires_at' => $device->token_expires_at
+                ? $device->token_expires_at->format('M d, Y')
+                : 'N/A',
+        ];
+    });
+            
 
         // Fetch Access Logs (with User and Device relationships)
         $accessLogs = PcAccessLogs::with('device')
             ->latest('occurred_at')
-            ->take(50) // Limit for performance
+            ->limit(10) // Limit for performance
             ->get()
             ->map(function ($log) {
                 return [
@@ -63,7 +71,7 @@ class MonitoringController extends Controller
         // Fetch Device Commands
         $deviceCommands = DeviceCommand::with('device')
             ->latest('created_at')
-            ->take(20)
+            ->limit(10)
             ->get()
             ->map(function ($command) {
                 return [
@@ -80,7 +88,7 @@ class MonitoringController extends Controller
 
         // Fetch App Usage Data
         $appUsage = PcAppUsage::latest('occurred_at')
-            ->take(20)
+            ->limit(10)
             ->get()
             ->map(function ($usage) {
                 return [
