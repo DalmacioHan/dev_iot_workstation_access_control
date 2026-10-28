@@ -19,7 +19,7 @@ class AdminController extends Controller
         $onlineDevices = Device::where('last_seen_at', '>=', Carbon::now()->subMinutes(5))->count();
 
         $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())
-        ->where('result','SUCCESS')
+        ->where('result','ALLOWED')
         ->count('student_external_id');
         $weekStart = Carbon::today()->startOfWeek(Carbon::MONDAY);
         $uniqueStudentsToday = PcAccessLogs::whereDate('occurred_at', Carbon::today())
@@ -60,13 +60,13 @@ class AdminController extends Controller
             $columnChartDays[] = $date->format('l');
 
             $male[] = PcAccessLogs::whereDate('occurred_at', $date)
-                ->where('result', 'allowed')
+                ->where('result', 'ALLOWED')
                 ->where('student_external_id', 'like', '%-1')
                 ->distinct('student_external_id')
                 ->count('student_external_id');
 
             $female[] = PcAccessLogs::whereDate('occurred_at', $date)
-                ->where('result', 'allowed')
+                ->where('result', 'ALLOWED')
                 ->where('student_external_id', 'like', '%-2')
                 ->distinct('student_external_id')
                 ->count('student_external_id');
@@ -74,7 +74,7 @@ class AdminController extends Controller
 
 
         $courseDistribution = PcAccessLogs::selectRaw('course, COUNT(DISTINCT student_external_id) as count')
-            ->where('result', 'allowed')
+            ->where('result', 'ALLOWED')
             ->whereNotNull('course')
             ->where('course', '<>', '')
             ->groupBy('course')
@@ -82,7 +82,7 @@ class AdminController extends Controller
             ->toArray();
 
         $totalStudents = PcAccessLogs::distinct('student_external_id')
-        ->where('result','SUCCESS')
+        ->where('result','ALLOWED')
         ->count('student_external_id');
 
         return view('admin.dashboard', compact(
