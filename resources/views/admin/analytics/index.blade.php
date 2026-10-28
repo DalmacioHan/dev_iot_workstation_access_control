@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
             width: "100%",
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
             toolbar: { show: false },
-            zoom: { enabled: false }
+            zoom: { enabled: true }
         },
         series: [{
             name: 'Access events',
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
         colors: [brandColor],
         stroke: {
             curve: 'smooth',
-            width: 4
+            width: 6
         },
         fill: {
             type: "gradient",
