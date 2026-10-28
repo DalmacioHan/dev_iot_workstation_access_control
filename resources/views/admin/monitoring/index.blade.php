@@ -166,192 +166,6 @@
         </div>
 
     </div>
-
-
-    {{-- =========================================================
-        DEVICE MONITORING
-    ========================================================== --}}
-    <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
-
-        <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-
-            <div class="flex items-center gap-3">
-
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                    </svg>
-
-                </div>
-
-
-                <div>
-
-                    <h2 class="text-lg font-bold text-gray-900">
-                        Workstation Devices
-                    </h2>
-
-                    <p class="text-sm text-gray-500">
-                        Registered devices and recent communication.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="relative">
-
-                <input type="text" id="device-search" placeholder="Search workstation..." class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-4 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-64">
-
-            </div>
-
-        </div>
-
-
-        <div class="overflow-x-auto">
-
-            <table class="w-full text-left">
-
-                <thead class="border-b border-gray-100 bg-gray-50/80 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-
-                    <tr>
-
-                        <th class="px-6 py-3.5">
-                            Workstation
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Device UID
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Pairing Code
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Last Seen
-                        </th>
-
-
-
-                        <th class="px-6 py-3.5">
-                            Status
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody class="divide-y divide-gray-100">
-
-                    @foreach ($devices as $device)
-
-                        <tr class="device-row transition hover:bg-gray-50/80" data-search="{{ strtolower($device['workstation_name'] . ' ' . $device['device_uid'] . ' ' . $device['pairing_code']) }}">
-
-                            <td class="px-6 py-4">
-
-                                <div class="flex items-center gap-3">
-
-                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl {{ $device['is_active'] ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400' }}">
-
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                                            <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                                        </svg>
-
-                                    </div>
-
-
-                                    <div>
-
-                                        <p class="text-sm font-semibold text-gray-900">
-                                            {{ $device['workstation_name'] }}
-                                        </p>
-
-                                        <p class="mt-0.5 text-[11px] text-gray-400">
-                                            Device #{{ $device['id'] }}
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-
-                            <td class="px-6 py-4">
-
-                                <span class="font-mono text-xs font-medium text-gray-600">
-                                    {{ $device['device_uid'] }}
-                                </span>
-
-                            </td>
-
-
-                            <td class="px-6 py-4">
-
-                                <span class="rounded-lg bg-gray-100 px-2.5 py-1 font-mono text-xs font-semibold text-gray-600">
-                                    {{ $device['pairing_code'] }}
-                                </span>
-
-                            </td>
-
-
-                            <td class="whitespace-nowrap px-6 py-4">
-
-                                <div class="flex items-center gap-2">
-
-                                    <span class="h-2 w-2 rounded-full {{ $device['is_active'] ? 'bg-emerald-500' : 'bg-gray-300' }}"></span>
-
-                                    <span class="text-xs text-gray-500">
-                                        {{ $device['last_seen_at'] }}
-                                    </span>
-
-                                </div>
-
-                            </td>
-
-
-                            
-
-
-                            <td class="px-6 py-4">
-
-                                @if ($device['is_active'])
-
-                                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                        Active
-                                    </span>
-
-                                @else
-
-                                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-500">
-                                        <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span>
-                                        Inactive
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-
     {{-- =========================================================
         ACCESS EVENTS
     ========================================================== --}}
@@ -541,6 +355,188 @@
 
     </div>
 
+    {{-- =========================================================
+        DEVICE MONITORING
+    ========================================================== --}}
+    <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
+
+        <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+
+            <div class="flex items-center gap-3">
+
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
+                        <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
+                    </svg>
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="text-lg font-bold text-gray-900">
+                        Workstation Devices
+                    </h2>
+
+                    <p class="text-sm text-gray-500">
+                        Registered devices and recent communication.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="relative">
+
+                <input type="text" id="device-search" placeholder="Search workstation..." class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-4 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-64">
+
+            </div>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left">
+
+                <thead class="border-b border-gray-100 bg-gray-50/80 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+
+                    <tr>
+
+                        <th class="px-6 py-3.5">
+                            Workstation
+                        </th>
+
+                        <th class="px-6 py-3.5">
+                            Device UID
+                        </th>
+
+                        <th class="px-6 py-3.5">
+                            Pairing Code
+                        </th>
+
+                        <th class="px-6 py-3.5">
+                            Last Seen
+                        </th>
+
+
+
+                        <th class="px-6 py-3.5">
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-gray-100">
+
+                    @foreach ($devices as $device)
+
+                        <tr class="device-row transition hover:bg-gray-50/80" data-search="{{ strtolower($device['workstation_name'] . ' ' . $device['device_uid'] . ' ' . $device['pairing_code']) }}">
+
+                            <td class="px-6 py-4">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl {{ $device['is_active'] ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400' }}">
+
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
+                                            <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
+                                        </svg>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <p class="text-sm font-semibold text-gray-900">
+                                            {{ $device['workstation_name'] }}
+                                        </p>
+
+                                        <p class="mt-0.5 text-[11px] text-gray-400">
+                                            Device #{{ $device['id'] }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td class="px-6 py-4">
+
+                                <span class="font-mono text-xs font-medium text-gray-600">
+                                    {{ $device['device_uid'] }}
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-6 py-4">
+
+                                <span class="rounded-lg bg-gray-100 px-2.5 py-1 font-mono text-xs font-semibold text-gray-600">
+                                    {{ $device['pairing_code'] }}
+                                </span>
+
+                            </td>
+
+
+                            <td class="whitespace-nowrap px-6 py-4">
+
+                                <div class="flex items-center gap-2">
+
+                                    <span class="h-2 w-2 rounded-full {{ $device['is_active'] ? 'bg-emerald-500' : 'bg-gray-300' }}"></span>
+
+                                    <span class="text-xs text-gray-500">
+                                        {{ $device['last_seen_at'] }}
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            
+
+
+                            <td class="px-6 py-4">
+
+                                @if ($device['is_active'])
+
+                                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                        Active
+                                    </span>
+
+                                @else
+
+                                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-500">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span>
+                                        Inactive
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
     {{-- =========================================================
         DEVICE COMMANDS + APP USAGE
