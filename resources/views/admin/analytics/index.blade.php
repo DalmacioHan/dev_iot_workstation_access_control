@@ -205,6 +205,12 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const chartElement = document.querySelector('#peak-hours-chart');
+    const getBrandColor = () => {
+        const computedStyle = getComputedStyle(document.documentElement);
+
+        return computedStyle.getPropertyValue('--color-fg-brand').trim() || '#1447E6';
+    };
+    const brandColor = getBrandColor();
 
     if (!chartElement || typeof ApexCharts === 'undefined') {
         return;
@@ -216,8 +222,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const chart = new ApexCharts(chartElement, {
         chart: {
-            type: 'line',
-            height: 300,
+            type: 'area',
+            height: "100%",
+            width: "100%",
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
             toolbar: { show: false },
             zoom: { enabled: false }
@@ -226,10 +233,19 @@ document.addEventListener('DOMContentLoaded', function () {
             name: 'Access events',
             data: peakHours // Clean single data mapping array
         }],
-        colors: ['#2563eb'],
+        colors: [brandColor],
         stroke: {
             curve: 'smooth',
             width: 4
+        },
+        fill: {
+            type: "gradient",
+            gradient: {
+                opacityFrom: 0.55,
+                opacityTo: 0,
+                shade: brandColor,
+                gradientToColors: [brandColor],
+            },
         },
         dataLabels: { enabled: false },
         grid: {
