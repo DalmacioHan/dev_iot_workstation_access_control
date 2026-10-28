@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -22,14 +21,14 @@
         content="noindex, nofollow"
     >
 
-    <title>Maintenance | Open Learning Hub</title>
+    <title>503 | Under Maintenance</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 
-<body class="min-h-screen bg-slate-950">
+<body class="min-h-screen bg-slate-50 font-sans text-slate-900">
 
 
     {{-- =========================================================
@@ -37,329 +36,378 @@
     ========================================================== --}}
 
     <section
-        class="relative flex min-h-screen items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat px-4 py-10 sm:px-6"
-        style="background-image: url('{{ asset('image/library_bg.jpg') }}');"
+        class="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10 sm:px-6 lg:px-8"
     >
 
-        {{-- Dark Overlay --}}
-        <div
-            class="absolute inset-0 bg-slate-950/65"
-        ></div>
+        {{-- Decorative Background --}}
+        <div class="pointer-events-none absolute inset-0">
 
+            <div
+                class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-200/40 blur-3xl"
+            ></div>
 
-        {{-- Blue / Slate Gradient --}}
-        <div
-            class="absolute inset-0 bg-gradient-to-br from-blue-950/40 via-slate-950/20 to-slate-950/70"
-        ></div>
+            <div
+                class="absolute -bottom-40 -right-32 h-[30rem] w-[30rem] rounded-full bg-indigo-200/35 blur-3xl"
+            ></div>
 
+            <div
+                class="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/30 blur-3xl"
+            ></div>
 
-        {{-- Decorative Blue Glow --}}
-        <div
-            class="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"
-        ></div>
-
-
-        {{-- Decorative Indigo Glow --}}
-        <div
-            class="pointer-events-none absolute -bottom-32 right-1/4 h-72 w-72 rounded-full bg-indigo-500/15 blur-3xl"
-        ></div>
+        </div>
 
 
 
         {{-- =====================================================
-            MAINTENANCE CARD
+            WRAPPER
         ====================================================== --}}
 
-        <div class="relative z-10 w-full max-w-md">
+        <div class="relative z-10 w-full max-w-6xl">
 
 
+            {{-- Main Error Container --}}
             <div
-                class="rounded-[2rem] border border-white/20 bg-white/[0.12] p-6 text-center shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-8"
+                class="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-2xl shadow-slate-200/70"
             >
 
-
-                {{-- =================================================
-                    BRAND
-                ================================================== --}}
-
-                <div class="mb-7">
-
-
-                    <div
-                        class="mx-auto flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-lg backdrop-blur-sm"
-                    >
-
-                        <img
-                            src="{{ asset('image/library_logo.jpg') }}"
-                            alt="Open Learning Hub Logo"
-                            class="h-full w-full object-cover"
-                        >
-
-                    </div>
-
-
-                    <p
-                        class="mt-4 text-sm font-bold tracking-wide text-white"
-                    >
-                        Open Learning Hub
-                    </p>
-
-
-                    <p
-                        class="mt-1 text-xs font-medium text-blue-100/70"
-                    >
-                        Digital Access Portal
-                    </p>
-
-
-                </div>
-
-
-
-                {{-- =================================================
-                    MAINTENANCE ICON
-                ================================================== --}}
-
                 <div
-                    class="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center"
+                    class="grid min-h-[620px] grid-cols-1 lg:grid-cols-2"
                 >
 
-                    {{-- Soft Glow --}}
-                    <div
-                        class="absolute inset-0 rounded-full bg-blue-500/20 blur-xl"
-                    ></div>
 
+                    {{-- =================================================
+                        LEFT MAINTENANCE PANEL
+                    ================================================== --}}
 
                     <div
-                        class="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-blue-300/20 bg-blue-500/15 text-blue-200"
+                        class="relative flex items-center overflow-hidden bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 px-8 py-12 text-white sm:px-12 lg:px-16"
                     >
 
-                        <svg
-                            class="h-8 w-8"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
+                        {{-- Decorative Shapes --}}
+                        <div
+                            class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10"
+                        ></div>
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M11.42 15.17 17.25 21a2.121 2.121 0 0 0 3-3l-5.84-5.84"
-                            />
+                        <div
+                            class="absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-blue-400/20"
+                        ></div>
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M14.83 8.58 17.4 6A4.5 4.5 0 0 0 11 2.6L8.42 5.17"
-                            />
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="m5.17 8.42-2.58 2.59A4.5 4.5 0 0 0 9 17.4l2.58-2.57"
-                            />
+                        <div class="relative w-full max-w-lg">
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="m8.5 8.5 7 7"
-                            />
 
-                        </svg>
+                            {{-- Icon --}}
+                            <div
+                                class="mb-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/15 shadow-lg backdrop-blur-sm"
+                            >
+
+                                <svg
+                                    class="h-8 w-8"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="M11.42 15.17 17.25 21a2.121 2.121 0 0 0 3-3l-5.84-5.84"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="M14.83 8.58 17.4 6A4.5 4.5 0 0 0 11 2.6L8.42 5.17"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="M5.17 8.42 2.59 11.01A4.5 4.5 0 0 0 9 17.4l2.58-2.57"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-width="1.8"
+                                        d="m8.5 8.5 7 7"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+
+
+                            {{-- Error Code --}}
+                            <p
+                                class="text-sm font-semibold uppercase tracking-[0.35em] text-blue-100"
+                            >
+                                Service 503
+                            </p>
+
+
+
+                            {{-- Heading --}}
+                            <h1
+                                class="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl"
+                            >
+                                Under maintenance
+                            </h1>
+
+
+
+                            {{-- Description --}}
+                            <p
+                                class="mt-5 max-w-md text-base leading-8 text-blue-50/85 sm:text-lg"
+                            >
+                                Open Learning Hub is temporarily unavailable
+                                while we perform system maintenance and updates.
+                            </p>
+
+
+
+                            {{-- Info Card --}}
+                            <div
+                                class="mt-10 rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm"
+                            >
+
+                                <div class="flex items-start gap-4">
+
+                                    <div
+                                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10"
+                                    >
+
+                                        <svg
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="9"
+                                                stroke-width="1.8"
+                                            />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="1.8"
+                                                d="M12 7.5V12l3 2"
+                                            />
+
+                                        </svg>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <p class="text-sm font-semibold text-white">
+                                            Maintenance in progress
+                                        </p>
+
+                                        <p
+                                            class="mt-1 text-sm leading-6 text-blue-100/80"
+                                        >
+                                            Workstation access and account services
+                                            are temporarily unavailable.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
 
                     </div>
 
-                </div>
 
 
-
-                {{-- =================================================
-                    STATUS
-                ================================================== --}}
-
-                <div
-                    class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-500/10 px-3 py-1.5"
-                >
-
-                    <span class="relative flex h-2 w-2">
-
-                        <span
-                            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-60"
-                        ></span>
-
-                        <span
-                            class="relative inline-flex h-2 w-2 rounded-full bg-blue-400"
-                        ></span>
-
-                    </span>
-
-                    <span
-                        class="text-xs font-semibold text-blue-100"
-                    >
-                        System Maintenance
-                    </span>
-
-                </div>
-
-
-
-                {{-- =================================================
-                    ERROR CODE
-                ================================================== --}}
-
-                <p
-                    class="text-xs font-bold uppercase tracking-[0.3em] text-blue-200/70"
-                >
-                    Service 503
-                </p>
-
-
-
-                {{-- =================================================
-                    HEADING
-                ================================================== --}}
-
-                <h1
-                    class="mt-3 text-3xl font-extrabold tracking-tight text-white"
-                >
-                    We'll be back soon
-                </h1>
-
-
-
-                {{-- =================================================
-                    DESCRIPTION
-                ================================================== --}}
-
-                <p
-                    class="mx-auto mt-3 max-w-sm text-sm leading-6 text-white/65"
-                >
-                    Open Learning Hub is currently undergoing scheduled maintenance.
-                    We're working to restore access as soon as possible.
-                </p>
-
-
-
-                {{-- =================================================
-                    MAINTENANCE INFORMATION
-                ================================================== --}}
-
-                <div
-                    class="mt-6 flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-left"
-                >
+                    {{-- =================================================
+                        RIGHT DETAILS PANEL
+                    ================================================== --}}
 
                     <div
-                        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-200"
+                        class="flex items-center bg-white px-8 py-12 sm:px-12 lg:px-16"
                     >
 
-                        <svg
-                            class="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
+                        <div class="w-full">
 
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 6v6l4 2"
-                            />
 
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="9"
-                                stroke-width="1.8"
-                            />
+                            {{-- Status Badge --}}
+                            <div
+                                class="inline-flex items-center gap-2 rounded-full bg-amber-50 px-4 py-2"
+                            >
 
-                        </svg>
+                                <span class="relative flex h-2.5 w-2.5">
+
+                                    <span
+                                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-60"
+                                    ></span>
+
+                                    <span
+                                        class="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-500"
+                                    ></span>
+
+                                </span>
+
+                                <span
+                                    class="text-sm font-semibold text-amber-700"
+                                >
+                                    Maintenance in Progress
+                                </span>
+
+                            </div>
+
+
+
+                            {{-- Large Error Number --}}
+                            <div class="relative mt-10">
+
+                                <p
+                                    class="select-none text-8xl font-black leading-none tracking-tight text-slate-100 sm:text-9xl"
+                                >
+                                    503
+                                </p>
+
+
+                                <h2
+                                    class="-mt-3 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl"
+                                >
+                                    We'll be back soon
+                                </h2>
+
+                            </div>
+
+
+
+                            {{-- Description --}}
+                            <p
+                                class="mt-5 max-w-md text-base leading-7 text-slate-500"
+                            >
+                                We're currently performing maintenance to improve
+                                the system. Access will return once the maintenance
+                                process has been completed.
+                            </p>
+
+
+
+                            {{-- Actions --}}
+                            <div class="mt-8">
+
+                                <button
+                                    type="button"
+                                    onclick="window.location.reload()"
+                                    class="group inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                                >
+
+                                    <svg
+                                        class="h-5 w-5 transition-transform duration-500 group-hover:rotate-180"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M20 7v5h-5"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M19 12a7 7 0 1 0-2.05 4.95"
+                                        />
+
+                                    </svg>
+
+                                    Check Again
+
+                                </button>
+
+                            </div>
+
+
+
+                            {{-- Divider --}}
+                            <div
+                                class="my-9 h-px w-full bg-slate-100"
+                            ></div>
+
+
+
+                            {{-- Information --}}
+                            <div class="flex items-start gap-4 mt-6">
+
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-500"
+                                >
+
+                                    <svg
+                                        class="h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="9"
+                                            stroke-width="1.8"
+                                        />
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M12 7.5V12l3 2"
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+
+                                <div>
+
+                                    <p
+                                        class="font-semibold text-slate-900"
+                                    >
+                                        What's happening?
+                                    </p>
+
+                                    <p
+                                        class="mt-1 max-w-sm text-sm leading-6 text-slate-500"
+                                    >
+                                        The system has been temporarily placed
+                                        offline so administrators can safely
+                                        perform updates and maintenance.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
 
                     </div>
 
 
-                    <div>
-
-                        <p
-                            class="text-sm font-semibold text-white"
-                        >
-                            Temporary service interruption
-                        </p>
-
-                        <p
-                            class="mt-1 text-xs leading-5 text-white/50"
-                        >
-                            Workstation access and account services may be
-                            temporarily unavailable while maintenance is in progress.
-                        </p>
-
-                    </div>
-
                 </div>
-
-
-
-                {{-- =================================================
-                    RETRY BUTTON
-                ================================================== --}}
-
-                <div class="mt-7">
-
-
-                    <button
-                        type="button"
-                        onclick="window.location.reload()"
-                        class="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white shadow-lg shadow-blue-900/30 transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300/30"
-                    >
-
-                        <svg
-                            class="h-5 w-5 transition-transform duration-300 group-hover:rotate-180"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M16.023 9.348h4.992V4.356"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M21.015 9.348A9 9 0 1 0 18.36 18"
-                            />
-
-                        </svg>
-
-                        Check Again
-
-                    </button>
-
-
-                </div>
-
-
-
-                {{-- =================================================
-                    SMALL MESSAGE
-                ================================================== --}}
-
-                <p
-                    class="mt-5 text-xs leading-5 text-white/40"
-                >
-                    Please try again in a few moments.
-                    Thank you for your patience.
-                </p>
-
 
             </div>
 
@@ -367,9 +415,9 @@
 
             {{-- Footer --}}
             <p
-                class="mt-5 text-center text-xs text-white/40"
+                class="mt-7 text-center text-xs text-slate-400"
             >
-                Open Learning Hub · Secure Digital Access
+                IoTWorkstationAccessControl · Secure access management
             </p>
 
 
