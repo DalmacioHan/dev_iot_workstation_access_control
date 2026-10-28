@@ -93,18 +93,20 @@
             </div>
         </div>
     </div>
+
     {{-- Peak Hours --}}
     <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <div class=" border-slate-100 px-6 py-5">
             <div>
                 <h2 class="text-lg font-bold text-slate-900">Peak Hours</h2>
-                <p class="mt-1 text-sm text-slate-500">Hours with the most access events.</p>
+                <p class="mt-1 text-sm text-slate-500">Hours with the most access events today.</p>
             </div>
         </div>
         <div class="p-6">
             <div id="peak-hours-chart" class="min-h-70"></div>
         </div>
     </div>
+
     {{-- Ranked Activity --}}
     <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -209,30 +211,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const peakHours = @json($peakHours);
+    // Generate clean hourly labels: "00:00", "01:00", ... "23:00"
     const hourLabels = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, '0')}:00`);
 
     const chart = new ApexCharts(chartElement, {
         chart: {
             type: 'line',
-            height: 280,
+            height: 300,
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
             toolbar: { show: false },
             zoom: { enabled: false }
         },
         series: [{
             name: 'Access events',
-            data: peakHours
+            data: peakHours // Clean single data mapping array
         }],
         colors: ['#2563eb'],
         stroke: {
             curve: 'smooth',
-            width: 3
-        },
-        markers: {
-            size: 4,
-            strokeWidth: 2,
-            strokeColors: '#ffffff',
-            hover: { size: 6 }
+            width: 4
         },
         dataLabels: { enabled: false },
         grid: {
@@ -241,13 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
             padding: { left: 8, right: 8 }
         },
         xaxis: {
-            categories: hourLabels,
-            labels: {
-                rotate: 0,
-                formatter: function (value, timestamp, index) {
-                    return index % 3 === 0 ? value : '';
-                }
-            },
+            categories: hourLabels, // Links categories directly to index matching peakHours
             axisBorder: { show: true },
             axisTicks: { show: true }
         },
@@ -261,6 +252,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         tooltip: {
+            x: {
+                formatter: function(val, { dataPointIndex }) {
+                    // Displays the exact hour range (e.g., "14:00") when hovered
+                    return hourLabels[dataPointIndex] || val;
+                }
+            },
             y: {
                 formatter: function (value) {
                     return `${value} event${value === 1 ? '' : 's'}`;
