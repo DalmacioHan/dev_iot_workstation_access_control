@@ -16,12 +16,12 @@ class AnalyticsController extends Controller
             'last_30_days' => 'Last 30 days',
             'last_90_days' => 'Last 90 days',
         ];
-        $allowedRanges = array_keys($rangeLabels);
+        $ALLOWEDRanges = array_keys($rangeLabels);
         $studentRange = $request->query('students_range', 'today');
         $courseRange = $request->query('courses_range', 'today');
 
-        $studentRange = in_array($studentRange, $allowedRanges, true) ? $studentRange : 'today';
-        $courseRange = in_array($courseRange, $allowedRanges, true) ? $courseRange : 'today';
+        $studentRange = in_array($studentRange, $ALLOWEDRanges, true) ? $studentRange : 'today';
+        $courseRange = in_array($courseRange, $ALLOWEDRanges, true) ? $courseRange : 'today';
 
         $now = now();
         $todayStart = $now->copy()->startOfDay();
@@ -52,10 +52,10 @@ class AnalyticsController extends Controller
             ->orderBy('total', 'desc')
             ->take(1)
             ->get();
-        $failedEvents = PcAccessLogs::where('result', 'denied')
+        $failedEvents = PcAccessLogs::where('result', 'FAIL')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
-        $successfulEvents = PcAccessLogs::where('result', 'allowed')
+        $successfulEvents = PcAccessLogs::where('result', 'ALLOWED')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
 
@@ -64,7 +64,7 @@ class AnalyticsController extends Controller
             ->selectRaw('HOUR(received_at) as hour, COUNT(*) as total')
             ->whereBetween('received_at', [$todayStart, $todayEnd])
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
-            ->where('result', 'allowed')
+            ->where('result', 'ALLOWED')
             ->whereNotNull('student_name')
             ->where('student_name', '<>', '')
             ->groupByRaw('HOUR(received_at)')
@@ -79,7 +79,7 @@ class AnalyticsController extends Controller
         $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
             ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
             ->whereNotNull('student_name')
-            ->where('result', 'allowed')
+            ->where('result', 'ALLOWED')
             ->where('student_name', '<>', '')
             ->groupBy('student_name')
             ->orderBy('total', 'desc')
@@ -88,7 +88,7 @@ class AnalyticsController extends Controller
 
         $topCourses = PcAccessLogs::select('course', PcAccessLogs::raw('count(*) as total'))
             ->whereBetween('occurred_at', [$rangeStart($courseRange), $rangeEnd($courseRange)])
-            ->where('result', 'allowed')
+            ->where('result', 'ALLOWED')
             ->groupBy('course')
             ->orderBy('total', 'desc')
             ->take(10)

@@ -30,21 +30,14 @@ class AdminController extends Controller
         // Device stats
         $totalDevices = Device::count();
         $activeDevices = Device::where('is_active', 1)->count();
-        $onlineDevices = Device::where('is_active', 1)
-            ->where('last_seen_at', '>=', $now->copy()->subMinutes(5))
-            ->count();
+        $onlineDevices = Device::where('last_seen_at', '>=', Carbon::now()->subMinutes(5))->count();
 
-        // Today's successful login events (one student can log in multiple times)
-        $totalLoginsToday = $successfulLogins()
-            ->where('occurred_at', '>=', $todayStart)
-            ->where('occurred_at', '<', $tomorrow)
-            ->count();
-
-        // Distinct students with successful logins today
-        $uniqueStudentsToday = $successfulLogins()
-            ->where('occurred_at', '>=', $todayStart)
-            ->where('occurred_at', '<', $tomorrow)
-            ->distinct()
+        $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())
+        ->where('result','ALLOWED')
+        ->count('student_external_id');
+        $weekStart = Carbon::today()->startOfWeek(Carbon::MONDAY);
+        $uniqueStudentsToday = PcAccessLogs::whereDate('occurred_at', Carbon::today())
+            ->distinct('student_external_id')
             ->count('student_external_id');
 
         // Distinct students with successful logins this week (Mon–Sun)
@@ -91,33 +84,31 @@ class AdminController extends Controller
             $nextDate = $date->copy()->addDay();
             $columnChartDays[] = $date->format('l');
 
-            $male[] = $successfulLogins()
-                ->where('occurred_at', '>=', $date)
-                ->where('occurred_at', '<', $nextDate)
+            $male[] = PcAccessLogs::whereDate('occurred_at', $date)
+                ->where('result', 'ALLOWED')
                 ->where('student_external_id', 'like', '%-1')
                 ->distinct()
                 ->count('student_external_id');
 
-            $female[] = $successfulLogins()
-                ->where('occurred_at', '>=', $date)
-                ->where('occurred_at', '<', $nextDate)
+            $female[] = PcAccessLogs::whereDate('occurred_at', $date)
+                ->where('result', 'ALLOWED')
                 ->where('student_external_id', 'like', '%-2')
                 ->distinct()
                 ->count('student_external_id');
         }
 
-        // All-time distribution of unique successful students, grouped by course
-        $courseExpression = "COALESCE(NULLIF(TRIM(course), ''), 'Unspecified')";
-        $courseDistribution = $successfulLogins()
-            ->selectRaw("{$courseExpression} AS course_name, COUNT(DISTINCT student_external_id) AS student_count")
-            ->groupByRaw($courseExpression)
-            ->pluck('student_count', 'course_name')
+
+        $courseDistribution = PcAccessLogs::selectRaw('course, COUNT(DISTINCT student_external_id) as count')
+            ->where('result', 'ALLOWED')
+            ->whereNotNull('course')
+            ->where('course', '<>', '')
+            ->groupBy('course')
+            ->pluck('count', 'course')
             ->toArray();
 
-        // All-time distinct students who have successfully logged in
-        $totalStudents = $successfulLogins()
-            ->distinct()
-            ->count('student_external_id');
+        $totalStudents = PcAccessLogs::distinct('student_external_id')
+        ->where('result','ALLOWED')
+        ->count('student_external_id');
 
         return view('admin.dashboard', compact(
             'totalDevices', 'activeDevices', 'onlineDevices',
