@@ -29,8 +29,11 @@ class AdminController extends Controller
 
         // Device stats
         $totalDevices = Device::count();
-        $activeDevices = Device::where('is_active', 1)->count();
-        $onlineDevices = Device::where('last_seen_at', '>=', Carbon::now()->subMinutes(5))->count();
+        $pairedDevices = Device::where('is_paired', 1)->count();
+        $onlineDevices = Device::where('is_paired', 1)
+        ->where('last_seen_at', '>=', now()->subSeconds(90))
+        ->count();
+        
 
         $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())
         ->where('result','ALLOWED')
@@ -110,8 +113,10 @@ class AdminController extends Controller
         ->where('result','ALLOWED')
         ->count('student_external_id');
 
+        $pairedDevices = Device::where('is_paired', 1)->count();
+
         return view('admin.dashboard', compact(
-            'totalDevices', 'activeDevices', 'onlineDevices',
+            'totalDevices', 'pairedDevices', 'onlineDevices',
             'weeklyVisitors', 'male', 'female', 'columnChartDays',
             'avgSessionDuration', 'courseDistribution', 'totalStudents',
             'totalLoginsToday', 'uniqueStudentsToday'

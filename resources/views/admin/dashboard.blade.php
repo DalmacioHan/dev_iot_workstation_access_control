@@ -108,13 +108,13 @@
 
                         <span class="text-blue-100">
 
-                            Active devices
+                            Paired devices
 
                         </span>
 
                         <span class="font-semibold text-white">
 
-                            {{ number_format($activeDevices ?? 0) }}
+                            {{ number_format($pairedDevices ?? 0) }}
 
                         </span>
 
@@ -126,7 +126,7 @@
 
                             class="h-full rounded-full bg-white transition-all"
 
-                            style="width: {{ ($totalDevices ?? 0) > 0 ? (($activeDevices ?? 0) / $totalDevices) * 100 : 0 }}%"
+                            style="width: {{ ($totalDevices ?? 0) > 0 ? (($pairedDevices ?? 0) / $totalDevices) * 100 : 0 }}%"
 
                         ></div>
 

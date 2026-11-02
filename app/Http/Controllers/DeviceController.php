@@ -23,8 +23,8 @@ class DeviceController extends Controller
 
 
         if ($request->filled('status')) {
-            $status = $request->input('status') === 'active' ? 1 : 0;
-            $query->where('is_active', $status);
+            $status = $request->input('status') === 'paired' ? 1 : 0;
+            $query->where('is_paired', $status);
         }
         $devices = $query->latest()->paginate(5)->withQueryString();
 
@@ -48,7 +48,7 @@ class DeviceController extends Controller
         'device_uid'   => $validated['device_uid'],
         'workstation_name'=> $validated['workstation_name'],
         'pairing_code' => $pairingCode,
-        'is_active'    => false, 
+        'is_paired'    => false, 
     ]);
 
         return redirect()->route('device')
@@ -60,12 +60,12 @@ class DeviceController extends Controller
         
         $request->validate([
             'workstation_name' => 'required',
-            'is_active' => 'required|boolean',
+            'is_paired' => 'required|boolean',
         ]);
 
         $device->update([
             'workstation_name' => $request->input('workstation_name'),
-            'is_active' => $request->input('is_active'),
+            'is_paired' => $request->input('is_paired'),
         ]);
 
         
@@ -88,9 +88,9 @@ public function show(Device $device ){
     {
     
         $device = Device::findOrFail($id);
-        if ($device->is_active) { 
+        if ($device->is_paired) { 
             return redirect()->route('device')
-                ->with('error', "Cannot delete device '{$device->workstation_name}' because it is currently Active. Please deactivate it before attempting to delete.");
+                ->with('error', "Cannot delete device '{$device->workstation_name}' because it is currently Paired. Please unpair it before attempting to delete.");
         }
 
         

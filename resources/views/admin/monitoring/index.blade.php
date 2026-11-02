@@ -72,11 +72,11 @@
 
 
             <p class="mt-5 text-3xl font-bold text-gray-900">
-                {{ $activeDevices }}
+                {{ $pairedDevices }}
             </p>
 
             <p class="mt-1 text-sm text-gray-500">
-                Active devices
+                Paired devices
             </p>
 
         </div>
@@ -100,11 +100,11 @@
 
 
             <p class="mt-5 text-3xl font-bold text-gray-900">
-                {{ $inactiveDevices }}
+                {{ $unpairedDevices }}
             </p>
 
             <p class="mt-1 text-sm text-gray-500">
-                Inactive devices
+                Unpaired devices
             </p>
 
         </div>
@@ -443,7 +443,7 @@
 
                                 <div class="flex items-center gap-3">
 
-                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl {{ $device['is_active'] ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400' }}">
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl {{ $device['is_paired'] ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400' }}">
 
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
@@ -492,7 +492,7 @@
 
                                 <div class="flex items-center gap-2">
 
-                                    <span class="h-2 w-2 rounded-full {{ $device['is_active'] ? 'bg-emerald-500' : 'bg-gray-300' }}"></span>
+                                    <span class="h-2 w-2 rounded-full {{ $device['is_paired'] ? 'bg-emerald-500' : 'bg-gray-300' }}"></span>
 
                                     <span class="text-xs text-gray-500">
                                         {{ $device['last_seen_at'] }}
@@ -508,18 +508,18 @@
 
                             <td class="px-6 py-4">
 
-                                @if ($device['is_active'])
+                                @if ($device['is_paired'])
 
                                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                         <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                        Active
+                                        Paired
                                     </span>
 
                                 @else
 
                                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-500">
                                         <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span>
-                                        Inactive
+                                        Unpaired
                                     </span>
 
                                 @endif

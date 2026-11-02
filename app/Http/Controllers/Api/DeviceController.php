@@ -32,7 +32,7 @@ class DeviceController extends Controller
 
         
         $device->update([
-            'is_active'    => true,
+            'is_paired'    => true,
             'last_seen_at' => now(),
             'pairing_code' => null, 
             'api_token'    => $token, 

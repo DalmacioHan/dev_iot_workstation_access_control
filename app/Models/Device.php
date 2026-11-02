@@ -9,7 +9,7 @@ class Device extends Model
     'device_uid',
     'workstation_name',
     'pairing_code',
-    'is_active',
+    'is_paired',
     'last_seen_at',
     'api_token',
     'token_created_at',
@@ -18,7 +18,7 @@ class Device extends Model
     
     protected $casts = [
         'last_seen_at' => 'datetime',
-        'is_active' => 'boolean',
+        'is_paired' => 'boolean',
         'token_created_at' => 'datetime',
         'token_expires_at' => 'datetime',
     ];
@@ -63,7 +63,7 @@ class Device extends Model
             return false;
         }
 
-        return $this->is_active;
+        return $this->is_paired;
     }
 
     /**

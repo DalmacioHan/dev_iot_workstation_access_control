@@ -63,15 +63,15 @@
                                 {{ $device->workstation_name }}
                             </h2>
 
-                            @if($device->is_active)
+                            @if($device->is_paired)
                                 <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/20 px-2.5 py-1 text-xs font-semibold text-emerald-100 ring-1 ring-inset ring-emerald-300/30">
                                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-300"></span>
-                                    Active
+                                    Paired
                                 </span>
                             @else
                                 <span class="inline-flex items-center gap-1.5 rounded-full bg-red-400/20 px-2.5 py-1 text-xs font-semibold text-red-100 ring-1 ring-inset ring-red-300/30">
                                     <span class="h-1.5 w-1.5 rounded-full bg-red-300"></span>
-                                    Inactive
+                                    Not Paired
                                 </span>
                             @endif
 

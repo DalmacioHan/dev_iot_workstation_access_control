@@ -102,8 +102,8 @@
                     class="block h-12 w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                 >
                     <option value="">All Status</option>
-                    <option value="active" @selected(request('status') === 'active')>Active</option>
-                    <option value="inactive" @selected(request('status') === 'inactive')>Inactive</option>
+                    <option value="paired" @selected(request('status') === 'paired')>Paired</option>
+                    <option value="unpaired" @selected(request('status') === 'unpaired')>Unpaired</option>
                 </select>
             </form>
         </div>
@@ -196,15 +196,15 @@
 
                             {{-- Status --}}
                             <td class="px-6 py-5 text-center">
-                                @if($device->is_active)
+                                @if($device->is_paired)
                                     <span class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
                                         <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                                        Active
+                                        Paired
                                     </span>
                                 @else
                                     <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
                                         <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
-                                        Inactive
+                                        Not Paired
                                     </span>
                                 @endif
                             </td>

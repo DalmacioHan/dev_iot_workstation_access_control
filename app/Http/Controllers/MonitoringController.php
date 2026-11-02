@@ -13,8 +13,8 @@ class MonitoringController extends Controller
     public function index()
     {
         // Fetch Summary Metrics
-        $activeDevices   = Device::where('is_active', true)->count();
-        $inactiveDevices = Device::where('is_active', false)->count();
+        $pairedDevices   = Device::where('is_paired', true)->count();
+        $unpairedDevices = Device::where('is_paired', false)->count();
         $grantedAccess = PcAccessLogs::where('result', 'allowed')
         ->whereBetween('occurred_at', [now()->startOfWeek(), now()])
         ->count();
@@ -31,7 +31,7 @@ class MonitoringController extends Controller
             'device_uid'       => $device->device_uid,
             'workstation_name' => $device->workstation_name,
             'pairing_code'     => $device->pairing_code,
-            'is_active'        => (bool) $device->is_active,
+            'is_paired'        => (bool) $device->is_paired,
             'last_seen_at'     => $device->last_seen_at
                 ? $device->last_seen_at->diffForHumans()
                 : 'Never',
@@ -103,8 +103,8 @@ class MonitoringController extends Controller
 
         // Pass variables down to your view
         return view('admin.monitoring.index', compact(
-            'activeDevices',
-            'inactiveDevices',
+            'pairedDevices',
+            'unpairedDevices',
             'grantedAccess',
             'pendingCommands',
             'devices',
