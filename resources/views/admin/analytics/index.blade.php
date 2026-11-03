@@ -96,10 +96,21 @@
 
     {{-- Peak Hours --}}
     <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-        <div class=" border-slate-100 px-6 py-5">
+        <div class="border-b border-slate-100 px-6 py-5 flex items-center justify-between gap-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900">Peak Hours</h2>
-                <p class="mt-1 text-sm text-slate-500">Hours with the most access events today.</p>
+                <p class="mt-1 text-sm text-slate-500">Hours with the most access events {{ $peakRangeLabel }}.</p>
+            </div>
+            <div class="relative self-start sm:self-auto">
+                <button id="peakHoursDropdownButton" data-dropdown-toggle="peakHoursDropdown" data-dropdown-placement="bottom-start" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                    {{ $peakRangeLabel }}
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
+                </button>
+                <div id="peakHoursDropdown" class="absolute left-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
+                    @foreach($rangeLabels as $range => $label)
+                        <a href="{{ route('analytics', ['peak_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
+                    @endforeach
+                </div>
             </div>
         </div>
         <div class="p-6">
@@ -113,7 +124,7 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Students</h2>
-                    <p class="mt-1 text-sm text-slate-500">Students with the most access events.</p>
+                    <p class="mt-1 text-sm text-slate-500">Students with the most access events {{ $studentRangeLabel }}.</p>
                 </div>
 
                 <div class="relative self-start sm:self-auto">
@@ -123,7 +134,7 @@
                     </button>
                     <div id="topStudentsDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
                         @foreach($rangeLabels as $range => $label)
-                            <a href="{{ route('analytics', ['students_range' => $range, 'courses_range' => $courseRange]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
+                            <a href="{{ route('analytics', ['students_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
                         @endforeach
                     </div>
                 </div>
@@ -157,7 +168,7 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Courses</h2>
-                    <p class="mt-1 text-sm text-slate-500">Courses with the most access events.</p>
+                    <p class="mt-1 text-sm text-slate-500">Courses with the most access events {{ $courseRangeLabel }}.</p>
                 </div>
 
                 <div class="relative self-start sm:self-auto">
@@ -167,7 +178,7 @@
                     </button>
                     <div id="topCoursesDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
                         @foreach($rangeLabels as $range => $label)
-                            <a href="{{ route('analytics', ['students_range' => $studentRange, 'courses_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
+                            <a href="{{ route('analytics', ['courses_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
                         @endforeach
                     </div>
                 </div>

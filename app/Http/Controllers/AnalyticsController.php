@@ -15,13 +15,17 @@ class AnalyticsController extends Controller
             'last_7_days' => 'Last 7 days',
             'last_30_days' => 'Last 30 days',
             'last_90_days' => 'Last 90 days',
+            'last_Year' => 'Last Year',
         ];
         $ALLOWEDRanges = array_keys($rangeLabels);
+
         $studentRange = $request->query('students_range', 'today');
         $courseRange = $request->query('courses_range', 'today');
+        $peakRange = $request->query('peak_range', 'today');
 
         $studentRange = in_array($studentRange, $ALLOWEDRanges, true) ? $studentRange : 'today';
         $courseRange = in_array($courseRange, $ALLOWEDRanges, true) ? $courseRange : 'today';
+        $peakRange = in_array($peakRange, $ALLOWEDRanges, true) ? $peakRange : 'today';
 
         $now = now();
         $todayStart = $now->copy()->startOfDay();
@@ -33,6 +37,7 @@ class AnalyticsController extends Controller
                 'last_7_days' => $now->copy()->subDays(6)->startOfDay(),
                 'last_30_days' => $now->copy()->subDays(29)->startOfDay(),
                 'last_90_days' => $now->copy()->subDays(89)->startOfDay(),
+                'last_Year' => $now->copy()->subYear()->startOfDay(),
                 default => $now->copy()->startOfDay(),
             };
         };
@@ -62,8 +67,8 @@ class AnalyticsController extends Controller
         //line chart
         $peakHoursByHour = PcAccessLogs::query()
             ->selectRaw('HOUR(received_at) as hour, COUNT(*) as total')
-            ->whereBetween('received_at', [$todayStart, $todayEnd])
-            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->whereBetween('received_at', [$rangeStart($peakRange), $rangeEnd($peakRange)])
+            ->whereBetween('occurred_at', [$rangeStart($peakRange), $rangeEnd($peakRange)])
             ->where('result', 'ALLOWED')
             ->whereNotNull('student_name')
             ->where('student_name', '<>', '')
@@ -96,13 +101,15 @@ class AnalyticsController extends Controller
 
         $studentRangeLabel = $rangeLabels[$studentRange];
         $courseRangeLabel = $rangeLabels[$courseRange];
+        $peakRangeLabel = $rangeLabels[$peakRange];
+
 
         return view('admin.analytics.index', compact(
             'failedEvents', 'popularWorkstation', 'successfulEvents', 'topApplication',
             'topStudents', 'topCourses', 'rangeLabels',
             'studentRange', 'courseRange',
             'studentRangeLabel', 'courseRangeLabel',
-            'peakHours'
+            'peakHours', 'peakRange', 'peakRangeLabel'
             ));
     }
 }
