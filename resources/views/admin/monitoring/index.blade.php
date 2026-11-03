@@ -337,10 +337,6 @@
                                     {{ $log['occurred_at'] }}
                                 </p>
 
-                                <p class="mt-1 text-[10px] text-gray-400">
-                                    Received {{ $log['received_at'] }}
-                                </p>
-
                             </td>
 
                         </tr>

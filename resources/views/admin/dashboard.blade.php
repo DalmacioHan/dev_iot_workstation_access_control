@@ -340,6 +340,79 @@
 
     {{-- =========================================================
 
+        LIVE PC USAGE
+
+    ========================================================== --}}
+
+    <div class="rounded-3xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between px-6 pt-6 pb-4">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 class="text-lg font-bold text-gray-900">Live PC Usage</h2>
+                    <span class="relative flex h-2 w-2">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                    </span>
+                    <span id="live-active-count" class="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+                        {{ count($activeSessions ?? []) }} Active
+                    </span>
+                </div>
+                <p class="mt-1 text-sm text-gray-500">Currently active sessions on workstations</p>
+            </div>
+        </div>
+        <div class="px-6 pb-6">
+            <div id="live-monitor-list" class="space-y-2">
+                @forelse(($activeSessions ?? []) as $session)
+                    <div class="live-card flex flex-col gap-3 rounded-2xl border border-gray-100 bg-gradient-to-r from-white to-gray-50/60 p-4 sm:flex-row sm:items-center sm:justify-between" data-session-id="{{ $session['session_id'] }}">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                                <span class="text-sm font-semibold">
+                                    {{ strtoupper(mb_substr($session['student_name'] ?? 'U', 0, 1)) }}
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900">{{ $session['student_name'] }}</p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $session['course'] ?? 'N/A' }} @if(!empty($session['student_external_id'])) • {{ $session['student_external_id'] }} @endif
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-4 text-xs text-gray-600">
+                            <div class="flex items-center gap-1.5">
+                                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" />
+                                </svg>
+                                <span class="font-medium text-gray-900">{{ $session['workstation_name'] ?? ($session['device_uid'] ?? 'PC') }}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="9"></circle>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2" />
+                                </svg>
+                                <span>Started {{ $session['started_at_display'] }}</span>
+                            </div>
+                            <div class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                                <span class="live-elapsed" data-start-ts="{{ $session['started_at_ts'] ?? '' }}">00:00</span>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                @endforelse
+            </div>
+            <div id="live-monitor-empty" class="flex flex-col items-center justify-center py-6 text-center {{ count($activeSessions ?? []) > 0 ? 'hidden' : '' }}">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" />
+                    </svg>
+                </div>
+                <p class="mt-2 text-sm font-medium text-gray-900">No active sessions right now</p>
+                <p class="mt-1 text-xs text-gray-500">Students will appear here the moment they log in to a PC</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- =========================================================
+
         MAIN BENTO CONTENT
 
     ========================================================== --}}
@@ -845,6 +918,180 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+</script>
+
+<style>
+    .live-card {
+        transition: transform 400ms ease, opacity 400ms ease, max-height 400ms ease, margin-top 400ms ease, padding-top 400ms ease, padding-bottom 400ms ease;
+        transform: translateX(0);
+        opacity: 1;
+        max-height: 160px;
+        overflow: hidden;
+    }
+    .live-card-enter {
+        transform: translateX(110%);
+        opacity: 0;
+        max-height: 0;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        border-width: 0 !important;
+    }
+    .live-card-leave {
+        transform: translateX(110%);
+        opacity: 0;
+        max-height: 0;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        border-width: 0 !important;
+    }
+</style>
+
+<script>
+    (function() {
+        const listEl = document.getElementById('live-monitor-list');
+        const emptyEl = document.getElementById('live-monitor-empty');
+        const countEl = document.getElementById('live-active-count');
+        const endpoint = '{{ route('dashboard.active-sessions') }}';
+
+        function formatElapsed(seconds) {
+            const s = Math.max(0, Number(seconds) || 0);
+            const h = Math.floor(s / 3600);
+            const m = Math.floor((s % 3600) / 60);
+            const sec = s % 60;
+            if (h > 0) {
+                return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+            }
+            return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+        }
+
+        function createCard(session) {
+            const card = document.createElement('div');
+            card.className = 'live-card live-card-enter flex flex-col gap-3 rounded-2xl border border-gray-100 bg-gradient-to-r from-white to-gray-50/60 p-4 sm:flex-row sm:items-center sm:justify-between';
+            card.setAttribute('data-session-id', session.session_id);
+
+            const initial = (session.student_name || 'U').trim().charAt(0).toUpperCase();
+
+            card.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                        <span class="text-sm font-semibold">${initial}</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-900">${session.student_name || ''}</p>
+                        <p class="text-xs text-gray-500">${session.course || 'N/A'}${session.student_external_id ? ' • ' + session.student_external_id : ''}</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-4 text-xs text-gray-600">
+                    <div class="flex items-center gap-1.5">
+                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" />
+                        </svg>
+                        <span class="font-medium text-gray-900">${session.workstation_name || session.device_uid || 'PC'}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2" />
+                        </svg>
+                        <span>Started ${session.started_at_display || ''}</span>
+                    </div>
+                    <div class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
+                        <span class="live-elapsed" data-start-ts="${session.started_at_ts || ''}">${formatElapsed(session.elapsed_seconds)}</span>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function updateElapsed() {
+            document.querySelectorAll('.live-elapsed').forEach(function(el) {
+                const ts = el.getAttribute('data-start-ts');
+                if (!ts) {
+                    const started = el.getAttribute('data-started');
+                    if (!started) return;
+                    const start = new Date(started).getTime();
+                    if (isNaN(start)) return;
+                    let diff = Math.floor((Date.now() - start) / 1000);
+                    if (diff < 0) diff = 0;
+                    el.textContent = formatElapsed(diff);
+                    return;
+                }
+                let diff = Math.floor(Date.now() / 1000 - Number(ts));
+                if (diff < 0) diff = 0;
+                el.textContent = formatElapsed(diff);
+            });
+        }
+
+        function sync() {
+            fetch(endpoint, { headers: { 'Accept': 'application/json' } })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    const sessions = Array.isArray(data) ? data : [];
+                    const currentIds = new Set(sessions.map(function(s) { return s.session_id; }));
+                    const existing = listEl.querySelectorAll('.live-card');
+
+                    existing.forEach(function(card) {
+                        const id = card.getAttribute('data-session-id');
+                        if (!currentIds.has(id)) {
+                            card.classList.add('live-card-leave');
+                            setTimeout(function() {
+                                if (card.parentNode) {
+                                    card.parentNode.removeChild(card);
+                                }
+                                updateCount();
+                            }, 420);
+                        }
+                    });
+
+                    sessions.forEach(function(session) {
+                        let card = listEl.querySelector('.live-card[data-session-id="' + session.session_id.replace(/"/g, '\\"') + '"]');
+                        if (!card) {
+                            card = createCard(session);
+                            listEl.prepend(card);
+                            requestAnimationFrame(function() {
+                                card.classList.remove('live-card-enter');
+                            });
+                            updateElapsed();
+                        } else {
+                            const elapsedEl = card.querySelector('.live-elapsed');
+                            if (elapsedEl) {
+                                if (session.started_at_ts) {
+                                    elapsedEl.setAttribute('data-start-ts', session.started_at_ts);
+                                    elapsedEl.removeAttribute('data-started');
+                                } else if (session.started_at) {
+                                    elapsedEl.setAttribute('data-started', session.started_at);
+                                }
+                            }
+                        }
+                    });
+
+                    updateCount();
+                })
+                .catch(function() {});
+        }
+
+        function updateCount() {
+            const count = listEl.querySelectorAll('.live-card').length;
+            if (countEl) {
+                countEl.textContent = count + (count === 1 ? ' Active' : ' Active');
+            }
+            if (emptyEl) {
+                if (count === 0) {
+                    emptyEl.classList.remove('hidden');
+                } else {
+                    emptyEl.classList.add('hidden');
+                }
+            }
+        }
+
+        updateCount();
+        updateElapsed();
+        setInterval(updateElapsed, 1000);
+        setInterval(sync, 5000);
+    })();
 </script>
 
 @endsection

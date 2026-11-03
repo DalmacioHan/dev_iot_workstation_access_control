@@ -45,8 +45,11 @@ Route::middleware('auth')->group(function () {
     
     // Device Management
 
+    Route::get('/dashboard/active-sessions', [AdminController::class, 'activeSessions'])->name('dashboard.active-sessions');
+
     Route::get('/devices',[DeviceController::class,'index'])->name('device');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('device.show');
+    Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
     Route::post('/devices/{device}/lock', [DeviceController::class, 'lockDevice'])->name('device.lock');
     Route::post('/devices/{device}/announce', [DeviceController::class, 'announceDevice'])->name('device.announce');
     // Monitoring
