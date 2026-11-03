@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Device;
 use App\Models\PcAccessLogs;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -115,11 +116,95 @@ class AdminController extends Controller
 
         $pairedDevices = Device::where('is_paired', 1)->count();
 
+        // Active PC sessions (time_in without corresponding time_out)
+        $activeSessions = PcAccessLogs::query()
+            ->select(
+                'pc_access_logs.session_id',
+                'pc_access_logs.device_id',
+                'pc_access_logs.student_name',
+                'pc_access_logs.student_external_id',
+                'pc_access_logs.course',
+                'pc_access_logs.occurred_at as started_at'
+            )
+            ->selectRaw('devices.workstation_name, devices.device_uid')
+            ->join('devices', 'devices.id', '=', 'pc_access_logs.device_id')
+            ->where('pc_access_logs.event_type', 'time_in')
+            ->where('pc_access_logs.result', 'allowed')
+            ->whereNotNull('pc_access_logs.session_id')
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('pc_access_logs as logout_log')
+                    ->whereColumn('logout_log.session_id', 'pc_access_logs.session_id')
+                    ->where('logout_log.event_type', 'time_out');
+            })
+            ->orderBy('pc_access_logs.occurred_at', 'desc')
+            ->get()
+            ->map(function ($session) {
+                $startedAt = Carbon::parse($session->started_at);
+                $elapsedSeconds = $startedAt->diffInSeconds(Carbon::now());
+
+                return [
+                    'session_id' => $session->session_id,
+                    'student_name' => $session->student_name,
+                    'student_external_id' => $session->student_external_id,
+                    'course' => $session->course,
+                    'workstation_name' => $session->workstation_name,
+                    'device_uid' => $session->device_uid,
+                    'started_at' => $startedAt->toIso8601String(),
+                    'started_at_display' => $startedAt->format('h:i A'),
+                    'elapsed_seconds' => $elapsedSeconds,
+                ];
+            });
+
         return view('admin.dashboard', compact(
             'totalDevices', 'pairedDevices', 'onlineDevices',
             'weeklyVisitors', 'male', 'female', 'columnChartDays',
             'avgSessionDuration', 'courseDistribution', 'totalStudents',
-            'totalLoginsToday', 'uniqueStudentsToday'
+            'totalLoginsToday', 'uniqueStudentsToday', 'activeSessions'
         ));
+    }
+
+    public function activeSessions(): JsonResponse
+    {
+        $sessions = PcAccessLogs::query()
+            ->select(
+                'pc_access_logs.session_id',
+                'pc_access_logs.device_id',
+                'pc_access_logs.student_name',
+                'pc_access_logs.student_external_id',
+                'pc_access_logs.course',
+                'pc_access_logs.occurred_at as started_at'
+            )
+            ->selectRaw('devices.workstation_name, devices.device_uid')
+            ->join('devices', 'devices.id', '=', 'pc_access_logs.device_id')
+            ->where('pc_access_logs.event_type', 'time_in')
+            ->where('pc_access_logs.result', 'allowed')
+            ->whereNotNull('pc_access_logs.session_id')
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('pc_access_logs as logout_log')
+                    ->whereColumn('logout_log.session_id', 'pc_access_logs.session_id')
+                    ->where('logout_log.event_type', 'time_out');
+            })
+            ->orderBy('pc_access_logs.occurred_at', 'desc')
+            ->get()
+            ->map(function ($session) {
+                $startedAt = Carbon::parse($session->started_at);
+                $elapsedSeconds = $startedAt->diffInSeconds(Carbon::now());
+
+                return [
+                    'session_id' => $session->session_id,
+                    'student_name' => $session->student_name,
+                    'student_external_id' => $session->student_external_id,
+                    'course' => $session->course,
+                    'workstation_name' => $session->workstation_name,
+                    'device_uid' => $session->device_uid,
+                    'started_at' => $startedAt->toIso8601String(),
+                    'started_at_display' => $startedAt->format('h:i A'),
+                    'elapsed_seconds' => $elapsedSeconds,
+                ];
+            });
+
+        return response()->json($sessions);
     }
 }
