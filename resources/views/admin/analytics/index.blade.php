@@ -68,7 +68,7 @@
                 <div>
                     <p class="text-sm font-medium text-slate-500">Successful Access</p>
                     <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) ?? 'N/A' }}</p>
-                    <p class="mt-1 text-xs text-slate-400">Successful events today</p>
+                    <p class="mt-1 text-xs text-slate-400">Successful sessions today</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -141,12 +141,13 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full min-w-[420px] text-left text-sm text-slate-600">
+                <table class="w-full min-w-[520px] text-left text-sm text-slate-600">
                     <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
                         <tr>
                             <th scope="col" class="px-6 py-4 font-semibold">#</th>
                             <th scope="col" class="px-6 py-4 font-semibold">Student Name</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access (Sessions)</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Overall Time</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -155,9 +156,10 @@
                                 <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
                                 <td class="px-6 py-4 font-semibold text-slate-800">{{ $student->student_name }}</td>
                                 <td class="px-6 py-4 text-center font-semibold text-blue-700">{{ number_format($student->total) }}</td>
+                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-700">{{ $student->total_time ?? '0h 0m 0s' }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="3" class="px-6 py-12 text-center text-sm text-slate-400">No student activity found for this period.</td></tr>
+                            <tr><td colspan="4" class="px-6 py-12 text-center text-sm text-slate-400">No student activity found for this period.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -185,12 +187,13 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full min-w-[420px] text-left text-sm text-slate-600">
+                <table class="w-full min-w-[520px] text-left text-sm text-slate-600">
                     <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
                         <tr>
                             <th scope="col" class="px-6 py-4 font-semibold">#</th>
                             <th scope="col" class="px-6 py-4 font-semibold">Course Name</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access (Sessions)</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Overall Time</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -199,9 +202,10 @@
                                 <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
                                 <td class="px-6 py-4 font-semibold text-slate-800">{{ $course->course }}</td>
                                 <td class="px-6 py-4 text-center font-semibold text-blue-700">{{ number_format($course->total) }}</td>
+                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-700">{{ $course->total_time ?? '0h 0m 0s' }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="3" class="px-6 py-12 text-center text-sm text-slate-400">No course activity found for this period.</td></tr>
+                            <tr><td colspan="4" class="px-6 py-12 text-center text-sm text-slate-400">No course activity found for this period.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

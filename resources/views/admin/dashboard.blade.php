@@ -288,7 +288,7 @@
 
                     <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
 
-                        {{ $avgSessionDuration ?? '0m' }}
+                        {{ $avgSessionDuration ?? '0h 0m 0s' }}
 
                     </p>
 

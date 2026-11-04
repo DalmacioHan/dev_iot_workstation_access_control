@@ -24,7 +24,7 @@ class AdminController extends Controller
         
         $successfulLogins = function () use ($successResult) {
             return PcAccessLogs::query()
-                ->where('event_type', 'login')
+                ->where('event_type', 'time_in')
                 ->where('result', $successResult);
         };
 
@@ -37,10 +37,13 @@ class AdminController extends Controller
         
 
         $totalLoginsToday= PcAccessLogs::whereDate('occurred_at', Carbon::today())
-        ->where('result','ALLOWED')
+        ->where('event_type', 'time_in')
+        ->where('result','allowed')
         ->count('student_external_id');
         $weekStart = Carbon::today()->startOfWeek(Carbon::MONDAY);
         $uniqueStudentsToday = PcAccessLogs::whereDate('occurred_at', Carbon::today())
+            ->where('event_type', 'time_in')
+            ->where('result', 'allowed')
             ->distinct('student_external_id')
             ->count('student_external_id');
 
@@ -55,28 +58,29 @@ class AdminController extends Controller
         $sessionTimes = PcAccessLogs::query()
             ->select('session_id')
             ->selectRaw(
-                'MIN(CASE WHEN event_type = ? AND result = ? THEN occurred_at END) AS login_at',
-                ['login', $successResult]
+                'MIN(CASE WHEN event_type = ? AND result = ? THEN occurred_at END) AS time_in_at',
+                ['time_in', $successResult]
             )
             ->selectRaw(
-                'MAX(CASE WHEN event_type = ? THEN occurred_at END) AS logout_at',
-                ['logout']
+                'MIN(CASE WHEN event_type = ? THEN occurred_at END) AS time_out_at',
+                ['time_out']
             )
             ->whereNotNull('session_id')
             ->groupBy('session_id');
 
         $avgSeconds = DB::query()
             ->fromSub($sessionTimes, 'sessions')
-            ->whereNotNull('login_at')
-            ->whereNotNull('logout_at')
-            ->whereColumn('logout_at', '>=', 'login_at')
-            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, login_at, logout_at)) AS avg_seconds')
+            ->whereNotNull('time_in_at')
+            ->whereNotNull('time_out_at')
+            ->whereColumn('time_out_at', '>=', 'time_in_at')
+            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, time_in_at, time_out_at)) AS avg_seconds')
             ->value('avg_seconds');
 
         $durationSeconds = max(0, (int) round($avgSeconds ?? 0));
         $hours = intdiv($durationSeconds, 3600);
         $minutes = intdiv($durationSeconds % 3600, 60);
-        $avgSessionDuration = "{$hours}h {$minutes}m";
+        $seconds = $durationSeconds % 60;
+        $avgSessionDuration = "{$hours}h {$minutes}m {$seconds}s";
 
         // Weekly unique students by gender (assumes ID suffix -1 = male, -2 = female)
         $male = [];
@@ -89,13 +93,15 @@ class AdminController extends Controller
             $columnChartDays[] = $date->format('l');
 
             $male[] = PcAccessLogs::whereDate('occurred_at', $date)
-                ->where('result', 'ALLOWED')
+                ->where('event_type', 'time_in')
+                ->where('result', 'allowed')
                 ->where('student_external_id', 'like', '%-1')
                 ->distinct()
                 ->count('student_external_id');
 
             $female[] = PcAccessLogs::whereDate('occurred_at', $date)
-                ->where('result', 'ALLOWED')
+                ->where('event_type', 'time_in')
+                ->where('result', 'allowed')
                 ->where('student_external_id', 'like', '%-2')
                 ->distinct()
                 ->count('student_external_id');
@@ -103,7 +109,8 @@ class AdminController extends Controller
 
 
         $courseDistribution = PcAccessLogs::selectRaw('course, COUNT(DISTINCT student_external_id) as count')
-            ->where('result', 'ALLOWED')
+            ->where('event_type', 'time_in')
+            ->where('result', 'allowed')
             ->whereNotNull('course')
             ->where('course', '<>', '')
             ->groupBy('course')
@@ -111,7 +118,8 @@ class AdminController extends Controller
             ->toArray();
 
         $totalStudents = PcAccessLogs::distinct('student_external_id')
-        ->where('result','ALLOWED')
+        ->where('event_type', 'time_in')
+        ->where('result', 'allowed')
         ->count('student_external_id');
 
         $pairedDevices = Device::where('is_paired', 1)->count();
