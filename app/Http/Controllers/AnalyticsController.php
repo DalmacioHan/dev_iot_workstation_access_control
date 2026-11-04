@@ -16,6 +16,7 @@ class AnalyticsController extends Controller
             'last_30_days' => 'Last 30 days',
             'last_90_days' => 'Last 90 days',
             'last_Year' => 'Last Year',
+            'all_time' => 'All Time',
         ];
         $ALLOWEDRanges = array_keys($rangeLabels);
 
@@ -38,6 +39,7 @@ class AnalyticsController extends Controller
                 'last_30_days' => $now->copy()->subDays(29)->startOfDay(),
                 'last_90_days' => $now->copy()->subDays(89)->startOfDay(),
                 'last_Year' => $now->copy()->subYear()->startOfDay(),
+                'all_time' => Carbon::create(1970, 1, 1)->startOfDay(),
                 default => $now->copy()->startOfDay(),
             };
         };
