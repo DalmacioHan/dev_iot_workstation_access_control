@@ -30,6 +30,28 @@
 
         </div>
 
+        <div class="relative self-start sm:self-auto">
+
+            <button id="dashboardRangeDropdownButton" data-dropdown-toggle="dashboardRangeDropdown" data-dropdown-placement="bottom-end" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-gray-200 bg-white px-3.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+
+                {{ $rangeLabel }}
+
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
+
+            </button>
+
+            <div id="dashboardRangeDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-gray-200 bg-white p-1 shadow-lg">
+
+                @foreach($rangeLabels as $rangeKey => $rangeOptionLabel)
+
+                    <a href="{{ route('dashboard', ['range' => $rangeKey]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-700">{{ $rangeOptionLabel }}</a>
+
+                @endforeach
+
+            </div>
+
+        </div>
+
     </div>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[150px]">
@@ -162,13 +184,13 @@
 
                     <p class="text-sm font-medium text-gray-500">
 
-                        Total Logins Today
+                        Total Logins
 
                     </p>
 
                     <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
 
-                        {{ number_format($totalLoginsToday ?? 0) }}
+                        {{ number_format($totalLogins ?? 0) }}
 
                     </p>
 
@@ -208,7 +230,7 @@
 
             <p class="mt-5 text-xs text-gray-500">
 
-                Successful RFID access today
+                Successful RFID access · {{ $rangeLabel }}
 
             </p>
 
@@ -228,7 +250,7 @@
 
                     <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
 
-                        {{ number_format($uniqueStudentsToday ?? 0) }}
+                        {{ number_format($uniqueStudents ?? 0) }}
 
                     </p>
 
@@ -268,7 +290,7 @@
 
             <p class="mt-5 text-xs text-gray-500">
 
-                Students accessing the library today
+                Students accessing the library · {{ $rangeLabel }}
 
             </p>
 
@@ -288,7 +310,7 @@
 
                     <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900">
 
-                        {{ $avgSessionDuration ?? '0m' }}
+                        {{ $avgSessionDuration ?? '0h 0m 0s' }}
 
                     </p>
 
@@ -330,7 +352,7 @@
 
             <p class="mt-5 text-xs text-gray-500">
 
-                Average usage session
+                Average usage session · {{ $rangeLabel }}
 
             </p>
 
@@ -392,7 +414,7 @@
                                 <span>Started {{ $session['started_at_display'] }}</span>
                             </div>
                             <div class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
-                                <span class="live-elapsed" data-start-ts="{{ $session['started_at_ts'] ?? '' }}">00:00</span>
+                                <span class="live-elapsed" data-start-ts="{{ $session['started_at_ts'] ?? '' }}" data-started="{{ $session['started_at'] ?? '' }}">{{ $session['elapsed_display'] ?? '00:00' }}</span>
                             </div>
                         </div>
                     </div>
@@ -433,13 +455,13 @@
 
                     <h2 class="text-lg font-bold text-gray-900">
 
-                        Weekly Student Access
+                        Student Access
 
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-500">
 
-                        Daily unique students with successful access.
+                        Unique students with successful access per {{ $chartGroupingLabel }} · {{ $rangeLabel }}.
 
                     </p>
 
@@ -487,7 +509,7 @@
 
                 <p class="mt-1 text-sm text-gray-500">
 
-                    Student distribution by course.
+                    Student distribution by course · {{ $rangeLabel }}.
 
                 </p>
 
@@ -998,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span>Started ${session.started_at_display || ''}</span>
                     </div>
                     <div class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
-                        <span class="live-elapsed" data-start-ts="${session.started_at_ts || ''}">${formatElapsed(session.elapsed_seconds)}</span>
+                        <span class="live-elapsed" data-start-ts="${session.started_at_ts || ''}">${session.elapsed_display || formatElapsed(session.elapsed_seconds)}</span>
                     </div>
                 </div>
             `;

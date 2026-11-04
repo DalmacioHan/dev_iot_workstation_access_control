@@ -301,20 +301,26 @@
 
                             <td class="px-6 py-4">
 
-                                @if (in_array(strtoupper($log['result']), ['ALLOWED', 'GRANTED', 'SUCCESS'], true))
-
+                                @if (strtolower($log['event_type'] ?? '') === 'time_in')
+                                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                        {{ $log['event_type'] }}
+                                    </span>
+                                @elseif (strtolower($log['event_type'] ?? '') === 'time_out')
+                                    <span class="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+                                        <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                                        {{ $log['event_type'] }}
+                                    </span>
+                                @elseif (in_array(strtoupper($log['result']), ['ALLOWED', 'GRANTED', 'SUCCESS'], true))
                                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                         <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                                         {{ $log['result'] }}
                                     </span>
-
                                 @else
-
                                     <span class="inline-flex items-center gap-1.5 rounded-lg bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600">
                                         <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
                                         {{ $log['result'] }}
                                     </span>
-
                                 @endif
 
                             </td>

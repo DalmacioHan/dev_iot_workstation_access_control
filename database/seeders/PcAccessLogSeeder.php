@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\PcAccessLogs;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class PcAccessLogSeeder extends Seeder
 {
@@ -119,39 +120,73 @@ class PcAccessLogSeeder extends Seeder
         $deviceIds = \App\Models\Device::pluck('id')->toArray();
 
 
-        $startDate = Carbon::create(2026, 10,26 )->startOfDay();
+        $startDate = Carbon::create(2026, 10, 26)->startOfDay();
         $endDate = Carbon::create(2026, 10, 31)->endOfDay();
 
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
-            
-            $logsToday = rand(24, 36);
-            $studentsToday = collect($students)->shuffle()->take($logsToday)->values();
+            $sessionsToday = rand(12, 18);
+            $studentsToday = collect($students)->shuffle()->take($sessionsToday)->values();
+
             foreach ($studentsToday as $student) {
                 [$studentId, $last, $first, $middle] = $student;
                 $studentName = trim("$first $middle $last");
 
-                $device_id = $deviceIds[array_rand($deviceIds)];
+                $deviceId = $deviceIds[array_rand($deviceIds)];
                 $course = $courses[array_rand($courses)];
+                $sessionId = Str::uuid()->toString();
+                $rfidUid = 'RFID' . rand(1000, 9999);
 
-                $occurredAt = Carbon::instance(
+                $timeInAt = Carbon::instance(
                     $date->copy()
-                        ->addHours(rand(7, 18))
+                        ->addHours(rand(7, 17))
                         ->addMinutes(rand(0, 59))
                         ->addSeconds(rand(0, 59))
                 );
-                $receivedAt = (clone $occurredAt)->addSeconds(rand(10, 90));
+                $durationSeconds = rand(5 * 60, 90 * 60);
+                $timeOutAt = (clone $timeInAt)->addSeconds($durationSeconds);
 
                 PcAccessLogs::create([
-                    'occurred_at'          => $occurredAt,
-                    'received_at'          => $receivedAt,
-                    'rfid_uid'             => 'RFID' . rand(1000,9999),
-                    'device_id'            => $device_id,
-                    'event_type'           => 'LOGIN',
-                    'result'               => rand(0, 9) > 0 ? 'ALLOWED' : 'FAIL',
+                    'occurred_at'          => $timeInAt,
+                    'received_at'          => (clone $timeInAt)->addSeconds(rand(10, 90)),
+                    'rfid_uid'             => $rfidUid,
+                    'device_id'            => $deviceId,
+                    'event_type'           => 'time_in',
+                    'result'               => 'allowed',
                     'reason'               => 'Authorized',
+                    'session_id'           => $sessionId,
                     'student_external_id'  => $studentId,
                     'student_name'         => $studentName,
                     'course'               => $course,
+                ]);
+
+                PcAccessLogs::create([
+                    'occurred_at'          => $timeOutAt,
+                    'received_at'          => (clone $timeOutAt)->addSeconds(rand(10, 90)),
+                    'rfid_uid'             => $rfidUid,
+                    'device_id'            => $deviceId,
+                    'event_type'           => 'time_out',
+                    'result'               => 'allowed',
+                    'reason'               => 'Session ended',
+                    'session_id'           => $sessionId,
+                    'student_external_id'  => $studentId,
+                    'student_name'         => $studentName,
+                    'course'               => $course,
+                ]);
+            }
+
+            // A few rejected cards per day so the failed-access cards have data.
+            for ($i = 0; $i < rand(0, 2); $i++) {
+                PcAccessLogs::create([
+                    'occurred_at' => $date->copy()
+                        ->addHours(rand(7, 17))
+                        ->addMinutes(rand(0, 59))
+                        ->addSeconds(rand(0, 59)),
+                    'received_at' => now(),
+                    'rfid_uid'    => 'RFID' . rand(1000, 9999),
+                    'device_id'   => $deviceIds[array_rand($deviceIds)],
+                    'event_type'  => 'denied',
+                    'result'      => 'denied',
+                    'reason'      => 'Card is not registered in the university MIS.',
                 ]);
             }
         }

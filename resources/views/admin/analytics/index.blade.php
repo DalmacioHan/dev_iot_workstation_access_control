@@ -68,7 +68,7 @@
                 <div>
                     <p class="text-sm font-medium text-slate-500">Successful Access</p>
                     <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) ?? 'N/A' }}</p>
-                    <p class="mt-1 text-xs text-slate-400">Successful events today</p>
+                    <p class="mt-1 text-xs text-slate-400">Successful sessions today</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">

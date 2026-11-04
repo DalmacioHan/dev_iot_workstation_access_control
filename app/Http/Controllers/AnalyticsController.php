@@ -16,6 +16,7 @@ class AnalyticsController extends Controller
             'last_30_days' => 'Last 30 days',
             'last_90_days' => 'Last 90 days',
             'last_Year' => 'Last Year',
+            'all_time' => 'All Time',
         ];
         $ALLOWEDRanges = array_keys($rangeLabels);
 
@@ -38,6 +39,7 @@ class AnalyticsController extends Controller
                 'last_30_days' => $now->copy()->subDays(29)->startOfDay(),
                 'last_90_days' => $now->copy()->subDays(89)->startOfDay(),
                 'last_Year' => $now->copy()->subYear()->startOfDay(),
+                'all_time' => Carbon::create(1970, 1, 1)->startOfDay(),
                 default => $now->copy()->startOfDay(),
             };
         };
@@ -57,22 +59,24 @@ class AnalyticsController extends Controller
             ->orderBy('total', 'desc')
             ->take(1)
             ->get();
-        $failedEvents = PcAccessLogs::where('result', 'FAIL')
+        $failedEvents = PcAccessLogs::whereIn('result', ['denied', 'fail'])
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
-        $successfulEvents = PcAccessLogs::where('result', 'ALLOWED')
+        $successfulEvents = PcAccessLogs::where('event_type', 'time_in')
+            ->where('result', 'allowed')
             ->whereBetween('occurred_at', [$todayStart, $todayEnd])
             ->count();
 
-        //line chart
+        //line chart - only count time_in, not time_out
         $peakHoursByHour = PcAccessLogs::query()
-            ->selectRaw('HOUR(received_at) as hour, COUNT(*) as total')
-            ->whereBetween('received_at', [$rangeStart($peakRange), $rangeEnd($peakRange)])
+            ->selectRaw('HOUR(occurred_at) as hour, COUNT(DISTINCT session_id) as total')
             ->whereBetween('occurred_at', [$rangeStart($peakRange), $rangeEnd($peakRange)])
-            ->where('result', 'ALLOWED')
+            ->where('event_type', 'time_in')
+            ->where('result', 'allowed')
             ->whereNotNull('student_name')
             ->where('student_name', '<>', '')
-            ->groupByRaw('HOUR(received_at)')
+            ->whereNotNull('session_id')
+            ->groupByRaw('HOUR(occurred_at)')
             ->orderBy('hour')
             ->pluck('total', 'hour');
 
@@ -80,24 +84,82 @@ class AnalyticsController extends Controller
             return (int) ($peakHoursByHour->get($hour, 0));
         })->values();
 
-        //table data
-        $topStudents = PcAccessLogs::select('student_name', PcAccessLogs::raw('count(*) as total'))
+        //table data - count distinct sessions, add total time
+        $topStudents = PcAccessLogs::query()
+            ->select('student_name')
+            ->selectRaw('COUNT(DISTINCT session_id) as total')
             ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
+            ->where('event_type', 'time_in')
+            ->where('result', 'allowed')
             ->whereNotNull('student_name')
-            ->where('result', 'ALLOWED')
             ->where('student_name', '<>', '')
+            ->whereNotNull('session_id')
             ->groupBy('student_name')
             ->orderBy('total', 'desc')
             ->take(10)
-            ->get();
+            ->get()
+            ->map(function ($student) use ($studentRange, $rangeStart, $rangeEnd) {
+                $sessionIds = PcAccessLogs::where('student_name', $student->student_name)
+                    ->where('event_type', 'time_in')
+                    ->where('result', 'allowed')
+                    ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
+                    ->whereNotNull('session_id')
+                    ->pluck('session_id')
+                    ->unique();
 
-        $topCourses = PcAccessLogs::select('course', PcAccessLogs::raw('count(*) as total'))
+                $totalSeconds = 0;
+                foreach ($sessionIds as $sid) {
+                    $in = PcAccessLogs::where('session_id', $sid)->where('event_type', 'time_in')->where('result', 'allowed')->orderBy('occurred_at')->first();
+                    $out = PcAccessLogs::where('session_id', $sid)->where('event_type', 'time_out')->orderBy('occurred_at')->first();
+                    if ($in && $out && $out->occurred_at >= $in->occurred_at) {
+                        $totalSeconds += $in->occurred_at->diffInSeconds($out->occurred_at);
+                    }
+                }
+                $h = intdiv($totalSeconds, 3600);
+                $m = intdiv($totalSeconds % 3600, 60);
+                $s = $totalSeconds % 60;
+                $student->total_time = "{$h}h {$m}m {$s}s";
+                $student->total_seconds = $totalSeconds;
+                return $student;
+            });
+
+        $topCourses = PcAccessLogs::query()
+            ->select('course')
+            ->selectRaw('COUNT(DISTINCT session_id) as total')
             ->whereBetween('occurred_at', [$rangeStart($courseRange), $rangeEnd($courseRange)])
-            ->where('result', 'ALLOWED')
+            ->where('event_type', 'time_in')
+            ->where('result', 'allowed')
+            ->whereNotNull('course')
+            ->where('course', '<>', '')
+            ->whereNotNull('session_id')
             ->groupBy('course')
             ->orderBy('total', 'desc')
             ->take(10)
-            ->get();
+            ->get()
+            ->map(function ($course) use ($courseRange, $rangeStart, $rangeEnd) {
+                $sessionIds = PcAccessLogs::where('course', $course->course)
+                    ->where('event_type', 'time_in')
+                    ->where('result', 'allowed')
+                    ->whereBetween('occurred_at', [$rangeStart($courseRange), $rangeEnd($courseRange)])
+                    ->whereNotNull('session_id')
+                    ->pluck('session_id')
+                    ->unique();
+
+                $totalSeconds = 0;
+                foreach ($sessionIds as $sid) {
+                    $in = PcAccessLogs::where('session_id', $sid)->where('event_type', 'time_in')->where('result', 'allowed')->orderBy('occurred_at')->first();
+                    $out = PcAccessLogs::where('session_id', $sid)->where('event_type', 'time_out')->orderBy('occurred_at')->first();
+                    if ($in && $out && $out->occurred_at >= $in->occurred_at) {
+                        $totalSeconds += $in->occurred_at->diffInSeconds($out->occurred_at);
+                    }
+                }
+                $h = intdiv($totalSeconds, 3600);
+                $m = intdiv($totalSeconds % 3600, 60);
+                $s = $totalSeconds % 60;
+                $course->total_time = "{$h}h {$m}m {$s}s";
+                $course->total_seconds = $totalSeconds;
+                return $course;
+            });
 
         $studentRangeLabel = $rangeLabels[$studentRange];
         $courseRangeLabel = $rangeLabels[$courseRange];
