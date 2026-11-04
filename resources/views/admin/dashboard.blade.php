@@ -517,17 +517,7 @@
 
             <div class="mt-2 flex items-end gap-2">
 
-                <span class="text-3xl font-bold text-gray-900">
-
-                    {{ number_format($totalStudents ?? 0) }}
-
-                </span>
-
-                <span class="mb-1 text-sm text-gray-500">
-
-                    students
-
-                </span>
+                
 
             </div>
 
