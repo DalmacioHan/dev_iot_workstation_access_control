@@ -140,29 +140,8 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[520px] text-left text-sm text-slate-600">
-                    <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
-                        <tr>
-                            <th scope="col" class="px-6 py-4 font-semibold">#</th>
-                            <th scope="col" class="px-6 py-4 font-semibold">Student Name</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access (Sessions)</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold">Overall Time</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        @forelse($topStudents as $index => $student)
-                            <tr class="transition-colors hover:bg-blue-50/30">
-                                <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
-                                <td class="px-6 py-4 font-semibold text-slate-800">{{ $student->student_name }}</td>
-                                <td class="px-6 py-4 text-center font-semibold text-blue-700">{{ number_format($student->total) }}</td>
-                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-700">{{ $student->total_time ?? '0h 0m 0s' }}</td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="4" class="px-6 py-12 text-center text-sm text-slate-400">No student activity found for this period.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            <div class="px-6 pb-6">
+                <div id="top-students-chart" class="min-h-70"></div>
             </div>
         </div>
 
@@ -186,29 +165,8 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[520px] text-left text-sm text-slate-600">
-                    <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
-                        <tr>
-                            <th scope="col" class="px-6 py-4 font-semibold">#</th>
-                            <th scope="col" class="px-6 py-4 font-semibold">Course Name</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold">Access (Sessions)</th>
-                            <th scope="col" class="px-6 py-4 text-center font-semibold">Overall Time</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        @forelse($topCourses as $index => $course)
-                            <tr class="transition-colors hover:bg-blue-50/30">
-                                <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
-                                <td class="px-6 py-4 font-semibold text-slate-800">{{ $course->course }}</td>
-                                <td class="px-6 py-4 text-center font-semibold text-blue-700">{{ number_format($course->total) }}</td>
-                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-700">{{ $course->total_time ?? '0h 0m 0s' }}</td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="4" class="px-6 py-12 text-center text-sm text-slate-400">No course activity found for this period.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            <div class="px-6 pb-6">
+                <div id="top-courses-chart" class="min-h-70"></div>
             </div>
         </div>
     </div>
@@ -241,8 +199,8 @@ document.addEventListener('DOMContentLoaded', function () {
             height: "100%",
             width: "100%",
             fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-            toolbar: { show: false },
-            zoom: { enabled: true }
+            toolbar: { show: true },
+            zoom: { enabled: false }
         },
         series: [{
             name: 'Access events',
@@ -298,6 +256,88 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     chart.render();
+
+    const renderRankedBarChart = (elementId, entries, emptyMessage, color) => {
+        const element = document.querySelector(`#${elementId}`);
+
+        if (!element) {
+            return;
+        }
+
+        const labels = entries.map((entry) => entry.label);
+        const values = entries.map((entry) => Number(entry.total));
+
+        if (!values.length) {
+            element.innerHTML = `<p class="py-12 text-center text-sm text-slate-400">${emptyMessage}</p>`;
+            return;
+        }
+
+        new ApexCharts(element, {
+            series: [{
+                name: 'Access',
+                data: values
+            }],
+            chart: {
+                type: 'bar',
+                height: Math.max(260, values.length * 42),
+                width: '100%',
+                fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+                toolbar: { show: true }
+            },
+            colors: [color],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    barHeight: '58%',
+                    borderRadius: 6,
+                    borderRadiusApplication: 'end'
+                }
+            },
+            dataLabels: { enabled: true },
+            grid: {
+                borderColor: '#F3F4F6',
+                strokeDashArray: 4,
+                padding: { left: 8, right: 12 }
+            },
+            xaxis: {
+                categories: labels,
+                min: 0,
+                labels: {
+                    style: { colors: '#9CA3AF', fontSize: '12px' },
+                    formatter: (value) => Math.round(value).toLocaleString()
+                },
+                axisBorder: { show: false },
+                axisTicks: { show: false }
+            },
+            yaxis: {
+                labels: {
+                    style: { colors: '#6B7280', fontSize: '12px' },
+                    maxWidth: 150
+                }
+            },
+            tooltip: {
+                theme: 'light',
+                y: {
+                    formatter: (value) => `${Number(value).toLocaleString()} accesses`
+                }
+            },
+            legend: { show: false }
+        }).render();
+    };
+
+    renderRankedBarChart(
+        'top-students-chart',
+        @json($topStudents->map(fn ($student) => ['label' => $student->student_name, 'total' => $student->total])->values()),
+        'No student activity found for this period.',
+        '#2563EB'
+    );
+
+    renderRankedBarChart(
+        'top-courses-chart',
+        @json($topCourses->map(fn ($course) => ['label' => $course->course, 'total' => $course->total])->values()),
+        'No course activity found for this period.',
+        '#1D4ED8'
+    );
 });
 </script>
 @endsection
