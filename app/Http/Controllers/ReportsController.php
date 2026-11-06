@@ -243,12 +243,6 @@ class ReportsController extends Controller
         );
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Export PDF
-    |--------------------------------------------------------------------------
-    */
     public function exportPdf(Request $request)
     {
         return $this
@@ -258,12 +252,6 @@ class ReportsController extends Controller
             );
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Preview PDF
-    |--------------------------------------------------------------------------
-    */
     public function previewPdf(Request $request)
     {
         $logs = $this->filteredLogsQuery($request)
