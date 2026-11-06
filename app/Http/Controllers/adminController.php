@@ -57,9 +57,9 @@ class AdminController extends Controller
         // Device stats
         $totalDevices = Device::count();
         $pairedDevices = Device::where('is_paired', 1)->count();
-        $onlineDevices = Device::where('is_paired', 1)
-        ->where('last_seen_at', '>=', now()->subSeconds(90))
-        ->count();
+        //  $onlineDevices = Device::where('is_paired', 1)
+        // ->where('last_seen_at', '>=', now()->subSeconds(90))
+        // ->count();
         
 
         $totalLogins = $inRange(
@@ -282,7 +282,7 @@ class AdminController extends Controller
             });
 
         return view('admin.dashboard', compact(
-            'totalDevices', 'pairedDevices', 'onlineDevices',
+            'totalDevices', 'pairedDevices',
             'weeklyVisitors', 'male', 'female', 'columnChartDays',
             'avgSessionDuration', 'courseDistribution', 'totalStudents',
             'totalLogins', 'uniqueStudents', 'activeSessions',

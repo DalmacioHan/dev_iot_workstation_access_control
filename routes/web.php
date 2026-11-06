@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
@@ -80,5 +81,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/device/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
         Route::put('/device/{device}/update', [DeviceController::class, 'update'])->name('device.update');
         Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
+        Route::get('/settings',[SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings',[SettingController::class, 'update'])->name('settings.update');
     });
 });
