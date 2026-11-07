@@ -176,7 +176,7 @@
                     class="mt-3 flex items-center justify-between text-xs text-blue-100"
                 >
 
-                    <span>
+                    {{-- <span>
                         {{ number_format($activeDevices ?? 0) }} active
                     </span>
 
@@ -184,7 +184,7 @@
                         {{ ($totalDevices ?? 0) > 0
                             ? round((($activeDevices ?? 0) / $totalDevices) * 100)
                             : 0 }}%
-                    </span>
+                    </span> --}}
 
                 </div>
 
