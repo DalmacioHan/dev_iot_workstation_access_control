@@ -86,7 +86,7 @@
                             </p>
 
                             <p class="text-[11px] font-medium text-gray-400">
-                                Library Management
+                                Workstation Management
                             </p>
 
                         </div>
