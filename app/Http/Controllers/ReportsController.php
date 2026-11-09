@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\PcAccessLogs;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelPdf\Enums\Format;
@@ -14,16 +15,18 @@ class ReportsController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Reports Page
+    | ACCESS LOG REPORT
     |--------------------------------------------------------------------------
     */
+
     public function index(Request $request)
     {
         /*
         |--------------------------------------------------------------------------
-        | Course Filter Options
+        | Filter Options
         |--------------------------------------------------------------------------
         */
+
         $courses = PcAccessLogs::query()
             ->whereNotNull('course')
             ->where('course', '!=', '')
@@ -32,11 +35,6 @@ class ReportsController extends Controller
             ->pluck('course');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Device / Workstation Filter Options
-        |--------------------------------------------------------------------------
-        */
         $devices = Device::query()
             ->whereNotNull('workstation_name')
             ->where('workstation_name', '!=', '')
@@ -45,11 +43,6 @@ class ReportsController extends Controller
             ->pluck('workstation_name');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Event Filter Options
-        |--------------------------------------------------------------------------
-        */
         $events = PcAccessLogs::query()
             ->whereNotNull('event_type')
             ->where('event_type', '!=', '')
@@ -58,11 +51,6 @@ class ReportsController extends Controller
             ->pluck('event_type');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Result Filter Options
-        |--------------------------------------------------------------------------
-        */
         $results = PcAccessLogs::query()
             ->whereNotNull('result')
             ->where('result', '!=', '')
@@ -71,11 +59,6 @@ class ReportsController extends Controller
             ->pluck('result');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Reason Filter Options
-        |--------------------------------------------------------------------------
-        */
         $reasons = PcAccessLogs::query()
             ->whereNotNull('reason')
             ->where('reason', '!=', '')
@@ -88,160 +71,46 @@ class ReportsController extends Controller
         |--------------------------------------------------------------------------
         | Access Logs
         |--------------------------------------------------------------------------
-        |
-        | Search + filters are all handled by filteredLogsQuery().
-        |
         */
-        $logs = $this->filteredLogsQuery($request)
-            ->orderBy('pc_access_logs.occurred_at', 'asc')
+
+        $logs = $this
+            ->filteredLogsQuery($request)
+            ->orderBy(
+                'pc_access_logs.occurred_at',
+                'asc'
+            )
             ->paginate(20)
-            ->appends($request->query());
+            ->appends(
+                $request->query()
+            );
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Visible Table / Export Columns
-        |--------------------------------------------------------------------------
-        */
-        $columns = $this->selectedColumns($request);
+        $columns =
+            $this->selectedColumns(
+                $request
+            );
 
 
-        return view('admin.reports.index', compact(
-            'logs',
-            'courses',
-            'devices',
-            'events',
-            'results',
-            'reasons',
-            'columns'
-        ));
+        return view(
+            'admin.reports.AccessLogReport.index',
+            compact(
+                'logs',
+                'courses',
+                'devices',
+                'events',
+                'results',
+                'reasons',
+                'columns'
+            )
+        );
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Export CSV
+    | ACCESS LOG PDF DOWNLOAD
     |--------------------------------------------------------------------------
     */
-    public function exportCsv(Request $request)
-    {
-        $filename =
-            'access-report-' .
-            now()->format('Y-m-d_H-i-s') .
-            '.csv';
-
-
-        $includeCourse =
-            $this->selectedColumns($request)['course'];
-
-
-        return response()->streamDownload(
-            function () use ($request, $includeCourse) {
-
-                $handle =
-                    fopen('php://output', 'w');
-
-
-                /*
-                |--------------------------------------------------------------------------
-                | UTF-8 BOM for Excel compatibility
-                |--------------------------------------------------------------------------
-                */
-                fwrite(
-                    $handle,
-                    "\xEF\xBB\xBF"
-                );
-
-
-                $headers = [
-                    'ID',
-                    'Date & Time',
-                    'Device',
-                    'Event',
-                    'Result',
-                    'Reason',
-                ];
-
-
-                if ($includeCourse) {
-
-                    array_splice(
-                        $headers,
-                        2,
-                        0,
-                        ['Course']
-                    );
-
-                }
-
-
-                fputcsv(
-                    $handle,
-                    $headers
-                );
-
-
-                /*
-                |--------------------------------------------------------------------------
-                | Search and all filters are also applied to CSV.
-                |--------------------------------------------------------------------------
-                */
-                $this->filteredLogsQuery($request)
-                    ->orderBy(
-                        'pc_access_logs.occurred_at',
-                        'asc'
-                    )
-                    ->cursor()
-                    ->each(
-                        function ($log) use (
-                            $handle,
-                            $includeCourse
-                        ) {
-
-                            $row = [
-                                $log->id,
-                                $log->occurred_at,
-
-                                // Corrected from $log->device
-                                $log->workstation_name,
-
-                                $log->event_type,
-                                $log->result,
-                                $log->reason,
-                            ];
-
-
-                            if ($includeCourse) {
-
-                                array_splice(
-                                    $row,
-                                    2,
-                                    0,
-                                    [$log->course]
-                                );
-
-                            }
-
-
-                            fputcsv(
-                                $handle,
-                                $row
-                            );
-
-                        }
-                    );
-
-
-                fclose($handle);
-
-            },
-            $filename,
-            [
-                'Content-Type' =>
-                    'text/csv; charset=UTF-8',
-            ]
-        );
-    }
 
     public function exportPdf(Request $request)
     {
@@ -252,9 +121,19 @@ class ReportsController extends Controller
             );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESS LOG PDF PREVIEW
+    |--------------------------------------------------------------------------
+    */
+
     public function previewPdf(Request $request)
     {
-        $logs = $this->filteredLogsQuery($request)
+        $logs = $this
+            ->filteredLogsQuery(
+                $request
+            )
             ->orderBy(
                 'pc_access_logs.occurred_at',
                 'asc'
@@ -263,12 +142,15 @@ class ReportsController extends Controller
 
 
         return Pdf::view(
-            'admin.reports.pdf',
+            'admin.reports.AccessLogReport.pdf',
             [
-                'logs' => $logs,
+                'logs' =>
+                    $logs,
 
                 'columns' =>
-                    $this->selectedColumns($request),
+                    $this->selectedColumns(
+                        $request
+                    ),
 
                 'filters' =>
                     $request->only([
@@ -287,10 +169,10 @@ class ReportsController extends Controller
             ]
         )
             ->headerView(
-                'admin.reports.header'
+                'admin.reports.AccessLogReport.header'
             )
             ->footerView(
-                'admin.reports.footer'
+                'admin.reports.AccessLogReport.footer'
             )
             ->margins(
                 45,
@@ -310,12 +192,18 @@ class ReportsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Build PDF
+    | BUILD ACCESS LOG PDF
     |--------------------------------------------------------------------------
     */
-    private function reportPdf(Request $request)
-    {
-        $logs = $this->filteredLogsQuery($request)
+
+    private function reportPdf(
+        Request $request
+    ) {
+
+        $logs = $this
+            ->filteredLogsQuery(
+                $request
+            )
             ->orderBy(
                 'pc_access_logs.occurred_at',
                 'asc'
@@ -324,12 +212,15 @@ class ReportsController extends Controller
 
 
         return Pdf::view(
-            'admin.reports.pdf',
+            'admin.reports.AccessLogReport.pdf',
             [
-                'logs' => $logs,
+                'logs' =>
+                    $logs,
 
                 'columns' =>
-                    $this->selectedColumns($request),
+                    $this->selectedColumns(
+                        $request
+                    ),
 
                 'filters' =>
                     $request->only([
@@ -348,10 +239,10 @@ class ReportsController extends Controller
             ]
         )
             ->headerView(
-                'admin.reports.header'
+                'admin.reports.AccessLogReport.header'
             )
             ->footerView(
-                'admin.reports.footer'
+                'admin.reports.AccessLogReport.footer'
             )
             ->margins(
                 45,
@@ -368,32 +259,31 @@ class ReportsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | PDF Filename
+    | ACCESS LOG PDF FILENAME
     |--------------------------------------------------------------------------
     */
+
     private function reportFilename(): string
     {
         return
             'access-report-' .
-            now()->format('Y-m-d_H-i-s') .
+            now()->format(
+                'Y-m-d_H-i-s'
+            ) .
             '.pdf';
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Selected Columns
+    | ACCESS LOG SELECTED COLUMNS
     |--------------------------------------------------------------------------
     */
+
     private function selectedColumns(
         Request $request
     ): array {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Default columns
-        |--------------------------------------------------------------------------
-        */
         if (
             !$request->boolean(
                 'columns_configured'
@@ -407,7 +297,6 @@ class ReportsController extends Controller
                 'date_time' => true,
                 'event' => true,
             ];
-
         }
 
 
@@ -419,6 +308,7 @@ class ReportsController extends Controller
 
 
         return [
+
             'student_name' =>
                 array_key_exists(
                     'student_name',
@@ -454,9 +344,10 @@ class ReportsController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Filtered Access Log Query
+    | ACCESS LOG FILTER QUERY
     |--------------------------------------------------------------------------
     */
+
     private function filteredLogsQuery(
         Request $request
     ) {
@@ -467,7 +358,6 @@ class ReportsController extends Controller
             ->select(
                 'pc_access_logs.id',
                 'pc_access_logs.occurred_at',
-
                 'pc_access_logs.rfid_uid',
                 'pc_access_logs.student_external_id',
                 'pc_access_logs.student_name',
@@ -493,29 +383,20 @@ class ReportsController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | SEARCH ACCESS LOGS
+        | Search
         |--------------------------------------------------------------------------
-        |
-        | The user can search using:
-        |
-        | - Student name
-        | - Student external ID
-        | - RFID UID
-        | - Course
-        | - Workstation name
-        | - Device UID
-        | - Session ID
-        | - Event type
-        | - Result
-        | - Reason
-        | - Numeric access log ID
-        |
         */
-        if ($request->filled('search')) {
+
+        if (
+            $request->filled(
+                'search'
+            )
+        ) {
 
             $search =
                 trim(
-                    (string) $request->input(
+                    (string)
+                    $request->input(
                         'search'
                     )
                 );
@@ -528,7 +409,9 @@ class ReportsController extends Controller
 
 
             $query->where(
-                function ($searchQuery) use (
+                function (
+                    $searchQuery
+                ) use (
                     $search,
                     $like
                 ) {
@@ -586,23 +469,19 @@ class ReportsController extends Controller
                         );
 
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Allow searching by access log ID
-                    |--------------------------------------------------------------------------
-                    */
-                    if (ctype_digit($search)) {
+                    if (
+                        ctype_digit(
+                            $search
+                        )
+                    ) {
 
                         $searchQuery->orWhere(
                             'pc_access_logs.id',
                             (int) $search
                         );
-
                     }
-
                 }
             );
-
         }
 
 
@@ -611,14 +490,18 @@ class ReportsController extends Controller
         | Date From
         |--------------------------------------------------------------------------
         */
-        if ($request->filled('date_from')) {
+
+        if (
+            $request->filled(
+                'date_from'
+            )
+        ) {
 
             $query->whereDate(
                 'pc_access_logs.occurred_at',
                 '>=',
                 $request->date_from
             );
-
         }
 
 
@@ -627,14 +510,18 @@ class ReportsController extends Controller
         | Date To
         |--------------------------------------------------------------------------
         */
-        if ($request->filled('date_to')) {
+
+        if (
+            $request->filled(
+                'date_to'
+            )
+        ) {
 
             $query->whereDate(
                 'pc_access_logs.occurred_at',
                 '<=',
                 $request->date_to
             );
-
         }
 
 
@@ -643,37 +530,36 @@ class ReportsController extends Controller
         | Course
         |--------------------------------------------------------------------------
         */
-        if ($request->filled('course')) {
+
+        if (
+            $request->filled(
+                'course'
+            )
+        ) {
 
             $query->where(
                 'pc_access_logs.course',
                 $request->course
             );
-
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Workstation / Device
+        | Workstation
         |--------------------------------------------------------------------------
-        |
-        | Corrected:
-        |
-        | devices.w
-        |
-        | to:
-        |
-        | devices.workstation_name
-        |
         */
-        if ($request->filled('device')) {
+
+        if (
+            $request->filled(
+                'device'
+            )
+        ) {
 
             $query->where(
                 'devices.workstation_name',
                 $request->device
             );
-
         }
 
 
@@ -682,13 +568,17 @@ class ReportsController extends Controller
         | Event
         |--------------------------------------------------------------------------
         */
-        if ($request->filled('event')) {
+
+        if (
+            $request->filled(
+                'event'
+            )
+        ) {
 
             $query->where(
                 'pc_access_logs.event_type',
                 $request->event
             );
-
         }
 
 
@@ -697,13 +587,17 @@ class ReportsController extends Controller
         | Result
         |--------------------------------------------------------------------------
         */
-        if ($request->filled('result')) {
+
+        if (
+            $request->filled(
+                'result'
+            )
+        ) {
 
             $query->where(
                 'pc_access_logs.result',
                 $request->result
             );
-
         }
 
 
@@ -712,16 +606,659 @@ class ReportsController extends Controller
         | Reason
         |--------------------------------------------------------------------------
         */
-        if ($request->filled('reason')) {
+
+        if (
+            $request->filled(
+                'reason'
+            )
+        ) {
 
             $query->where(
                 'pc_access_logs.reason',
                 $request->reason
             );
-
         }
 
 
         return $query;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    | STUDENT SUMMARY REPORT
+    |--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    */
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUMMARY REPORT PAGE
+    |--------------------------------------------------------------------------
+    */
+
+    public function summaryReport(
+        Request $request
+    ) {
+
+        $filters =
+            $this->summaryFilters(
+                $request
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Filter Options
+        |--------------------------------------------------------------------------
+        */
+
+        $courses = PcAccessLogs::query()
+            ->whereNotNull(
+                'course'
+            )
+            ->where(
+                'course',
+                '!=',
+                ''
+            )
+            ->distinct()
+            ->orderBy(
+                'course'
+            )
+            ->pluck(
+                'course'
+            );
+
+
+        $devices = Device::query()
+            ->whereNotNull(
+                'workstation_name'
+            )
+            ->where(
+                'workstation_name',
+                '!=',
+                ''
+            )
+            ->distinct()
+            ->orderBy(
+                'workstation_name'
+            )
+            ->pluck(
+                'workstation_name'
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Student Summary
+        |--------------------------------------------------------------------------
+        |
+        | One row = one student.
+        |
+        */
+
+        $students = $this
+            ->studentSummaryQuery(
+                $filters
+            )
+            ->orderBy(
+                'student_name'
+            )
+            ->paginate(20)
+            ->withQueryString();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Date Values
+        |--------------------------------------------------------------------------
+        */
+
+        $dateFrom =
+            $filters['date_from'];
+
+
+        $dateTo =
+            $filters['date_to'];
+
+
+        $periodLabel =
+            Carbon::parse(
+                $dateFrom
+            )->format(
+                'M d, Y'
+            )
+            . ' – ' .
+            Carbon::parse(
+                $dateTo
+            )->format(
+                'M d, Y'
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Summary View
+        |--------------------------------------------------------------------------
+        */
+
+        return view(
+            'admin.reports.SummaryReport.index',
+            compact(
+                'students',
+                'courses',
+                'devices',
+                'dateFrom',
+                'dateTo',
+                'periodLabel'
+            )
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUMMARY PDF PREVIEW
+    |--------------------------------------------------------------------------
+    */
+
+    public function summaryPreviewPdf(
+        Request $request
+    ) {
+
+        $filters =
+            $this->summaryFilters(
+                $request
+            );
+
+
+        $students = $this
+            ->studentSummaryQuery(
+                $filters
+            )
+            ->orderBy(
+                'student_name'
+            )
+            ->get();
+
+
+        return $this
+            ->summaryPdf(
+                $students,
+                $filters
+            )
+            ->inline(
+                'student-summary-report-preview.pdf'
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUMMARY PDF DOWNLOAD
+    |--------------------------------------------------------------------------
+    */
+
+    public function summaryExportPdf(
+        Request $request
+    ) {
+
+        $filters =
+            $this->summaryFilters(
+                $request
+            );
+
+
+        $students = $this
+            ->studentSummaryQuery(
+                $filters
+            )
+            ->orderBy(
+                'student_name'
+            )
+            ->get();
+
+
+        return $this
+            ->summaryPdf(
+                $students,
+                $filters
+            )
+            ->download(
+                $this->summaryReportFilename()
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | BUILD SUMMARY PDF
+    |--------------------------------------------------------------------------
+    */
+
+    private function summaryPdf(
+        $students,
+        array $filters
+    ) {
+
+        $periodLabel =
+            Carbon::parse(
+                $filters['date_from']
+            )->format(
+                'M d, Y'
+            )
+            . ' – ' .
+            Carbon::parse(
+                $filters['date_to']
+            )->format(
+                'M d, Y'
+            );
+
+
+        return Pdf::view(
+            'admin.reports.SummaryReport.pdf',
+            [
+                'students' =>
+                    $students,
+
+                'filters' =>
+                    $filters,
+
+                'periodLabel' =>
+                    $periodLabel,
+
+                'generatedAt' =>
+                    now(),
+            ]
+        )
+            /*
+            |--------------------------------------------------------------------------
+            | Separate Summary Report Header / Footer
+            |--------------------------------------------------------------------------
+            |
+            | Create:
+            |
+            | admin/reports/SummaryReport/header.blade.php
+            | admin/reports/SummaryReport/footer.blade.php
+            |
+            */
+
+            ->headerView(
+                'admin.reports.SummaryReport.header'
+            )
+            ->footerView(
+                'admin.reports.SummaryReport.footer'
+            )
+            ->margins(
+                45,
+                12,
+                35,
+                12,
+                Unit::Millimeter
+            )
+            ->format(
+                Format::A4
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STUDENT SUMMARY QUERY
+    |--------------------------------------------------------------------------
+    |
+    | One row is returned for each student_external_id.
+    |
+    */
+
+    private function studentSummaryQuery(
+        array $filters
+    ) {
+
+        $startDate =
+            Carbon::parse(
+                $filters['date_from']
+            )->startOfDay();
+
+
+        $endDate =
+            Carbon::parse(
+                $filters['date_to']
+            )->endOfDay();
+
+
+        $query = DB::table(
+            'pc_access_logs'
+        )
+            ->leftJoin(
+                'devices',
+                'pc_access_logs.device_id',
+                '=',
+                'devices.id'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | TIME IN records represent access attempts.
+            |--------------------------------------------------------------------------
+            */
+
+            ->where(
+                'pc_access_logs.event_type',
+                'time_in'
+            )
+
+            ->whereBetween(
+                'pc_access_logs.occurred_at',
+                [
+                    $startDate,
+                    $endDate,
+                ]
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Require a Student ID
+            |--------------------------------------------------------------------------
+            */
+
+            ->whereNotNull(
+                'pc_access_logs.student_external_id'
+            )
+
+            ->where(
+                'pc_access_logs.student_external_id',
+                '!=',
+                ''
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Group Identifier
+            |--------------------------------------------------------------------------
+            */
+
+            ->select(
+                'pc_access_logs.student_external_id'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Student Information
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw(
+                'MAX(pc_access_logs.student_name) AS student_name'
+            )
+
+            ->selectRaw(
+                'MAX(pc_access_logs.course) AS course'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Total Attempts
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw(
+                'COUNT(*) AS total_attempts'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | Allowed Attempts
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw("
+                SUM(
+                    CASE
+                        WHEN pc_access_logs.result = 'allowed'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS allowed_accesses
+            ")
+
+            /*
+            |--------------------------------------------------------------------------
+            | Denied Attempts
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw("
+                SUM(
+                    CASE
+                        WHEN pc_access_logs.result = 'denied'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS denied_accesses
+            ")
+
+            /*
+            |--------------------------------------------------------------------------
+            | Successful Sessions
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw("
+                COUNT(
+                    DISTINCT CASE
+                        WHEN pc_access_logs.result = 'allowed'
+                        THEN pc_access_logs.session_id
+                    END
+                ) AS total_sessions
+            ")
+
+            /*
+            |--------------------------------------------------------------------------
+            | Number of Workstations Used
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw(
+                'COUNT(DISTINCT pc_access_logs.device_id) AS workstations_used'
+            )
+
+            /*
+            |--------------------------------------------------------------------------
+            | First Successful Access
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw("
+                MIN(
+                    CASE
+                        WHEN pc_access_logs.result = 'allowed'
+                        THEN pc_access_logs.occurred_at
+                    END
+                ) AS first_access
+            ")
+
+            /*
+            |--------------------------------------------------------------------------
+            | Last Successful Access
+            |--------------------------------------------------------------------------
+            */
+
+            ->selectRaw("
+                MAX(
+                    CASE
+                        WHEN pc_access_logs.result = 'allowed'
+                        THEN pc_access_logs.occurred_at
+                    END
+                ) AS last_access
+            ");
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Course Filter
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            !empty(
+                $filters['course']
+            )
+        ) {
+
+            $query->where(
+                'pc_access_logs.course',
+                $filters['course']
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Workstation Filter
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            !empty(
+                $filters['device']
+            )
+        ) {
+
+            $query->where(
+                'devices.workstation_name',
+                $filters['device']
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Group By Student
+        |--------------------------------------------------------------------------
+        */
+
+        return $query
+            ->groupBy(
+                'pc_access_logs.student_external_id'
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUMMARY FILTERS
+    |--------------------------------------------------------------------------
+    */
+
+    private function summaryFilters(
+        Request $request
+    ): array {
+
+        $validated =
+            $request->validate([
+                'date_from' => [
+                    'nullable',
+                    'date',
+                ],
+
+                'date_to' => [
+                    'nullable',
+                    'date',
+                ],
+
+                'course' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+
+                'device' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                ],
+            ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Date Range
+        |--------------------------------------------------------------------------
+        |
+        | Current month.
+        |
+        */
+
+        $dateFrom =
+            $validated['date_from']
+            ?? now()
+                ->startOfMonth()
+                ->toDateString();
+
+
+        $dateTo =
+            $validated['date_to']
+            ?? now()
+                ->endOfMonth()
+                ->toDateString();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Protect against invalid reversed ranges.
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            Carbon::parse($dateTo)
+                ->lt(
+                    Carbon::parse(
+                        $dateFrom
+                    )
+                )
+        ) {
+
+            $dateTo =
+                $dateFrom;
+        }
+
+
+        return [
+
+            'date_from' =>
+                $dateFrom,
+
+            'date_to' =>
+                $dateTo,
+
+            'course' =>
+                $validated['course']
+                ?? null,
+
+            'device' =>
+                $validated['device']
+                ?? null,
+        ];
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUMMARY PDF FILENAME
+    |--------------------------------------------------------------------------
+    */
+
+    private function summaryReportFilename(): string
+    {
+        return
+            'student-summary-report-' .
+            now()->format(
+                'Y-m-d_H-i-s'
+            ) .
+            '.pdf';
     }
 }

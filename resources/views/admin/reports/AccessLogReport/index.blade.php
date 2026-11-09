@@ -61,7 +61,7 @@
             <h1
                 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
             >
-                Reports Dashboard
+               Access Log Reports 
             </h1>
 
 
@@ -82,7 +82,7 @@
 
             {{-- Preview PDF --}}
             <a
-                href="{{ route('reports.preview', request()->query()) }}"
+                href="{{ route('reports.accesslog.preview', request()->query()) }}"
                 target="_blank"
                 rel="noopener"
                 class="inline-flex h-10 items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 text-sm font-semibold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100 focus:outline-none focus:ring-4 focus:ring-blue-100"
@@ -115,7 +115,7 @@
 
             {{-- PDF --}}
             <a
-                href="{{ route('reports.pdf', request()->query()) }}"
+                href="{{ route('reports.accesslog.pdf', request()->query()) }}"
                 class="inline-flex h-10 items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700 focus:outline-none focus:ring-4 focus:ring-gray-100"
             >
 
@@ -153,7 +153,7 @@
     ========================================================== --}}
     <form
         method="GET"
-        action="{{ route('reports') }}"
+        action="{{ route('reports.accesslog') }}"
         class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm"
     >
 
@@ -726,7 +726,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row">
 
                     <a
-                        href="{{ route('reports') }}"
+                        href="{{ route('reports.accesslog') }}"
                         class="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100"
                     >
 
@@ -1263,7 +1263,7 @@
                                     @if(request('search'))
 
                                         <a
-                                            href="{{ route('reports', request()->except('search', 'page')) }}"
+                                            href="{{ route('reports.accesslog', request()->except('search', 'page')) }}"
                                             class="mt-4 inline-flex items-center rounded-xl bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:bg-blue-100"
                                         >
                                             Clear Search

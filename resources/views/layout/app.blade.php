@@ -2,22 +2,44 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Dashboard') | OLH</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="ie=edge"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+
+    <title>
+        @yield('title', 'Dashboard') | OLH
+    </title>
+
+
+    @vite([
+        'resources/css/app.css',
+        'resources/js/app.js'
+    ])
+
 
     {{-- Flowbite --}}
     <link
         href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"
         rel="stylesheet"
-    />
+    >
 
 </head>
+
 
 <body class="bg-gray-50 text-gray-900 antialiased">
 
@@ -27,10 +49,14 @@
     <nav
         class="fixed top-0 z-50 w-full border-b border-gray-200 bg-white"
     >
+
         <div class="px-4 py-3 lg:px-6">
 
             <div class="flex items-center justify-between">
 
+                {{-- =================================================
+                    LEFT SIDE
+                ================================================== --}}
                 <div class="flex items-center">
 
                     {{-- Mobile Sidebar Button --}}
@@ -41,9 +67,11 @@
                         type="button"
                         class="mr-3 inline-flex h-10 w-10 items-center justify-center rounded-xl text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:hidden"
                     >
+
                         <span class="sr-only">
                             Open sidebar
                         </span>
+
 
                         <svg
                             class="h-5 w-5"
@@ -72,21 +100,28 @@
                         <div
                             class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-blue-600 shadow-sm"
                         >
+
                             <img
                                 src="{{ asset('image/library_logo.jpg') }}"
                                 class="h-full w-full object-cover"
                                 alt="OLH Logo"
                             >
+
                         </div>
 
 
                         <div class="hidden sm:block">
 
-                            <p class="text-base font-bold tracking-tight text-gray-900">
+                            <p
+                                class="text-base font-bold tracking-tight text-gray-900"
+                            >
                                 OLH
                             </p>
 
-                            <p class="text-[11px] font-medium text-gray-400">
+
+                            <p
+                                class="text-[11px] font-medium text-gray-400"
+                            >
                                 Workstation Management
                             </p>
 
@@ -97,16 +132,19 @@
                 </div>
 
 
-                {{-- =====================================================
+                {{-- =================================================
                     RIGHT SIDE
-                ====================================================== --}}
+                ================================================== --}}
                 <div class="flex items-center gap-3">
 
-                    {{-- Divider --}}
-                    <div class="hidden h-8 w-px bg-gray-200 sm:block"></div>
+                    <div
+                        class="hidden h-8 w-px bg-gray-200 sm:block"
+                    ></div>
 
 
-                    {{-- USER MENU --}}
+                    {{-- =================================================
+                        USER MENU
+                    ================================================== --}}
                     <div class="relative">
 
                         <button
@@ -116,7 +154,6 @@
                             data-dropdown-toggle="dropdown-user"
                         >
 
-                            {{-- Avatar --}}
                             <img
                                 class="h-9 w-9 rounded-xl object-cover ring-2 ring-gray-100"
                                 src="{{ Auth::user()->profile_picture
@@ -126,7 +163,6 @@
                             >
 
 
-                            {{-- User information --}}
                             <div class="hidden text-left md:block">
 
                                 <p
@@ -134,6 +170,7 @@
                                 >
                                     {{ Auth::user()->name }}
                                 </p>
+
 
                                 <p
                                     class="max-w-[140px] truncate text-xs text-gray-400"
@@ -144,7 +181,6 @@
                             </div>
 
 
-                            {{-- Chevron --}}
                             <svg
                                 class="hidden h-4 w-4 text-gray-400 md:block"
                                 fill="none"
@@ -162,15 +198,13 @@
                         </button>
 
 
-                        {{-- =================================================
-                            USER DROPDOWN
-                        ================================================== --}}
+                        {{-- User Dropdown --}}
                         <div
                             id="dropdown-user"
                             class="z-50 hidden w-64 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl"
                         >
 
-                            {{-- User header --}}
+                            {{-- User Header --}}
                             <div
                                 class="border-b border-gray-100 bg-gray-50/70 px-4 py-4"
                             >
@@ -194,6 +228,7 @@
                                             {{ Auth::user()->name }}
                                         </p>
 
+
                                         <p
                                             class="truncate text-xs text-gray-500"
                                         >
@@ -207,7 +242,6 @@
                             </div>
 
 
-                            {{-- Dropdown Menu --}}
                             <ul class="p-2 text-sm text-gray-700">
 
                                 {{-- Dashboard --}}
@@ -268,7 +302,7 @@
                                 </li>
 
 
-                                {{-- Settings --}}
+                                {{-- System Settings --}}
                                 @if(auth()->user()->isSuperAdmin())
 
                                     <li>
@@ -284,6 +318,7 @@
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
                                             >
+
                                                 <path
                                                     stroke-linecap="round"
                                                     stroke-linejoin="round"
@@ -297,6 +332,7 @@
                                                     r="4"
                                                     stroke-width="1.8"
                                                 />
+
                                             </svg>
 
                                             System Settings
@@ -360,9 +396,11 @@
         aria-label="Sidebar"
     >
 
-        <div class="flex h-full flex-col px-4 pb-5">
+        <div
+            class="flex h-full flex-col overflow-y-auto px-4 pb-5"
+        >
 
-            {{-- Sidebar heading --}}
+            {{-- Sidebar Heading --}}
             <div class="mb-5 px-2">
 
                 <p
@@ -495,6 +533,7 @@
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
+
                                 <rect
                                     x="4"
                                     y="4"
@@ -517,6 +556,7 @@
                                     stroke-width="1.8"
                                     d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2"
                                 />
+
                             </svg>
 
                         </span>
@@ -556,6 +596,7 @@
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
+
                                 <rect
                                     x="3"
                                     y="4"
@@ -577,6 +618,7 @@
                                     stroke-width="1.8"
                                     d="M9 21h6M12 17v4"
                                 />
+
                             </svg>
 
                         </span>
@@ -618,6 +660,7 @@
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
+
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -638,6 +681,7 @@
                                         stroke-width="1.8"
                                         d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
                                     />
+
                                 </svg>
 
                             </span>
@@ -654,20 +698,25 @@
 
 
                 {{-- =================================================
-                    REPORTS
+                    REPORTS WITH SUBMENU
                 ================================================== --}}
                 <li>
 
-                    <a
-                        href="{{ route('reports') }}"
-                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                    {{-- Reports Parent Button --}}
+                    <button
+                        type="button"
+                        class="group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
                         {{ request()->routeIs('reports*')
                             ? 'bg-blue-50 text-blue-600'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                        aria-controls="reports-submenu"
+                        aria-expanded="{{ request()->routeIs('reports*') ? 'true' : 'false' }}"
+                        data-collapse-toggle="reports-submenu"
                     >
 
+                        {{-- Parent Icon --}}
                         <span
-                            class="flex h-9 w-9 items-center justify-center rounded-lg
+                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
                             {{ request()->routeIs('reports*')
                                 ? 'bg-blue-600 text-white shadow-sm'
                                 : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
@@ -679,6 +728,7 @@
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
+
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
@@ -692,15 +742,149 @@
                                     stroke-width="1.8"
                                     d="M14 2v6h6M8 13h8M8 17h6M8 9h2"
                                 />
+
                             </svg>
 
                         </span>
 
-                        <span>
+
+                        <span class="flex-1 text-left">
                             Reports
                         </span>
 
-                    </a>
+
+                        {{-- Chevron --}}
+                        <svg
+                            class="h-4 w-4 shrink-0 transition-transform duration-200
+                            {{ request()->routeIs('reports*') ? 'rotate-180' : '' }}"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m6 9 6 6 6-6"
+                            />
+                        </svg>
+
+                    </button>
+
+
+                    {{-- =================================================
+                        REPORTS SUBMENU
+                    ================================================== --}}
+                    <ul
+                        id="reports-submenu"
+                        class="mt-1 space-y-1 pl-6
+                        {{ request()->routeIs('reports*') ? '' : 'hidden' }}"
+                    >
+
+                        {{-- =============================================
+                            ACCESS LOG REPORT
+                        ============================================== --}}
+                        <li>
+
+                            <a
+                                href="{{ route('reports.accesslog') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('reports')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('reports')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M8 6h8M8 10h8M8 14h5M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
+                                        />
+
+                                    </svg>
+
+                                </span>
+
+
+                                <div class="min-w-0 text-left">
+
+                                    <span class="block truncate">
+                                        Access Log Report
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+                        </li>
+
+
+                        {{-- =============================================
+                            SUMMARY REPORT
+                        ============================================== --}}
+                        <li>
+
+                            <a
+                                href="{{ route('reports.summary') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('reports.summary*')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('reports.summary*')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7M20 16V6"
+                                        />
+
+                                    </svg>
+
+                                </span>
+
+
+                                <div class="min-w-0 text-left">
+
+                                    <span class="block truncate">
+                                        Summary Report
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
 
                 </li>
 
@@ -727,7 +911,6 @@
                                     : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                             >
 
-                                {{-- Settings Gear Icon --}}
                                 <svg
                                     class="h-5 w-5"
                                     fill="none"
@@ -770,7 +953,7 @@
             {{-- =====================================================
                 SIDEBAR BOTTOM
             ====================================================== --}}
-            <div class="mt-auto">
+            <div class="mt-auto pt-5">
 
                 <div class="mb-3 h-px bg-gray-100"></div>
 
@@ -804,11 +987,16 @@
 
                         <div>
 
-                            <p class="text-xs font-semibold text-gray-800">
+                            <p
+                                class="text-xs font-semibold text-gray-800"
+                            >
                                 OLH Library
                             </p>
 
-                            <p class="mt-0.5 text-[11px] leading-4 text-gray-500">
+
+                            <p
+                                class="mt-0.5 text-[11px] leading-4 text-gray-500"
+                            >
                                 Device and student activity management.
                             </p>
 

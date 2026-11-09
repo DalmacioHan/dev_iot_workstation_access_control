@@ -39,11 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
     
     // Reports
-    Route::get('/reports',[ReportsController::class,'index'])->name('reports');
-    Route::get('/reports/csv',[ReportsController::class,'exportCsv'])->name('reports.csv');
-    Route::get('/reports/preview-pdf', [ReportsController::class, 'previewPdf'])->name('reports.preview');
-    Route::get('/reports/pdf',[ReportsController::class,'exportPdf'])->name('reports.pdf');
-    
+    // Access log report
+    Route::get('/reports/accesslog',[ReportsController::class,'index'])->name('reports.accesslog');
+    Route::get('/reports/accesslog/preview-pdf', [ReportsController::class, 'previewPdf'])->name('reports.accesslog.preview');
+    Route::get('/reports/accesslog/pdf',[ReportsController::class,'exportPdf'])->name('reports.accesslog.pdf');
+    //Summary report
+    Route::get('/reports/summary',[ReportsController::class,'summaryReport'])->name('reports.summary');
+    Route::get('/reports/summary/preview-pdf', [ReportsController::class, 'summaryPreviewPdf'])->name('reports.summary.preview');
+    Route::get('/reports/summary/pdf',[ReportsController::class,'summaryExportPdf'])->name('reports.summary.pdf');
     // Device Management
 
     Route::get('/dashboard/active-sessions', [AdminController::class, 'activeSessions'])->name('dashboard.active-sessions');
