@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         
         $middleware->alias([
             'device.auth' => \App\Http\Middleware\AuthenticateDeviceToken::class,
+            'reap.sessions' => \App\Http\Middleware\ReapStaleSessions::class,
             'superadmin' => \App\Http\Middleware\EnsureUserIsSuperAdmin::class,
         ]);
     })

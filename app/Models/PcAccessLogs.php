@@ -14,6 +14,8 @@ class PcAccessLogs extends Model
         'event_type',
         'result',
         'reason',
+        'ended_reason',
+        'ended_by',
         'session_id',
         'student_external_id',
         'student_name',

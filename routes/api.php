@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/device/activate',[DeviceController::class,'activate']);
 
-Route::middleware('device.auth')->group(function () {
+Route::middleware(['device.auth', 'reap.sessions'])->group(function () {
     // heartbeat route
     Route::post('/device/ping',[DeviceController::class,'heartbeat']);
 
