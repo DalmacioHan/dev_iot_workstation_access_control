@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     // Device Management
 
     Route::get('/dashboard/active-sessions', [AdminController::class, 'activeSessions'])->name('dashboard.active-sessions');
+    Route::post('/dashboard/sessions/{sessionId}/force-end', [AdminController::class, 'forceEndSession'])->name('dashboard.session.force-end');
 
     Route::get('/devices',[DeviceController::class,'index'])->name('device');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('device.show');

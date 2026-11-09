@@ -479,7 +479,9 @@ class ReportsController extends Controller
 
                 'pc_access_logs.event_type',
                 'pc_access_logs.result',
-                'pc_access_logs.reason'
+                'pc_access_logs.reason',
+                'pc_access_logs.ended_by',
+                'pc_access_logs.ended_reason'
             )
             ->join(
                 'devices',

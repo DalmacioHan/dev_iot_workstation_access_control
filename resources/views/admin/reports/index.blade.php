@@ -1145,6 +1145,19 @@
 
                                     </span>
 
+
+                                    @if (strtolower($log->event_type ?? '') === 'time_out' && ($log->ended_by ?? null) === 'system')
+                                        <span
+                                            class="mt-2 flex items-center gap-1.5 text-[11px] font-semibold text-amber-600"
+                                            title="{{ $log->ended_reason ?? 'Session closed automatically' }}"
+                                        >
+                                            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v5m0 3.5v.5M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+                                            </svg>
+                                            Did not log out manually
+                                        </span>
+                                    @endif
+
                                 </td>
 
                             @endif

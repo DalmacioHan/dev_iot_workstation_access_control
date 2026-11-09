@@ -283,6 +283,32 @@
 
                             </div>
 
+
+                            {{-- Session cleanup --}}
+                            <div class="flex items-start gap-3">
+
+                                <div
+                                    class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-sm font-bold ring-1 ring-white/20"
+                                >
+                                    3
+                                </div>
+
+
+                                <div>
+
+                                    <p class="text-sm font-semibold">
+                                        Session Cleanup
+                                    </p>
+
+                                    <p class="mt-1 text-xs leading-5 text-blue-100">
+                                        Automatically close sessions left open
+                                        by crashes, shutdowns, or lost network.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
 
@@ -712,6 +738,141 @@
                             </button>
 
                         </div>
+
+                    </div>
+
+                </div>
+
+
+                {{-- =================================================
+                    SESSION CLEANUP
+                ================================================== --}}
+                <div
+                    class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+                >
+
+                    <div class="mb-7 flex items-start gap-4">
+
+                        <div
+                            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600"
+                        >
+
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.8"
+                                    d="M12 8v5m0 3.5v.5M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2 class="text-lg font-bold text-gray-900">
+                                Session Cleanup
+                            </h2>
+
+                            <p class="mt-1 text-sm leading-6 text-gray-500">
+                                Sessions on workstations that stop reporting a
+                                heartbeat are closed automatically and marked as
+                                "did not log out manually".
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            for="stale_session_minutes"
+                            class="mb-2 block text-sm font-semibold text-gray-900"
+                        >
+                            Stale Session Threshold
+                            <span class="text-red-500">*</span>
+                        </label>
+
+
+                        <div class="relative">
+
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
+                            >
+
+                                <svg
+                                    class="h-5 w-5 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="9"
+                                        stroke-width="1.8"
+                                    />
+
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.8"
+                                        d="M12 7v5l3 2"
+                                    />
+                                </svg>
+
+                            </div>
+
+
+                            <input
+                                type="number"
+                                id="stale_session_minutes"
+                                name="stale_session_minutes"
+                                min="1"
+                                max="1440"
+                                step="1"
+                                value="{{ old('stale_session_minutes', $staleSessionMinutes ?? 5) }}"
+                                required
+                                class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-24 text-sm font-semibold text-gray-900 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                            >
+
+
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4"
+                            >
+                                <span
+                                    class="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500"
+                                >
+                                    minutes
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        @error('stale_session_minutes')
+
+                            <p class="mt-1.5 text-xs font-medium text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+
+                        <p class="mt-2 text-xs leading-5 text-gray-400">
+                            The kiosk sends a heartbeat every 60 seconds. Five
+                            minutes tolerates short network drops while clearing
+                            ghost sessions quickly. Allowed range: 1 to 1,440 minutes.
+                        </p>
 
                     </div>
 

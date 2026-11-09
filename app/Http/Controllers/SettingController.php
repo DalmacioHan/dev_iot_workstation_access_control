@@ -30,11 +30,19 @@ class SettingController extends Controller
             );
 
 
+        $staleSessionMinutes =
+            (int) $settings->get(
+                'stale_session_minutes',
+                5
+            );
+
+
         return view(
             'admin.settings.index',
             compact(
                 'studentApiUrl',
-                'pirTimeoutSeconds'
+                'pirTimeoutSeconds',
+                'staleSessionMinutes'
             )
         );
     }
@@ -60,6 +68,13 @@ class SettingController extends Controller
                 'integer',
                 'min:5',
                 'max:3600',
+            ],
+
+            'stale_session_minutes' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:1440',
             ],
         ]);
 
@@ -90,6 +105,22 @@ class SettingController extends Controller
                     [
                         'value' =>
                             (string) $validated['pir_timeout_seconds'],
+
+                        'updated_at' => now(),
+
+                        'created_at' => now(),
+                    ]
+                );
+
+
+            DB::table('system_settings')
+                ->updateOrInsert(
+                    [
+                        'key' => 'stale_session_minutes',
+                    ],
+                    [
+                        'value' =>
+                            (string) $validated['stale_session_minutes'],
 
                         'updated_at' => now(),
 

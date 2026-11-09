@@ -547,6 +547,24 @@
 
                             </div>
 
+
+                            <span
+                                class="live-stale-badge {{ !empty($session['is_stale']) ? '' : 'hidden' }} inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700"
+                                title="No heartbeat for over {{ $session['stale_warning_minutes'] ?? 2 }} minutes. Auto-closes after {{ $session['stale_minutes'] ?? 5 }} minutes without a heartbeat."
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                                No heartbeat
+                            </span>
+
+
+                            <button
+                                type="button"
+                                class="force-end-session inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-100"
+                                data-session-id="{{ $session['session_id'] }}"
+                            >
+                                Force End
+                            </button>
+
                         </div>
 
                     </div>
@@ -1292,6 +1310,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const endpoint =
         '{{ route('dashboard.active-sessions') }}';
 
+    const forceEndBase =
+        '{{ url('/dashboard/sessions') }}';
+
+    const csrfToken =
+        document.querySelector('meta[name="csrf-token"]')?.content || '';
+
 
     /*
     |--------------------------------------------------------------------------
@@ -1302,6 +1326,75 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!listEl) {
         return;
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Force-end a session (server closes it immediately)
+    |--------------------------------------------------------------------------
+    */
+
+    function forceEndSession(sessionId, button) {
+
+        if (!sessionId) {
+            return;
+        }
+
+        if (!window.confirm('End this session now? The student will be signed out on the dashboard.')) {
+            return;
+        }
+
+        button.disabled = true;
+        const originalText = button.textContent.trim();
+        button.textContent = 'Ending...';
+
+        fetch(
+            forceEndBase + '/' + encodeURIComponent(sessionId) + '/force-end',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            }
+        )
+
+            .then(function (response) {
+
+                if (!response.ok) {
+                    throw new Error('force-end failed');
+                }
+
+                sync();
+
+            })
+
+            .catch(function () {
+
+                button.disabled = false;
+                button.textContent = originalText;
+                window.alert('Could not end the session. Please try again.');
+
+            });
+
+    }
+
+
+    listEl.addEventListener('click', function (event) {
+
+        const button =
+            event.target.closest('.force-end-session');
+
+        if (!button) {
+            return;
+        }
+
+        forceEndSession(
+            button.getAttribute('data-session-id'),
+            button
+        );
+
+    });
 
 
     /*
@@ -1479,6 +1572,24 @@ document.addEventListener('DOMContentLoaded', function () {
                     </span>
 
                 </div>
+
+
+                <span
+                    class="live-stale-badge ${session.is_stale ? '' : 'hidden'} inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700"
+                    title="No heartbeat for over ${session.stale_warning_minutes || 2} minutes. Auto-closes after ${session.stale_minutes || 5} minutes without a heartbeat."
+                >
+                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                    No heartbeat
+                </span>
+
+
+                <button
+                    type="button"
+                    class="force-end-session inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-100"
+                    data-session-id="${session.session_id}"
+                >
+                    Force End
+                </button>
 
             </div>
         `;
@@ -1726,6 +1837,34 @@ document.addEventListener('DOMContentLoaded', function () {
                                         'data-started',
                                         session.started_at
                                     );
+
+                                }
+
+                            }
+
+
+                            const staleBadge =
+                                card.querySelector(
+                                    '.live-stale-badge'
+                                );
+
+
+                            if (staleBadge) {
+
+                                staleBadge.classList.toggle(
+                                    'hidden',
+                                    !session.is_stale
+                                );
+
+
+                                if (session.is_stale) {
+
+                                    staleBadge.title =
+                                        'No heartbeat for over '
+                                        + (session.stale_warning_minutes || 2)
+                                        + ' minutes. Auto-closes after '
+                                        + (session.stale_minutes || 5)
+                                        + ' minutes without a heartbeat.';
 
                                 }
 
