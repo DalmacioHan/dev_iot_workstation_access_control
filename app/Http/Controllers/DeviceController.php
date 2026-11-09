@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class DeviceController extends Controller
 {
+    public function __construct(private SessionService $sessions)
+    {
+    }
+
     public function index(Request $request)
     {
         
@@ -105,6 +110,14 @@ public function show(Device $device ){
             'message' => 'nullable|string|max:500',
         ]);
 
+        // Close the session on the server first. This works even when the
+        // kiosk is offline, restarted, or showing a stale login.
+        $closed = $this->sessions->closeOpenSessionsForDevice(
+            $device->id,
+            'Remote lock by staff',
+            SessionService::ENDED_BY_ADMIN
+        );
+
         $device->remoteCommands()->create([
             'command' => 'lock',
             'message' => trim($validated['message'] ?? '') ?: null,
@@ -112,8 +125,11 @@ public function show(Device $device ){
         ]);
 
         $name = $device->workstation_name ?? $device->device_uid;
+        $sessionNote = $closed > 0
+            ? " {$closed} open session" . ($closed === 1 ? ' was' : 's were') . ' closed.'
+            : '';
 
-        return redirect()->back()->with('success', "Remote lock command sent to '{$name}'. It will take effect on the PC's next check (within a few seconds if online).");
+        return redirect()->back()->with('success', "Remote lock command sent to '{$name}'. It will take effect on the PC's next check (within a few seconds if online).{$sessionNote}");
     }
 
     public function announceDevice(Request $request, Device $device)
