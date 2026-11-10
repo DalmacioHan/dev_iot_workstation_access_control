@@ -56,7 +56,7 @@ class AnalyticsController extends Controller
         })->values();
 
         //table data - count distinct sessions, add total time
-        $topStudents = PcAccessLogs::query()
+        $topAccessStudents = PcAccessLogs::query()
             ->select('student_name')
             ->selectRaw('COUNT(DISTINCT session_id) as total')
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
@@ -91,6 +91,36 @@ class AnalyticsController extends Controller
                 $s = $totalSeconds % 60;
                 $student->total_time = "{$h}h {$m}m {$s}s";
                 $student->total_seconds = $totalSeconds;
+                return $student;
+            });
+
+        $topUsageStudents = PcAccessLogs::query()
+            ->select('student_name')
+            ->selectRaw('SUM(TIMESTAMPDIFF(SECOND, in_time, out_time)) as total_seconds')
+            ->fromSub(function ($query) use ($dateFrom, $dateTo) {
+                $query->from('pc_access_logs')
+                    ->select('student_name', 'session_id')
+                    ->selectRaw("MIN(CASE WHEN event_type = 'time_in' THEN occurred_at END) as in_time")
+                    ->selectRaw("MAX(CASE WHEN event_type = 'time_out' THEN occurred_at END) as out_time")
+                    ->whereBetween('occurred_at', [$dateFrom, $dateTo])
+                    ->where('result', 'allowed')
+                    ->whereNotNull('student_name')
+                    ->where('student_name', '<>', '')
+                    ->whereNotNull('session_id')
+                    ->groupBy('session_id', 'student_name');
+            }, 'sessions_summary')
+            ->groupBy('student_name')
+            ->orderByDesc('total_seconds')
+            ->take(10)
+            ->get()
+            ->map(function ($student) {
+                $totalSeconds = (int) ($student->total_seconds ?? 0);
+
+                $h = intdiv($totalSeconds, 3600);
+                $m = intdiv($totalSeconds % 3600, 60);
+                $s = $totalSeconds % 60;
+
+                $student->total_time = "{$h}h {$m}m {$s}s";
                 return $student;
             });
 
@@ -134,16 +164,29 @@ class AnalyticsController extends Controller
 
         $topApplication = PcAppUsage::query()
             ->select('app_name')
-            ->selectRaw('COUNT(*) as total')
+            ->selectRaw('COUNT(DISTINCT session_id) as total_sessions')
+            ->selectRaw('SUM(seconds) as total_seconds')
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
+            ->whereNotNull('app_name')
+            ->where('app_name', '<>', '')
             ->groupBy('app_name')
-            ->orderBy('total', 'desc')
+            ->orderByDesc('total_sessions')
             ->take(10)
-            ->get();
+            ->get()
+            ->map(function ($app) {
+                $totalSeconds = (int) ($app->total_seconds ?? 0);
+
+                $h = intdiv($totalSeconds, 3600);
+                $m = intdiv($totalSeconds % 3600, 60);
+                $s = $totalSeconds % 60;
+
+                $app->total_time = "{$h}h {$m}m {$s}s";
+                return $app;
+            });
 
         return view('admin.analytics.index', compact(
             'failedEvents', 'popularWorkstation', 'successfulEvents', 'popularApplication',
-            'topStudents', 'topCourses', 'topApplication', 'peakHours',
+            'topAccessStudents', 'topCourses', 'topApplication', 'peakHours', 'topUsageStudents',
             'dateFrom', 'dateTo'
             ));
     }
