@@ -184,9 +184,16 @@
                     </div>
                 </div>
             </div>
-
-            <div class="overflow-x-auto px-6 pb-6">
+            <div class="p-6 border-t border-slate-100">
                 <div id="top-students-chart" class="min-h-70"></div>
+                <div>
+                    <div class="flex justify-end px-6">
+                        <a href="{{ route('reports.summary') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                            View Report
+                            <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div id="top-students-usage" class="hidden overflow-x-auto">
                 <table class="w-full min-w-[520px] text-left text-sm text-slate-600">
@@ -209,6 +216,14 @@
                         @endforelse
                     </tbody>
                 </table>
+                <div>
+                    <div class="flex justify-end px-6 pb-5 pt-5">
+                        <a href="{{ route('reports.summary') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                            View Report
+                            <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -219,8 +234,16 @@
                     <p class="mt-1 text-sm text-slate-500">Courses with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
                 </div>
             </div>
-            <div class="overflow-x-auto px-6 pb-6">
+            <div class="p-6">
                 <div id="top-courses-chart" class="min-h-70"></div>
+            </div>
+            <div>
+                <div class="flex justify-end px-6 pb-5">
+                    <a href="{{ route('reports.accesslog') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        View Report
+                        <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -230,10 +253,8 @@
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Application</h2>
                     <p class="mt-1 text-sm text-slate-500">Applications with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
                 </div>
-
             </div>
-
-            <div class="overflow-x-auto px-6 pb-6">
+            <div class="p-6">
                 <div id="top-app-chart" class="min-h-70"></div>
             </div>
         </div>
