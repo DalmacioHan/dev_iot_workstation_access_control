@@ -167,13 +167,48 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Students</h2>
-                    <p class="mt-1 text-sm text-slate-500">Students with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
+                    <p id="student-ranking-description" class="mt-1 text-sm text-slate-500">Students with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
                 </div>
-
+                <div class="relative self-end sm:self-auto">
+                    <button id="student-ranking-toggle" type="button" aria-expanded="false" aria-controls="student-ranking-dropdown" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        <span id="student-ranking-toggle-label">Access Events</span>
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div id="student-ranking-dropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-gray-200 bg-white p-1 shadow-lg">
+                        <button type="button" data-ranking-mode="access" class="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700">
+                            Access Events
+                        </button>
+                        <button type="button" data-ranking-mode="usage" class="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700">
+                            Time Usage
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="overflow-x-auto px-6 pb-6">
                 <div id="top-students-chart" class="min-h-70"></div>
+            </div>
+            <div id="top-students-usage" class="hidden overflow-x-auto">
+                <table class="w-full min-w-[520px] text-left text-sm text-slate-600">
+                    <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 font-semibold">#</th>
+                            <th scope="col" class="px-6 py-4 font-semibold">Student Name</th>
+                            <th scope="col" class="px-6 py-4 text-center font-semibold">Overall Time</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($topUsageStudents as $index => $student)
+                            <tr class="transition-colors hover:bg-blue-50/30">
+                                <td class="px-6 py-4 font-semibold text-slate-400">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800">{{ $student->student_name }}</td>
+                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-700">{{ $student->total_time ?? '0h 0m 0s' }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="3" class="px-6 py-12 text-center text-sm text-slate-400">No student activity found for this period.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -183,9 +218,7 @@
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Courses</h2>
                     <p class="mt-1 text-sm text-slate-500">Courses with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
                 </div>
-
             </div>
-
             <div class="overflow-x-auto px-6 pb-6">
                 <div id="top-courses-chart" class="min-h-70"></div>
             </div>
@@ -292,6 +325,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
     chart.render();
 
+    const rankingToggle = document.querySelector('#student-ranking-toggle');
+    const rankingToggleLabel = document.querySelector('#student-ranking-toggle-label');
+    const rankingDropdown = document.querySelector('#student-ranking-dropdown');
+    const rankingDescription = document.querySelector('#student-ranking-description');
+    const accessChart = document.querySelector('#top-students-chart')?.parentElement;
+    const usageTable = document.querySelector('#top-students-usage');
+    const dateRange = @json($dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y'));
+
+    if (rankingToggle && rankingToggleLabel && rankingDropdown && rankingDescription && accessChart && usageTable) {
+        rankingToggle.addEventListener('click', function () {
+            const isOpen = rankingToggle.getAttribute('aria-expanded') === 'true';
+
+            rankingToggle.setAttribute('aria-expanded', String(!isOpen));
+            rankingDropdown.classList.toggle('hidden', isOpen);
+        });
+
+        rankingDropdown.querySelectorAll('[data-ranking-mode]').forEach((option) => {
+            option.addEventListener('click', function () {
+                const isUsageMode = option.dataset.rankingMode === 'usage';
+
+                rankingToggleLabel.textContent = isUsageMode ? 'Time Usage' : 'Access Events';
+                rankingDescription.textContent = `Students with the most ${isUsageMode ? 'time usage' : 'access events'} · ${dateRange}.`;
+                accessChart.classList.toggle('hidden', isUsageMode);
+                usageTable.classList.toggle('hidden', !isUsageMode);
+                rankingDropdown.classList.add('hidden');
+                rankingToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!rankingToggle.contains(event.target) && !rankingDropdown.contains(event.target)) {
+                rankingDropdown.classList.add('hidden');
+                rankingToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
     const renderRankedBarChart = (elementId, entries, emptyMessage, color) => {
         const element = document.querySelector(`#${elementId}`);
 
@@ -364,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderRankedBarChart(
         'top-students-chart',
-        @json($topStudents->map(fn ($student) => ['label' => $student->student_name, 'total' => $student->total])->values()),
+        @json($topAccessStudents->map(fn ($student) => ['label' => $student->student_name, 'total' => $student->total])->values()),
         'No student activity found for this period.',
         '#2563EB'
     );
@@ -378,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderRankedBarChart(
         'top-app-chart',
-        @json($topApplication->map(fn ($course) => ['label' => $course->app_name, 'total' => $course->total])->values()),
+        @json($topApplication->map(fn ($app) => ['label' => $app->app_name, 'total' => $app->total_sessions])->values()),
         'No application activity found for this period.',
         '#1D4ED8'
     );
