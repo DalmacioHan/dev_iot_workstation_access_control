@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\PcAccessLogs;
 use App\Models\PcAppUsage;
+use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -12,6 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccessController extends Controller
 {
+    public function __construct(private SessionService $sessions)
+    {
+    }
+
     /**
      * Validate one RFID scan against the university MIS and log the result.
      *
@@ -60,13 +65,21 @@ class AccessController extends Controller
             ], Response::HTTP_OK);
         }
 
+        // One student can only hold one session per workstation. Close any
+        // orphan from a crash, power loss, or unacknowledged logout first.
+        $this->sessions->closeOpenSessionsForDevice(
+            $device->id,
+            'New sign-in on same workstation',
+            SessionService::ENDED_BY_SYSTEM
+        );
+
         $sessionId = Str::uuid()->toString();
 
         $this->writeLog([
             'occurred_at'    => $occurredAt,
-'rfid_uid'       => $cardId,
-                'device_id'      => $device->id,
-                'event_type'     => 'time_in',
+            'rfid_uid'       => $cardId,
+            'device_id'      => $device->id,
+            'event_type'     => 'time_in',
             'result'         => 'allowed',
             'reason'         => 'Authorized',
             'session_id'     => $sessionId,
@@ -98,35 +111,20 @@ class AccessController extends Controller
             ? \Illuminate\Support\Carbon::parse($validated['occurred_at'])
             : now();
 
-        $entry = PcAccessLogs::where('session_id', $validated['session_id'])
-            ->where('event_type', 'time_in')
-            ->first();
+        $closed = $this->sessions->closeSession(
+            $validated['session_id'],
+            $occurredAt,
+            'Session ended',
+            SessionService::ENDED_BY_KIOSK
+        );
 
-        if ($entry === null) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unknown or already closed session.',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        PcAccessLogs::create([
-            'occurred_at'         => $occurredAt,
-            'received_at'         => now(),
-            'rfid_uid'            => $entry->rfid_uid,
-            'device_id'           => $entry->device_id,
-            'event_type'          => 'time_out',
-            'result'              => 'allowed',
-            'reason'              => 'Session ended',
-            'session_id'          => $entry->session_id,
-            'student_external_id' => $entry->student_external_id,
-            'student_name'        => $entry->student_name,
-            'course'              => $entry->course,
-        ]);
-
+        // Idempotent: a retry (or a duplicate call from the kiosk) must not
+        // create a second time_out row or fail the client.
         return response()->json([
-            'success'    => true,
-            'message'    => 'Session closed.',
-            'session_id' => $entry->session_id,
+            'success'        => true,
+            'already_closed' => ! $closed,
+            'message'        => $closed ? 'Session closed.' : 'Session was already closed.',
+            'session_id'     => $validated['session_id'],
         ], Response::HTTP_OK);
     }
 

@@ -4,11 +4,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Device;
+use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeviceController extends Controller
 {
+    public function __construct(private SessionService $sessions)
+    {
+    }
+
     public function activate(Request $request)
     {
         $validated = $request->validate([
@@ -46,17 +51,27 @@ class DeviceController extends Controller
     
     public function heartbeat(Request $request)
     {
-        
-        $device =  $request->get('authenticated_device');
-
-        $device->update([
-            'last_seen_at'=> now()
+        $validated = $request->validate([
+            'session_id' => 'nullable|string|max:64',
         ]);
 
+        $device = $request->get('authenticated_device');
+
+        $device->update([
+            'last_seen_at' => now(),
+        ]);
+
+        // The kiosk reports which session (if any) it currently owns. Any
+        // other open session on this device is an orphan and gets closed.
+        $this->sessions->reconcileFromHeartbeat(
+            $device,
+            $validated['session_id'] ?? null
+        );
+
         return response()->json([
-            'success'=>true,
-            'message'=>'Heartbeat Acknowledged. Device status: Online',
-            'last_seen_at'=>$device->last_seen_at->toIso8601String()
+            'success'      => true,
+            'message'      => 'Heartbeat Acknowledged. Device status: Online',
+            'last_seen_at' => $device->last_seen_at->toIso8601String(),
         ], Response::HTTP_OK);
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
@@ -38,14 +39,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
     
     // Reports
-    Route::get('/reports',[ReportsController::class,'index'])->name('reports');
-    Route::get('/reports/csv',[ReportsController::class,'exportCsv'])->name('reports.csv');
-    Route::get('/reports/preview-pdf', [ReportsController::class, 'previewPdf'])->name('reports.preview');
-    Route::get('/reports/pdf',[ReportsController::class,'exportPdf'])->name('reports.pdf');
-    
+    // Access log report
+    Route::get('/reports/accesslog',[ReportsController::class,'index'])->name('reports.accesslog');
+    Route::get('/reports/accesslog/preview-pdf', [ReportsController::class, 'previewPdf'])->name('reports.accesslog.preview');
+    Route::get('/reports/accesslog/pdf',[ReportsController::class,'exportPdf'])->name('reports.accesslog.pdf');
+    //Summary report
+    Route::get('/reports/summary',[ReportsController::class,'summaryReport'])->name('reports.summary');
+    Route::get('/reports/summary/preview-pdf', [ReportsController::class, 'summaryPreviewPdf'])->name('reports.summary.preview');
+    Route::get('/reports/summary/pdf',[ReportsController::class,'summaryExportPdf'])->name('reports.summary.pdf');
     // Device Management
 
     Route::get('/dashboard/active-sessions', [AdminController::class, 'activeSessions'])->name('dashboard.active-sessions');
+    Route::post('/dashboard/sessions/{sessionId}/force-end', [AdminController::class, 'forceEndSession'])->name('dashboard.session.force-end');
 
     Route::get('/devices',[DeviceController::class,'index'])->name('device');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('device.show');
@@ -80,5 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/device/{device}/edit',[DeviceController::class,'edit'])->name('device.edit');
         Route::put('/device/{device}/update', [DeviceController::class, 'update'])->name('device.update');
         Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
+        Route::get('/settings',[SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings',[SettingController::class, 'update'])->name('settings.update');
     });
 });

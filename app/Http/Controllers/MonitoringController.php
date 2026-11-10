@@ -6,12 +6,16 @@ use App\Models\Device;
 use App\Models\PcAccessLogs;
 use App\Models\DeviceCommand;
 use App\Models\PcAppUsage;
+use App\Services\SessionService;
 use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
     public function index()
     {
+        // Surface auto-closed sessions right away on the history view.
+        app(SessionService::class)->reapStaleSessions();
+
         // Fetch Summary Metrics
         $pairedDevices   = Device::where('is_paired', true)->count();
         $unpairedDevices = Device::where('is_paired', false)->count();
@@ -61,6 +65,8 @@ class MonitoringController extends Controller
                     'event_type'          => $log->event_type,
                     'result'              => $log->result,
                     'reason'              => $log->reason,
+                    'ended_reason'        => $log->ended_reason,
+                    'ended_by'            => $log->ended_by,
                     'student_external_id' => $log->student_external_id,
                     'student_name'        => $log->student_name,
                     'course'              => $log->course,

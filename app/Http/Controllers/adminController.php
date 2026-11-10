@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\PcAccessLogs;
+use App\Services\SessionService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,8 +12,16 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    public function __construct(private SessionService $sessions)
+    {
+    }
+
     public function dashboard(Request $request)
     {
+        // Lazy cleanup so ghost sessions disappear even when nobody starts
+        // the Laravel scheduler.
+        $this->sessions->reapStaleSessions();
+
         $successResult = 'allowed';
 
         $rangeLabels = [
@@ -57,9 +66,9 @@ class AdminController extends Controller
         // Device stats
         $totalDevices = Device::count();
         $pairedDevices = Device::where('is_paired', 1)->count();
-        $onlineDevices = Device::where('is_paired', 1)
-        ->where('last_seen_at', '>=', now()->subSeconds(90))
-        ->count();
+        //  $onlineDevices = Device::where('is_paired', 1)
+        // ->where('last_seen_at', '>=', now()->subSeconds(90))
+        // ->count();
         
 
         $totalLogins = $inRange(
@@ -239,50 +248,12 @@ class AdminController extends Controller
 
         $pairedDevices = Device::where('is_paired', 1)->count();
 
-        // Active PC sessions (time_in without corresponding time_out)
-        $activeSessions = PcAccessLogs::query()
-            ->select(
-                'pc_access_logs.session_id',
-                'pc_access_logs.device_id',
-                'pc_access_logs.student_name',
-                'pc_access_logs.student_external_id',
-                'pc_access_logs.course',
-                'pc_access_logs.occurred_at as started_at'
-            )
-            ->selectRaw('devices.workstation_name, devices.device_uid')
-            ->join('devices', 'devices.id', '=', 'pc_access_logs.device_id')
-            ->where('pc_access_logs.event_type', 'time_in')
-            ->where('pc_access_logs.result', 'allowed')
-            ->whereNotNull('pc_access_logs.session_id')
-            ->whereNotExists(function ($q) {
-                $q->select(DB::raw(1))
-                    ->from('pc_access_logs as logout_log')
-                    ->whereColumn('logout_log.session_id', 'pc_access_logs.session_id')
-                    ->where('logout_log.event_type', 'time_out');
-            })
-            ->orderBy('pc_access_logs.occurred_at', 'desc')
+        $activeSessions = $this->activeSessionsQuery()
             ->get()
-            ->map(function ($session) {
-                $startedAt = Carbon::parse($session->started_at);
-                $elapsedSeconds = $startedAt->diffInSeconds(Carbon::now());
-
-                return [
-                    'session_id' => $session->session_id,
-                    'student_name' => $session->student_name,
-                    'student_external_id' => $session->student_external_id,
-                    'course' => $session->course,
-                    'workstation_name' => $session->workstation_name,
-                    'device_uid' => $session->device_uid,
-                    'started_at' => $startedAt->toIso8601String(),
-                    'started_at_ts' => $startedAt->timestamp,
-                    'started_at_display' => $startedAt->format('h:i A'),
-                    'elapsed_seconds' => (int) $elapsedSeconds,
-                    'elapsed_display' => $this->formatElapsed((int) $elapsedSeconds),
-                ];
-            });
+            ->map(fn ($session) => $this->formatSession($session));
 
         return view('admin.dashboard', compact(
-            'totalDevices', 'pairedDevices', 'onlineDevices',
+            'totalDevices', 'pairedDevices',
             'weeklyVisitors', 'male', 'female', 'columnChartDays',
             'avgSessionDuration', 'courseDistribution', 'totalStudents',
             'totalLogins', 'uniqueStudents', 'activeSessions',
@@ -292,7 +263,23 @@ class AdminController extends Controller
 
     public function activeSessions(): JsonResponse
     {
-        $sessions = PcAccessLogs::query()
+        // Keep the polling endpoint consistent with a full page load: a ghost
+        // session must disappear even if nobody reloads the dashboard.
+        $this->sessions->reapStaleSessions();
+
+        $sessions = $this->activeSessionsQuery()
+            ->get()
+            ->map(fn ($session) => $this->formatSession($session));
+
+        return response()->json($sessions);
+    }
+
+    /**
+     * Open sessions joined with their workstation, newest first.
+     */
+    private function activeSessionsQuery()
+    {
+        return $this->sessions->openSessionsQuery()
             ->select(
                 'pc_access_logs.session_id',
                 'pc_access_logs.device_id',
@@ -301,39 +288,64 @@ class AdminController extends Controller
                 'pc_access_logs.course',
                 'pc_access_logs.occurred_at as started_at'
             )
-            ->selectRaw('devices.workstation_name, devices.device_uid')
+            ->selectRaw('devices.workstation_name, devices.device_uid, devices.last_seen_at as device_last_seen_at')
             ->join('devices', 'devices.id', '=', 'pc_access_logs.device_id')
-            ->where('pc_access_logs.event_type', 'time_in')
-            ->where('pc_access_logs.result', 'allowed')
-            ->whereNotNull('pc_access_logs.session_id')
-            ->whereNotExists(function ($q) {
-                $q->select(DB::raw(1))
-                    ->from('pc_access_logs as logout_log')
-                    ->whereColumn('logout_log.session_id', 'pc_access_logs.session_id')
-                    ->where('logout_log.event_type', 'time_out');
-            })
-            ->orderBy('pc_access_logs.occurred_at', 'desc')
-            ->get()
-            ->map(function ($session) {
-                $startedAt = Carbon::parse($session->started_at);
-                $elapsedSeconds = $startedAt->diffInSeconds(Carbon::now());
+            ->orderBy('pc_access_logs.occurred_at', 'desc');
+    }
 
-                return [
-                    'session_id' => $session->session_id,
-                    'student_name' => $session->student_name,
-                    'student_external_id' => $session->student_external_id,
-                    'course' => $session->course,
-                    'workstation_name' => $session->workstation_name,
-                    'device_uid' => $session->device_uid,
-                    'started_at' => $startedAt->toIso8601String(),
-                    'started_at_ts' => $startedAt->timestamp,
-                    'started_at_display' => $startedAt->format('h:i A'),
-                    'elapsed_seconds' => (int) $elapsedSeconds,
-                    'elapsed_display' => $this->formatElapsed((int) $elapsedSeconds),
-                ];
-            });
+    public function forceEndSession(string $sessionId): JsonResponse
+    {
+        $closed = $this->sessions->closeSession(
+            $sessionId,
+            now(),
+            'Force-ended by staff',
+            SessionService::ENDED_BY_ADMIN
+        );
 
-        return response()->json($sessions);
+        if (! $closed) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Session is unknown or already closed.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success'    => true,
+            'message'    => 'Session ended.',
+            'session_id' => $sessionId,
+        ]);
+    }
+
+    private function formatSession($session): array
+    {
+        $startedAt = Carbon::parse($session->started_at);
+        $elapsedSeconds = $startedAt->diffInSeconds(Carbon::now());
+        $lastSeen = $session->device_last_seen_at
+            ? Carbon::parse($session->device_last_seen_at)
+            : null;
+        $staleMinutes = $this->sessions->staleMinutes();
+        $warningMinutes = max(1, (int) ceil($staleMinutes / 2));
+        $isStale = $lastSeen === null
+            || $lastSeen->lt(Carbon::now()->subMinutes($warningMinutes));
+
+        return [
+            'session_id' => $session->session_id,
+            'student_name' => $session->student_name,
+            'student_external_id' => $session->student_external_id,
+            'course' => $session->course,
+            'workstation_name' => $session->workstation_name,
+            'device_uid' => $session->device_uid,
+            'started_at' => $startedAt->toIso8601String(),
+            'started_at_ts' => $startedAt->timestamp,
+            'started_at_display' => $startedAt->format('h:i A'),
+            'elapsed_seconds' => (int) $elapsedSeconds,
+            'elapsed_display' => $this->formatElapsed((int) $elapsedSeconds),
+            'last_seen_at' => $lastSeen?->toIso8601String(),
+            'last_seen_display' => $lastSeen ? $lastSeen->diffForHumans() : 'never',
+            'is_stale' => $isStale,
+            'stale_minutes' => $staleMinutes,
+            'stale_warning_minutes' => $warningMinutes,
+        ];
     }
 
     private function formatElapsed(int $seconds): string

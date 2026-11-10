@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Device;
+use App\Models\PcAccessLogs;
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -41,7 +45,34 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function sessionTestDevice(array $attributes = []): Device
 {
-    // ..
+    return Device::create(array_merge([
+        'device_uid'       => 'TEST-PC-1',
+        'workstation_name' => 'Test Workstation',
+        'is_paired'        => true,
+        'api_token'        => 'test-token',
+        'last_seen_at'     => now(),
+    ], $attributes));
+}
+
+function sessionTestStart(Device $device, ?string $sessionId = null, $occurredAt = null): string
+{
+    $sessionId = $sessionId ?: (string) Str::uuid();
+
+    PcAccessLogs::create([
+        'occurred_at'         => $occurredAt ?: now(),
+        'received_at'         => now(),
+        'rfid_uid'            => '04A3B2C1',
+        'device_id'           => $device->id,
+        'event_type'          => 'time_in',
+        'result'              => 'allowed',
+        'reason'              => 'Authorized',
+        'session_id'          => $sessionId,
+        'student_external_id' => '2024-0001',
+        'student_name'        => 'Dela Cruz, Juan',
+        'course'              => 'BSIT',
+    ]);
+
+    return $sessionId;
 }
