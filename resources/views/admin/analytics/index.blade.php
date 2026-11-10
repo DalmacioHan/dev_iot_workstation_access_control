@@ -27,6 +27,66 @@
     </div>
 
     {{-- Summary Metrics --}}
+    <form method="GET" action="{{ route('analytics') }}" class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+        <div class="mb-4 flex items-center gap-2">
+
+            <span
+                class="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-xs font-bold text-blue-600"
+            >
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
+                </svg>
+            </span>
+
+
+            <h3 class="text-sm font-bold text-gray-900">
+                Filter Analytics
+            </h3>
+
+        </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
+        {{-- Date From --}}
+            <div>
+                <label
+                    for="date_from"
+                    class="mb-1.5 block text-xs font-semibold text-gray-600"
+                >
+                    Date From
+                </label>
+
+                <input
+                    type="date"
+                    id="date_from"
+                    name="date_from"
+                    value="{{ $dateFrom->toDateString() }}"
+                    onchange="this.form.submit()"
+                    class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                >
+
+            </div>
+        {{-- Date To --}}
+            <div>
+
+                <label
+                    for="date_to"
+                    class="mb-1.5 block text-xs font-semibold text-gray-600"
+                >
+                    Date To
+                </label>
+
+
+                <input
+                    type="date"
+                    id="date_to"
+                    name="date_to"
+                    value="{{ $dateTo->toDateString() }}"
+                    onchange="this.form.submit()"
+                    class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                >
+
+            </form>
+        </div>
+    </div>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
             <div class="flex items-start justify-between gap-4">
@@ -35,7 +95,7 @@
                     <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $topApplication->first()->app_name ?? 'N/A' }}">
                         {{ $topApplication->first()->app_name ?? 'N/A' }}
                     </p>
-                    <p class="mt-1 text-xs text-slate-400">Most used today</p>
+                    <p class="mt-1 text-xs text-slate-400">Most used · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -52,7 +112,7 @@
                     <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularWorkstation->first()->device->workstation_name ?? 'N/A' }}">
                         {{ $popularWorkstation->first()->device->workstation_name ?? 'N/A' }}
                     </p>
-                    <p class="mt-1 text-xs text-slate-400">Highest access today</p>
+                    <p class="mt-1 text-xs text-slate-400">Highest access · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -68,7 +128,7 @@
                 <div>
                     <p class="text-sm font-medium text-slate-500">Successful Access</p>
                     <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) ?? 'N/A' }}</p>
-                    <p class="mt-1 text-xs text-slate-400">Successful sessions today</p>
+                    <p class="mt-1 text-xs text-slate-400">Successful sessions · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -83,7 +143,7 @@
                 <div>
                     <p class="text-sm font-medium text-slate-500">Failed Access</p>
                     <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($failedEvents) ?? 'N/A' }}</p>
-                    <p class="mt-1 text-xs text-slate-400">Failed events today</p>
+                    <p class="mt-1 text-xs text-slate-400">Failed events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -99,18 +159,7 @@
         <div class="border-b border-slate-100 px-6 py-5 flex items-center justify-between gap-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900">Peak Hours</h2>
-                <p class="mt-1 text-sm text-slate-500">Hours with the most access events {{ $peakRangeLabel }}.</p>
-            </div>
-            <div class="relative self-start sm:self-auto">
-                <button id="peakHoursDropdownButton" data-dropdown-toggle="peakHoursDropdown" data-dropdown-placement="bottom-start" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
-                    {{ $peakRangeLabel }}
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
-                </button>
-                <div id="peakHoursDropdown" class="absolute left-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
-                    @foreach($rangeLabels as $range => $label)
-                        <a href="{{ route('analytics', ['peak_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
-                    @endforeach
-                </div>
+                <p class="mt-1 text-sm text-slate-500">Hours with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
             </div>
         </div>
         <div class="p-6">
@@ -124,20 +173,9 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Students</h2>
-                    <p class="mt-1 text-sm text-slate-500">Students with the most access events {{ $studentRangeLabel }}.</p>
+                    <p class="mt-1 text-sm text-slate-500">Students with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
                 </div>
 
-                <div class="relative self-start sm:self-auto">
-                    <button id="topStudentsDropdownButton" data-dropdown-toggle="topStudentsDropdown" data-dropdown-placement="bottom-end" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
-                        {{ $studentRangeLabel }}
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
-                    </button>
-                    <div id="topStudentsDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
-                        @foreach($rangeLabels as $range => $label)
-                            <a href="{{ route('analytics', ['students_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
-                        @endforeach
-                    </div>
-                </div>
             </div>
 
             <div class="px-6 pb-6">
@@ -149,24 +187,27 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Courses</h2>
-                    <p class="mt-1 text-sm text-slate-500">Courses with the most access events {{ $courseRangeLabel }}.</p>
+                    <p class="mt-1 text-sm text-slate-500">Courses with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
                 </div>
 
-                <div class="relative self-start sm:self-auto">
-                    <button id="topCoursesDropdownButton" data-dropdown-toggle="topCoursesDropdown" data-dropdown-placement="bottom-end" type="button" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
-                        {{ $courseRangeLabel }}
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6" /></svg>
-                    </button>
-                    <div id="topCoursesDropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg">
-                        @foreach($rangeLabels as $range => $label)
-                            <a href="{{ route('analytics', ['courses_range' => $range]) }}" class="block rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-700">{{ $label }}</a>
-                        @endforeach
-                    </div>
-                </div>
             </div>
 
-            <div class="px-6 pb-6">
+            <div class="overflow-x-autopx-6 pb-6">
                 <div id="top-courses-chart" class="min-h-70"></div>
+            </div>
+        </div>
+
+        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Top 10 Application</h2>
+                    <p class="mt-1 text-sm text-slate-500">Applications with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
+                </div>
+
+            </div>
+
+            <div class="overflow-x-autopx-6 pb-6">
+                <div id="top-app-chart" class="min-h-70"></div>
             </div>
         </div>
     </div>
@@ -297,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
             grid: {
                 borderColor: '#F3F4F6',
                 strokeDashArray: 4,
-                padding: { left: 8, right: 12 }
+                padding: { left: 8, right: 20 }
             },
             xaxis: {
                 categories: labels,
@@ -311,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             yaxis: {
                 labels: {
-                    style: { colors: '#6B7280', fontSize: '12px' },
+                    style: { colors: '#6B7280', fontSize: '12px'},
                     maxWidth: 150
                 }
             },
@@ -321,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     formatter: (value) => `${Number(value).toLocaleString()} accesses`
                 }
             },
-            legend: { show: false }
+            legend: { show: true }
         }).render();
     };
 
@@ -336,6 +377,13 @@ document.addEventListener('DOMContentLoaded', function () {
         'top-courses-chart',
         @json($topCourses->map(fn ($course) => ['label' => $course->course, 'total' => $course->total])->values()),
         'No course activity found for this period.',
+        '#1D4ED8'
+    );
+
+    renderRankedBarChart(
+        'top-app-chart',
+        @json($top10Application->map(fn ($course) => ['label' => $course->app_name, 'total' => $course->total])->values()),
+        'No application activity found for this period.',
         '#1D4ED8'
     );
 });
