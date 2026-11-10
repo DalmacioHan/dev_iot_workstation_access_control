@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a78eff9bbb84dbc10fd778f50a28b54",
+    "content-hash": "6bb10d8357ef99d7cd2a6f791abff332",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -4407,16 +4407,16 @@
         },
         {
             "name": "spatie/laravel-pdf",
-            "version": "2.13.1",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-pdf.git",
-                "reference": "004e3d21cc1c3b2f435d9794841bacf1cf46ab8f"
+                "reference": "9581e64f96092cc3a0857b76d9ee180d6abdce78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-pdf/zipball/004e3d21cc1c3b2f435d9794841bacf1cf46ab8f",
-                "reference": "004e3d21cc1c3b2f435d9794841bacf1cf46ab8f",
+                "url": "https://api.github.com/repos/spatie/laravel-pdf/zipball/9581e64f96092cc3a0857b76d9ee180d6abdce78",
+                "reference": "9581e64f96092cc3a0857b76d9ee180d6abdce78",
                 "shasum": ""
             },
             "require": {
@@ -4496,9 +4496,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-pdf/issues",
-                "source": "https://github.com/spatie/laravel-pdf/tree/2.13.1"
+                "source": "https://github.com/spatie/laravel-pdf/tree/2.14.0"
             },
-            "time": "2026-09-01T08:23:12+00:00"
+            "time": "2026-10-05T08:48:41+00:00"
         },
         {
             "name": "spatie/temporary-directory",
