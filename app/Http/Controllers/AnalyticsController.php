@@ -24,14 +24,12 @@ class AnalyticsController extends Controller
             ->with('device')
             ->groupBy('device_id')
             ->orderBy('total', 'desc')
-            ->take(1)
-            ->get();
-        $topApplication = PcAppUsage::select('app_name', PcAppUsage::raw('COUNT(*) as total'))
+            ->get(1);
+        $popularApplication = PcAppUsage::select('app_name', PcAppUsage::raw('COUNT(*) as total'))
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->groupBy('app_name')
             ->orderBy('total', 'desc')
-            ->take(1)
-            ->get();
+            ->get(1);
         $failedEvents = PcAccessLogs::whereIn('result', ['denied', 'fail'])
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->count();
@@ -134,7 +132,7 @@ class AnalyticsController extends Controller
                 return $course;
             });
 
-        $top10Application = PcAppUsage::query()
+        $topApplication = PcAppUsage::query()
             ->select('app_name')
             ->selectRaw('COUNT(*) as total')
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
@@ -144,8 +142,8 @@ class AnalyticsController extends Controller
             ->get();
 
         return view('admin.analytics.index', compact(
-            'failedEvents', 'popularWorkstation', 'successfulEvents', 'topApplication',
-            'topStudents', 'topCourses', 'top10Application', 'peakHours',
+            'failedEvents', 'popularWorkstation', 'successfulEvents', 'popularApplication',
+            'topStudents', 'topCourses', 'topApplication', 'peakHours',
             'dateFrom', 'dateTo'
             ));
     }
