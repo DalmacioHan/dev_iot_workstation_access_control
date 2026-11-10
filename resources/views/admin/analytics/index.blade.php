@@ -29,20 +29,18 @@
     {{-- Summary Metrics --}}
     <form method="GET" action="{{ route('analytics') }}" class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
         <div class="mb-4 flex items-center gap-2">
-
             <span
                 class="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-xs font-bold text-blue-600"
             >
-                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
+
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
                 </svg>
+
             </span>
-
-
             <h3 class="text-sm font-bold text-gray-900">
                 Filter Analytics
             </h3>
-
         </div>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
         {{-- Date From --}}
@@ -53,7 +51,6 @@
                 >
                     Date From
                 </label>
-
                 <input
                     type="date"
                     id="date_from"
@@ -62,19 +59,15 @@
                     onchange="this.form.submit()"
                     class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
                 >
-
             </div>
         {{-- Date To --}}
             <div>
-
                 <label
                     for="date_to"
                     class="mb-1.5 block text-xs font-semibold text-gray-600"
                 >
                     Date To
                 </label>
-
-
                 <input
                     type="date"
                     id="date_to"
@@ -83,7 +76,6 @@
                     onchange="this.form.submit()"
                     class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
                 >
-
             </form>
         </div>
     </div>
@@ -91,16 +83,18 @@
         <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
             <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
-                    <p class="text-sm font-medium text-slate-500">Top Application</p>
-                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $topApplication->first()->app_name ?? 'N/A' }}">
-                        {{ $topApplication->first()->app_name ?? 'N/A' }}
+                    <p class="text-sm font-medium text-slate-500">Popular Application</p>
+                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularApplication->first()->app_name ?? 'N/A' }}">
+                        {{ $popularApplication->first()->app_name ?? 'N/A' }}
                     </p>
                     <p class="mt-1 text-xs text-slate-400">Most used · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
+
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" >
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
                     </svg>
+
                 </div>
             </div>
         </div>
@@ -115,10 +109,10 @@
                     <p class="mt-1 text-xs text-slate-400">Highest access · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3h6l1 3h3a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h3l1-3Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h8M8 16h5" />
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"/>
                     </svg>
+
                 </div>
             </div>
         </div>
@@ -178,7 +172,7 @@
 
             </div>
 
-            <div class="px-6 pb-6">
+            <div class="overflow-x-auto px-6 pb-6">
                 <div id="top-students-chart" class="min-h-70"></div>
             </div>
         </div>
@@ -192,7 +186,7 @@
 
             </div>
 
-            <div class="overflow-x-autopx-6 pb-6">
+            <div class="overflow-x-auto px-6 pb-6">
                 <div id="top-courses-chart" class="min-h-70"></div>
             </div>
         </div>
@@ -206,7 +200,7 @@
 
             </div>
 
-            <div class="overflow-x-autopx-6 pb-6">
+            <div class="overflow-x-auto px-6 pb-6">
                 <div id="top-app-chart" class="min-h-70"></div>
             </div>
         </div>
@@ -353,7 +347,9 @@ document.addEventListener('DOMContentLoaded', function () {
             yaxis: {
                 labels: {
                     style: { colors: '#6B7280', fontSize: '12px'},
-                    maxWidth: 150
+                    minWidth: 160,
+                    maxWidth: 160,
+                    offsetX: 0
                 }
             },
             tooltip: {
@@ -382,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderRankedBarChart(
         'top-app-chart',
-        @json($top10Application->map(fn ($course) => ['label' => $course->app_name, 'total' => $course->total])->values()),
+        @json($topApplication->map(fn ($course) => ['label' => $course->app_name, 'total' => $course->total])->values()),
         'No application activity found for this period.',
         '#1D4ED8'
     );
