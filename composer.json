@@ -17,7 +17,7 @@
         "nyholm/psr7": "^1.8",
         "railsware/mailtrap-php": "^3.11",
         "spatie/browsershot": "^5.4",
-        "spatie/laravel-pdf": "^2.13",
+        "spatie/laravel-pdf": "^2.14",
         "symfony/http-client": "^8.0",
         "symfony/mailer": "^7.4"
     },
