@@ -73,34 +73,34 @@ An enterprise-grade IoT access control, workstation monitoring, and analytics pl
 
 ```mermaid
 graph TD
-    subgraph Physical Laboratory Workstation
-        RFID["RFID Card Reader"] -->|Card Tap| KIOSK["Desktop Kiosk Client (C# / ESP32)"]
-        PC["PC Workstation Lock/Screen"] <-->|Control & App Telemetry| KIOSK
+    subgraph Station["Physical Laboratory Workstation"]
+        RFID["RFID Card Reader"] -->|"Card Tap"| KIOSK["Desktop Kiosk Client (C# / ESP32)"]
+        PC["PC Workstation Lock/Screen"] <-->|"Control & App Telemetry"| KIOSK
     end
 
-    subgraph University Infrastructure
+    subgraph Uni["University Infrastructure"]
         MIS["University Student MIS / UISA API"]
     end
 
-    subgraph Laravel Central Platform
-        API["REST API Layer (/api/access/*, /api/device/*)"]
+    subgraph Cloud["Laravel Central Platform"]
+        API["REST API Layer"]
         AUTH["Device Auth & Session Reaper Middleware"]
         SESSION["Session Lifecycle Service"]
-        DB[(MySQL Database)]
+        DB[("MySQL Database")]
         WEB["Admin Portal & Reporting Engine"]
-        PDF["Headless PDF Engine (Chromium/Puppeteer)"]
+        PDF["Headless PDF Engine (Chromium)"]
     end
 
-    KIOSK -->|1. POST /api/access/scan| API
+    KIOSK -->|"1. POST /api/access/scan"| API
     API --> AUTH
-    AUTH -->|2. Verify Student| MIS
-    AUTH -->|3. Record Login & Session| SESSION
+    AUTH -->|"2. Verify Student"| MIS
+    AUTH -->|"3. Record Login & Session"| SESSION
     SESSION --> DB
-    KIOSK -->|4. Periodic Heartbeat & App Telemetry| API
-    API -->|5. Remote Commands (Lock / Announce)| KIOSK
+    KIOSK -->|"4. Periodic Heartbeat & App Telemetry"| API
+    API -->|"5. Remote Commands (Lock / Announce)"| KIOSK
 
-    WEB -->|Query Insights & Charts| DB
-    WEB -->|Export Summary & Logs| PDF
+    WEB -->|"Query Insights & Charts"| DB
+    WEB -->|"Export Summary & Logs"| PDF
 ```
 
 ---
