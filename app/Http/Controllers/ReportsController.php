@@ -74,6 +74,9 @@ class ReportsController extends Controller
                 $data['dateTo'] = $filters['date_to'];
                 $data['isAllTime'] = $filters['all_time'];
 
+                $analytics = $this->studentSummaryAnalytics($filters);
+                $data = array_merge($data, $analytics);
+
             } else {
 
                 $data['logs'] = $this
@@ -518,10 +521,7 @@ class ReportsController extends Controller
                 'pc_access_logs.student_name',
                 'pc_access_logs.course',
                 'pc_access_logs.session_id',
-
-                'devices.device_uid',
                 'devices.workstation_name',
-
                 'pc_access_logs.event_type',
                 'pc_access_logs.result',
                 'pc_access_logs.reason',
@@ -594,11 +594,6 @@ class ReportsController extends Controller
                         )
                         ->orWhere(
                             'devices.workstation_name',
-                            'like',
-                            $like
-                        )
-                        ->orWhere(
-                            'devices.device_uid',
                             'like',
                             $like
                         )
@@ -879,9 +874,11 @@ class ReportsController extends Controller
             );
 
 
+        $analytics = $this->studentSummaryAnalytics($filters, $students);
+
         return Pdf::view(
             'admin.reports.SummaryReport.pdf',
-            [
+            array_merge([
                 'students' =>
                     $students,
 
@@ -893,7 +890,7 @@ class ReportsController extends Controller
 
                 'generatedAt' =>
                     now(),
-            ]
+            ], $analytics)
         )
             /*
             |--------------------------------------------------------------------------
@@ -1150,6 +1147,191 @@ class ReportsController extends Controller
             ->groupBy(
                 'pc_access_logs.student_external_id'
             );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STUDENT SUMMARY ANALYTICS
+    |--------------------------------------------------------------------------
+    |
+    | Computes overall course distribution and top 3 rankings for:
+    | - Students by logins (allowed check-ins)
+    | - Students by accumulated usage time
+    | - Courses by logins
+    | - Courses by accumulated usage time
+    |
+    */
+    private function studentSummaryAnalytics(array $filters, $summaryStudents = null): array
+    {
+        if ($summaryStudents === null) {
+            $summaryStudents = $this->studentSummaryQuery($filters)->get();
+        }
+
+        $totalCourseStudents = $summaryStudents->count();
+
+        // 1. Overall Course Distribution based on the distinct students in this report
+        $courseDistribution = $summaryStudents
+            ->groupBy(function ($s) {
+                return $s->course ?: 'Unassigned';
+            })
+            ->map(function ($group, $courseName) {
+                return (object) [
+                    'course' => $courseName,
+                    'student_count' => $group->count(),
+                    'login_count' => (int) $group->sum('allowed_accesses'),
+                ];
+            })
+            ->sortByDesc('student_count')
+            ->values();
+
+        // Prepare slices for donut chart (Top 5 + "Other courses" if more)
+        $chartCourseLabels = [];
+        $chartCourseCounts = [];
+        $chartCoursePercentages = [];
+        $chartCourseColors = [
+            '#1D4ED8', '#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#CBD5E1'
+        ];
+
+        if ($totalCourseStudents > 0) {
+            $topSlices = $courseDistribution->take(5);
+            $othersCount = (int) $courseDistribution->skip(5)->sum('student_count');
+
+            foreach ($topSlices as $slice) {
+                $chartCourseLabels[] = $slice->course;
+                $chartCourseCounts[] = (int) $slice->student_count;
+            }
+
+            if ($othersCount > 0) {
+                $chartCourseLabels[] = 'Other courses';
+                $chartCourseCounts[] = $othersCount;
+            }
+
+            foreach ($chartCourseCounts as $count) {
+                $chartCoursePercentages[] = round(($count / $totalCourseStudents) * 100, 1);
+            }
+        }
+
+        // 2. Top 3 Students by Logins (from the distinct student records)
+        $topStudentsByLogins = $summaryStudents
+            ->sortByDesc('allowed_accesses')
+            ->take(3)
+            ->map(function ($s) {
+                return (object) [
+                    'student_external_id' => $s->student_external_id,
+                    'student_name' => $s->student_name,
+                    'course' => $s->course,
+                    'login_count' => (int) $s->allowed_accesses,
+                ];
+            })
+            ->values();
+
+        // 3. Top 3 Courses by Logins
+        $topCoursesByLogins = $courseDistribution
+            ->sortByDesc('login_count')
+            ->take(3)
+            ->values();
+
+        // 4 & 5. Session Usage Times
+        $sessionDurations = DB::table('pc_access_logs as in_log')
+            ->leftJoin('devices', 'in_log.device_id', '=', 'devices.id')
+            ->join('pc_access_logs as out_log', function ($join) {
+                $join->on('in_log.session_id', '=', 'out_log.session_id')
+                    ->where('out_log.event_type', '=', 'time_out');
+            })
+            ->where('in_log.event_type', 'time_in')
+            ->where('in_log.result', 'allowed')
+            ->whereNotNull('in_log.session_id')
+            ->select(
+                'in_log.session_id',
+                'in_log.student_external_id',
+                'in_log.student_name',
+                'in_log.course',
+                'devices.workstation_name',
+                'in_log.occurred_at as time_in_at',
+                'out_log.occurred_at as time_out_at',
+                DB::raw('TIMESTAMPDIFF(SECOND, in_log.occurred_at, out_log.occurred_at) as duration_seconds')
+            );
+
+        if (!($filters['all_time'] ?? false)) {
+            $sessionDurations->whereBetween('in_log.occurred_at', [
+                Carbon::parse($filters['date_from'])->startOfDay(),
+                Carbon::parse($filters['date_to'])->endOfDay(),
+            ]);
+        }
+
+        if (!empty($filters['course'])) {
+            $sessionDurations->where('in_log.course', $filters['course']);
+        }
+
+        if (!empty($filters['device'])) {
+            $sessionDurations->where('devices.workstation_name', $filters['device']);
+        }
+
+        // Top 3 Students by Accumulated Usage Time
+        $topStudentsByTime = DB::query()
+            ->fromSub($sessionDurations, 'sessions')
+            ->whereNotNull('student_external_id')
+            ->where('student_external_id', '!=', '')
+            ->where('duration_seconds', '>=', 0)
+            ->select('student_external_id')
+            ->selectRaw('MAX(student_name) as student_name, MAX(course) as course, SUM(duration_seconds) as total_seconds, COUNT(*) as session_count')
+            ->groupBy('student_external_id')
+            ->orderByDesc('total_seconds')
+            ->limit(3)
+            ->get()
+            ->map(function ($s) {
+                $s->formatted_time = $this->formatDurationSeconds((int) $s->total_seconds);
+                return $s;
+            });
+
+        // Top 3 Courses by Accumulated Usage Time
+        $topCoursesByTime = DB::query()
+            ->fromSub($sessionDurations, 'sessions')
+            ->whereNotNull('course')
+            ->where('course', '!=', '')
+            ->where('duration_seconds', '>=', 0)
+            ->select('course')
+            ->selectRaw('SUM(duration_seconds) as total_seconds, COUNT(*) as session_count')
+            ->groupBy('course')
+            ->orderByDesc('total_seconds')
+            ->limit(3)
+            ->get()
+            ->map(function ($c) {
+                $c->formatted_time = $this->formatDurationSeconds((int) $c->total_seconds);
+                return $c;
+            });
+
+        return [
+            'courseDistribution'     => $courseDistribution,
+            'chartCourseLabels'      => $chartCourseLabels,
+            'chartCourseCounts'      => $chartCourseCounts,
+            'chartCoursePercentages' => $chartCoursePercentages,
+            'chartCourseColors'      => $chartCourseColors,
+            'totalCourseStudents'    => $totalCourseStudents,
+            'topStudentsByLogins'    => $topStudentsByLogins,
+            'topStudentsByTime'      => $topStudentsByTime,
+            'topCoursesByLogins'     => $topCoursesByLogins,
+            'topCoursesByTime'       => $topCoursesByTime,
+        ];
+    }
+
+    private function formatDurationSeconds(int $seconds): string
+    {
+        $seconds = max(0, $seconds);
+        $hours = intdiv($seconds, 3600);
+        $minutes = intdiv($seconds % 3600, 60);
+        $secs = $seconds % 60;
+
+        if ($hours > 0) {
+            return "{$hours}h {$minutes}m" . ($secs > 0 ? " {$secs}s" : '');
+        }
+
+        if ($minutes > 0) {
+            return "{$minutes}m {$secs}s";
+        }
+
+        return "{$secs}s";
     }
 
 
