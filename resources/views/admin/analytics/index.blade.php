@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Analytics')
+@section('title', 'Overview')
 
 @section('content')
 
@@ -10,18 +10,17 @@
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
-                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
-                </svg>
-                Analytics
+                <x-icon name="chart-vertical" class="h-3.5 w-3.5" aria-hidden="true" />
+                Insights
             </div>
 
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                Usage Analytics
+                Overview
             </h1>
 
             <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                Review access patterns across students, courses, applications, and workstations.
+                Access patterns across students, courses, applications, and workstations.
+                For full searchable records, open Reports.
             </p>
         </div>
     </div>
@@ -33,13 +32,11 @@
                 class="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-xs font-bold text-blue-600"
             >
 
-                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
-                </svg>
+                <x-icon name="filter" class="h-3 w-3" aria-hidden="true" />
 
             </span>
             <h3 class="text-sm font-bold text-gray-900">
-                Filter Analytics
+                Filters
             </h3>
         </div>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
@@ -91,9 +88,7 @@
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
 
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" >
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
-                    </svg>
+                    <x-icon name="chart" class="h-5 w-5" aria-hidden="true" />
 
                 </div>
             </div>
@@ -109,9 +104,7 @@
                     <p class="mt-1 text-xs text-slate-400">Highest access · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"xmlns="http://www.w3.org/2000/svg">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1M9 12H4m8 8V9h8v11h-8Zm0 0H9m8-4a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"/>
-                    </svg>
+                    <x-icon name="dashboard" class="h-5 w-5" aria-hidden="true" />
 
                 </div>
             </div>
@@ -125,9 +118,7 @@
                     <p class="mt-1 text-xs text-slate-400">Successful sessions · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l4 4L19 6" />
-                    </svg>
+                    <x-icon name="check" class="h-5 w-5" aria-hidden="true" />
                 </div>
             </div>
         </div>
@@ -140,9 +131,7 @@
                     <p class="mt-1 text-xs text-slate-400">Failed events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 4h.01M10.3 3.9l-7.1 12.3A1.5 1.5 0 004.5 18.5h15a1.5 1.5 0 001.3-2.3L13.7 3.9a1.9 1.9 0 00-3.4 0Z" />
-                    </svg>
+                    <x-icon name="exclamation-triangle" class="h-5 w-5" aria-hidden="true" />
                 </div>
             </div>
         </div>
@@ -172,7 +161,7 @@
                 <div class="relative self-end sm:self-auto">
                     <button id="student-ranking-toggle" type="button" aria-expanded="false" aria-controls="student-ranking-dropdown" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                         <span id="student-ranking-toggle-label">Access Events</span>
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m6 9 6 6 6-6"/></svg>
+                        <x-icon name="chevron-down" class="h-4 w-4" aria-hidden="true" />
                     </button>
                     <div id="student-ranking-dropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-gray-200 bg-white p-1 shadow-lg">
                         <button type="button" data-ranking-mode="access" class="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700">
@@ -188,9 +177,9 @@
                 <div id="top-students-chart" class="min-h-70"></div>
                 <div>
                     <div class="flex justify-end px-6">
-                        <a href="{{ route('reports.summary') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        <a href="{{ route('reports.index', ['tab' => 'students', 'step' => 4]) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                             View Report
-                            <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                            <x-icon name="arrow-right" class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" />
                         </a>
                     </div>
                 </div>
@@ -218,9 +207,9 @@
                 </table>
                 <div>
                     <div class="flex justify-end px-6 pb-5 pt-5">
-                        <a href="{{ route('reports.summary') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        <a href="{{ route('reports.index', ['tab' => 'students', 'step' => 4]) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                             View Report
-                            <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                            <x-icon name="arrow-right" class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" />
                         </a>
                     </div>
                 </div>
@@ -239,9 +228,9 @@
             </div>
             <div>
                 <div class="flex justify-end px-6 pb-5">
-                    <a href="{{ route('reports.accesslog') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                    <a href="{{ route('reports.index', ['tab' => 'access', 'step' => 4]) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                         View Report
-                        <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                        <x-icon name="arrow-right" class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" />
                     </a>
                 </div>
             </div>

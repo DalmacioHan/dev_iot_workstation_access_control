@@ -51,19 +51,7 @@
                 class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.8"
-                        d="m5 12 4 4L19 6"
-                    />
-                </svg>
+                <x-icon name="check" class="h-5 w-5" />
 
             </div>
 
@@ -101,33 +89,7 @@
                     class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600"
                 >
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9"
-                            stroke-width="1.8"
-                        />
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-width="1.8"
-                            d="M12 8v5"
-                        />
-
-                        <circle
-                            cx="12"
-                            cy="17"
-                            r=".8"
-                            fill="currentColor"
-                            stroke="none"
-                        />
-                    </svg>
+                    <x-icon name="clock" class="h-5 w-5" />
 
                 </div>
 
@@ -194,26 +156,7 @@
                             class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20 backdrop-blur"
                         >
 
-                            <svg
-                                class="h-7 w-7"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M12 2v3m0 14v3M4.93 4.93l2.12 2.12m9.9 9.9 2.12 2.12M2 12h3m14 0h3M4.93 19.07l2.12-2.12m9.9-9.9 2.12-2.12"
-                                />
-
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="4"
-                                    stroke-width="1.8"
-                                />
-                            </svg>
+                            <x-icon name="settings" class="h-7 w-7" />
 
                         </div>
 
@@ -318,26 +261,7 @@
 
                             <div class="flex gap-3">
 
-                                <svg
-                                    class="mt-0.5 h-5 w-5 shrink-0 text-blue-100"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M12 3 5 6v5c0 4.7 2.9 8.6 7 10 4.1-1.4 7-5.3 7-10V6l-7-3Z"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="m9.5 12 1.7 1.7 3.5-3.5"
-                                    />
-                                </svg>
+                                <x-icon name="shield-check" class="mt-0.5 h-5 w-5 shrink-0 text-blue-100" />
 
 
                                 <div>
@@ -382,26 +306,7 @@
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
                         >
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="9"
-                                    stroke-width="1.8"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"
-                                />
-                            </svg>
+                            <x-icon name="globe" class="h-5 w-5" />
 
                         </div>
 
@@ -409,12 +314,13 @@
                         <div>
 
                             <h2 class="text-lg font-bold text-gray-900">
-                                Student System Integration
+                                MIS / Library System Integration
                             </h2>
 
                             <p class="mt-1 text-sm leading-6 text-gray-500">
-                                Configure the API address used to communicate
-                                with your external student system.
+                                Configure the API address used for RFID student
+                                lookups against the university MIS or the
+                                simulated Library database.
                             </p>
 
                         </div>
@@ -428,7 +334,7 @@
                             for="student_api_url"
                             class="mb-2 block text-sm font-semibold text-gray-900"
                         >
-                            Student API URL
+                            MIS / Library API URL
                             <span class="text-red-500">*</span>
                         </label>
 
@@ -439,19 +345,7 @@
                                 class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
                             >
 
-                                <svg
-                                    class="h-5 w-5 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M10.5 13.5 13.5 10.5M8.5 15.5l-1 1a3.54 3.54 0 0 1-5-5l3-3a3.54 3.54 0 0 1 5 0M15.5 8.5l1-1a3.54 3.54 0 0 1 5 5l-3 3a3.54 3.54 0 0 1-5 0"
-                                    />
-                                </svg>
+                                <x-icon name="link" class="h-5 w-5 text-gray-400" />
 
                             </div>
 
@@ -479,8 +373,10 @@
 
 
                         <p class="mt-2 text-xs leading-5 text-gray-400">
-                            Enter the base URL supplied by the external student
-                            information system.
+                            Base URL supplied by the university MIS (or the
+                            simulated LibraryApi). Saving here overrides
+                            <span class="font-mono">MIS_API_BASE_URL</span>
+                            from <span class="font-mono">.env</span>.
                         </p>
 
                     </div>
@@ -496,33 +392,7 @@
                                 class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm"
                             >
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9"
-                                        stroke-width="1.8"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-width="1.8"
-                                        d="M12 11v5"
-                                    />
-
-                                    <circle
-                                        cx="12"
-                                        cy="8"
-                                        r=".8"
-                                        fill="currentColor"
-                                        stroke="none"
-                                    />
-                                </svg>
+                                <x-icon name="information-circle" class="h-5 w-5" />
 
                             </div>
 
@@ -530,14 +400,20 @@
                             <div>
 
                                 <p class="text-xs font-semibold text-blue-800">
-                                    API configuration
+                                    Current endpoint
+                                </p>
+
+                                <p class="mt-1 break-all text-xs leading-5 text-blue-700">
+                                    <span class="font-mono">
+                                        {{ $currentEndpoint ?? '—' }}
+                                    </span>
                                 </p>
 
                                 <p class="mt-1 text-xs leading-5 text-blue-700">
-                                    Example:
-                                    <span class="font-mono">
-                                        https://student-system.example.com/api
-                                    </span>
+                                    This is what RFID scans use right now. A
+                                    blank saved value falls back to
+                                    <span class="font-mono">MIS_API_BASE_URL</span>
+                                    in <span class="font-mono">.env</span>.
                                 </p>
 
                             </div>
@@ -562,31 +438,7 @@
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600"
                         >
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <circle
-                                    cx="12"
-                                    cy="12"
-                                    r="2"
-                                    stroke-width="1.8"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-width="1.8"
-                                    d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-width="1.8"
-                                    d="M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"
-                                />
-                            </svg>
+                            <x-icon name="wifi" class="h-5 w-5" />
 
                         </div>
 
@@ -624,26 +476,7 @@
                                 class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
                             >
 
-                                <svg
-                                    class="h-5 w-5 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9"
-                                        stroke-width="1.8"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M12 7v5l3 2"
-                                    />
-                                </svg>
+                                <x-icon name="clock" class="h-5 w-5 text-gray-400" />
 
                             </div>
 
@@ -757,20 +590,7 @@
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600"
                         >
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M12 8v5m0 3.5v.5M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z"
-                                />
-
-                            </svg>
+                            <x-icon name="exclamation-triangle" class="h-5 w-5" />
 
                         </div>
 
@@ -809,26 +629,7 @@
                                 class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
                             >
 
-                                <svg
-                                    class="h-5 w-5 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9"
-                                        stroke-width="1.8"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M12 7v5l3 2"
-                                    />
-                                </svg>
+                                <x-icon name="clock" class="h-5 w-5 text-gray-400" />
 
                             </div>
 
@@ -904,26 +705,7 @@
                         class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
                     >
 
-                        <svg
-                            class="h-5 w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M5 3h12l2 2v16H5V3Z"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M8 3v6h8V3M8 21v-7h8v7"
-                            />
-                        </svg>
+                        <x-icon name="save-floppy" class="h-5 w-5" />
 
                         Save Settings
 

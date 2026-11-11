@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\PcAccessLogs;
 use App\Models\PcAppUsage;
+use App\Services\MisStudentLookup;
 use App\Services\SessionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccessController extends Controller
 {
-    public function __construct(private SessionService $sessions)
-    {
+    public function __construct(
+        private SessionService $sessions,
+        private MisStudentLookup $mis
+    ) {
     }
 
     /**
@@ -47,7 +49,7 @@ class AccessController extends Controller
             ? \Illuminate\Support\Carbon::parse($validated['occurred_at'])
             : now();
 
-        [$student, $reason] = $this->lookupStudentInMis($cardId);
+        [$student, $reason] = $this->mis->lookup($cardId);
 
         if ($student === null) {
             $this->writeLog([
@@ -171,55 +173,6 @@ class AccessController extends Controller
     }
 
     /**
-     * Query the university MIS for a card.
-     *
-     * Returns [StudentParameters|null, reason]. A null student is always
-     * paired with a human readable reason explaining why access was denied.
-     */
-    private function lookupStudentInMis(string $cardId): array
-    {
-        $timeout = (float) config('services.mis.timeout', 3);
-        $url = rtrim(config('services.mis.url', 'http://localhost:5080'), '/')
-            . '/api/students/' . rawurlencode($cardId);
-
-        try {
-            $request = Http::timeout($timeout);
-
-            $misKey = (string) config('services.mis.key');
-            if ($misKey !== '') {
-                $request = $request->withHeaders(['X-API-Key' => $misKey]);
-            }
-
-            $response = $request->get($url);
-
-            if ($response->notFound()) {
-                return [null, 'Card is not registered in the university MIS.'];
-            }
-
-            if ($response->unauthorized()) {
-                return [null, 'MIS rejected the API key.'];
-            }
-
-            if ($response->successful()) {
-                $data = $response->json() ?? [];
-
-                return [[
-                    'cardId'       => $data['cardId'] ?? $data['CardId'] ?? $cardId,
-                    'studentNumber'=> $data['studentNumber'] ?? $data['StudentNumber'] ?? '',
-                    'firstName'    => $data['firstName'] ?? $data['FirstName'] ?? '',
-                    'lastName'     => $data['lastName'] ?? $data['LastName'] ?? '',
-                    'middleName'   => $data['middleName'] ?? $data['MiddleName'] ?? '',
-                    'course'       => $data['course'] ?? $data['Course'] ?? '',
-                ], null];
-            }
-
-            return [null, 'MIS returned an unexpected response (' . $response->status() . ').'];
-        } catch (\Exception $ex) {
-            return [null, 'MIS is currently unavailable. Please try again.'];
-        }
-    }
-
-    /**
      * Write one row to pc_access_logs in the schema the admin pages expect.
      */
     private function writeLog(array $data): void
@@ -229,7 +182,11 @@ class AccessController extends Controller
         $snapshot = $student === null
             ? []
             : [
-                'student_external_id' => $student['cardId'],
+                // The student number is the identity. The RFID UID is only the
+                // lookup key, so never substitute it for a missing StudentNo.
+                'student_external_id' => ($student['studentNumber'] ?? '') !== ''
+                    ? $student['studentNumber']
+                    : null,
                 'student_name'        => trim(($student['firstName'] ?? '') . ' ' . ($student['middleName'] ?? '') . ' ' . ($student['lastName'] ?? '')),
                 'course'              => $student['course'] ?? null,
             ];

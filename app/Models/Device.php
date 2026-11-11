@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     protected $fillable = [
-    'device_uid',
     'workstation_name',
     'pairing_code',
     'is_paired',

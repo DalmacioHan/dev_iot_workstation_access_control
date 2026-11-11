@@ -6,18 +6,14 @@
                 <li>
                     <span class="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium font-medium rounded-s-base text-sm w-9 h-9 opacity-50 pointer-events-none">
                         <span class="sr-only">Previous</span>
-                        <svg class="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
-                        </svg>
+                        <x-icon name="chevron-left" class="w-4 h-4" aria-hidden="true" />
                     </span>
                 </li>
             @else
                 <li>
                     <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium rounded-s-base text-sm w-9 h-9 focus:outline-none">
                         <span class="sr-only">Previous</span>
-                        <svg class="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
-                        </svg>
+                        <x-icon name="chevron-left" class="w-4 h-4" aria-hidden="true" />
                     </a>
                 </li>
             @endif
@@ -50,18 +46,14 @@
                 <li>
                     <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading font-medium rounded-e-base text-sm w-9 h-9 focus:outline-none">
                         <span class="sr-only">Next</span>
-                        <svg class="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                        </svg>
+                        <x-icon name="chevron-right" class="w-4 h-4" aria-hidden="true" />
                     </a>
                 </li>
             @else
                 <li>
                     <span class="flex items-center justify-center text-body bg-neutral-secondary-medium box-border border border-default-medium font-medium rounded-e-base text-sm w-9 h-9 opacity-50 pointer-events-none">
                         <span class="sr-only">Next</span>
-                        <svg class="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
-                        </svg>
+                        <x-icon name="chevron-right" class="w-4 h-4" aria-hidden="true" />
                     </span>
                 </li>
             @endif

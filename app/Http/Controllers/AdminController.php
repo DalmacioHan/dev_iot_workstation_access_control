@@ -288,7 +288,7 @@ class AdminController extends Controller
                 'pc_access_logs.course',
                 'pc_access_logs.occurred_at as started_at'
             )
-            ->selectRaw('devices.workstation_name, devices.device_uid, devices.last_seen_at as device_last_seen_at')
+            ->selectRaw('devices.workstation_name,devices.last_seen_at as device_last_seen_at')
             ->join('devices', 'devices.id', '=', 'pc_access_logs.device_id')
             ->orderBy('pc_access_logs.occurred_at', 'desc');
     }
@@ -328,13 +328,22 @@ class AdminController extends Controller
         $isStale = $lastSeen === null
             || $lastSeen->lt(Carbon::now()->subMinutes($warningMinutes));
 
+        // devices.device_uid was dropped from the schema; the workstation name
+        // is the only human-readable identifier left.
+        $deviceName = $session->workstation_name ?: 'Workstation';
+
         return [
             'session_id' => $session->session_id,
             'student_name' => $session->student_name,
             'student_external_id' => $session->student_external_id,
             'course' => $session->course,
             'workstation_name' => $session->workstation_name,
-            'device_uid' => $session->device_uid,
+            'device_uid' => null,
+            'device_id' => (int) $session->device_id,
+            'device_name' => $deviceName,
+            'lock_url' => route('device.lock', $session->device_id),
+            'announce_url' => route('device.announce', $session->device_id),
+            'device_url' => route('device.show', $session->device_id),
             'started_at' => $startedAt->toIso8601String(),
             'started_at_ts' => $startedAt->timestamp,
             'started_at_display' => $startedAt->format('h:i A'),

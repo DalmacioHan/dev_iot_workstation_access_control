@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Monitoring')
+@section('title', 'Event Logs')
 
 @section('content')
 
@@ -14,13 +14,14 @@
         <div>
 
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                Workstation Monitoring
+                Event Logs
             </h1>
 
 
             <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-                Monitor registered workstation devices, access events,
-                device commands, and application usage.
+                A current snapshot of workstation devices, access events,
+                device commands, and application usage. For full searchable
+                records and exports, open Reports.
             </p>
 
         </div>
@@ -31,9 +32,7 @@
 
             <button type="button" id="refresh-monitoring" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
 
-                <svg id="refresh-icon" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7" />
-                </svg>
+                <x-icon name="refresh" class="h-4 w-4" id="refresh-icon" />
 
                 Refresh
 
@@ -56,10 +55,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="4" y="4" width="16" height="16" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2" />
-                    </svg>
+                    <x-icon name="calendar" class="h-5 w-5" />
 
                 </div>
 
@@ -89,10 +85,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                    </svg>
+                    <x-icon name="laptop" class="h-5 w-5" />
 
                 </div>
 
@@ -117,10 +110,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m8 12 2.5 2.5L16 9" />
-                    </svg>
+                    <x-icon name="search" class="h-5 w-5" />
 
                 </div>
 
@@ -145,10 +135,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M12 7v5l3 2" />
-                    </svg>
+                    <x-icon name="clock" class="h-5 w-5" />
 
                 </div>
 
@@ -166,9 +153,70 @@
         </div>
 
     </div>
+
+    {{-- =========================================================
+        TABS
+    ========================================================== --}}
+    <div class="mb-6 flex flex-col gap-3 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+
+        <div class="flex flex-wrap items-center gap-1" role="tablist" aria-label="Event log views">
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="devices"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <x-icon name="laptop" class="h-4 w-4" />
+                Devices
+            </button>
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="access"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <x-icon name="file" class="h-4 w-4" />
+                Access Events
+            </button>
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="commands"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <x-icon name="dash-menu" class="h-4 w-4" />
+                Commands
+            </button>
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="apps"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <x-icon name="dashboard" class="h-4 w-4" />
+                Application Usage
+            </button>
+
+        </div>
+
+        <p class="px-3 text-xs text-gray-400">
+            Showing the latest 10 records per view.
+        </p>
+
+    </div>
+
     {{-- =========================================================
         ACCESS EVENTS
     ========================================================== --}}
+    <div data-tab-panel="access" class="hidden">
     <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
         <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -177,10 +225,7 @@
 
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M14 2v6h6M8 13h8M8 17h6" />
-                    </svg>
+                    <x-icon name="file" class="h-5 w-5" />
 
                 </div>
 
@@ -200,11 +245,20 @@
             </div>
 
 
-            <select id="access-filter" class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50">
-                <option value="all">All results</option>
-                <option value="ALLOWED">Allowed</option>
-                <option value="DENIED">Denied</option>
-            </select>
+            <div class="flex flex-wrap items-center gap-2">
+
+                <select id="access-filter" class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50">
+                    <option value="all">All results</option>
+                    <option value="ALLOWED">Allowed</option>
+                    <option value="DENIED">Denied</option>
+                </select>
+
+                <a href="{{ route('reports.index', ['tab' => 'access', 'date_from' => now()->toDateString(), 'date_to' => now()->toDateString(), 'step' => 4]) }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                    Open full access log
+                    <x-icon name="arrow-right" class="h-4 w-4" />
+                </a>
+
+            </div>
 
         </div>
 
@@ -292,10 +346,6 @@
                                     {{ $log['event_type'] }}
                                 </p>
 
-                                <p class="mt-1 font-mono text-[10px] text-gray-400">
-                                    {{ $log['rfid_uid'] }}
-                                </p>
-
                             </td>
 
 
@@ -329,9 +379,7 @@
                                         class="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700"
                                         title="{{ $log['ended_reason'] ?? 'Session closed automatically' }}"
                                     >
-                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v5m0 3.5v.5M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z" />
-                                        </svg>
+                                        <x-icon name="exclamation-triangle" class="h-3.5 w-3.5" />
                                         Did not log out manually
                                     </p>
                                 @endif
@@ -370,9 +418,12 @@
 
     </div>
 
+    </div>
+
     {{-- =========================================================
         DEVICE MONITORING
     ========================================================== --}}
+    <div data-tab-panel="devices" class="hidden">
     <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
         <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -381,10 +432,7 @@
 
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                    </svg>
+                    <x-icon name="laptop" class="h-5 w-5" />
 
                 </div>
 
@@ -404,9 +452,14 @@
             </div>
 
 
-            <div class="relative">
+            <div class="flex flex-wrap items-center gap-2">
 
-                <input type="text" id="device-search" placeholder="Search workstation..." class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-4 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-64">
+                <input type="text" id="device-search" placeholder="Search workstation..." class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-56">
+
+                <a href="{{ route('device') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                    Manage devices
+                    <x-icon name="arrow-right" class="h-4 w-4" />
+                </a>
 
             </div>
 
@@ -423,14 +476,6 @@
 
                         <th class="px-6 py-3.5">
                             Workstation
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Device UID
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Pairing Code
                         </th>
 
                         <th class="px-6 py-3.5">
@@ -460,10 +505,7 @@
 
                                     <div class="flex h-10 w-10 items-center justify-center rounded-xl {{ $device['is_paired'] ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400' }}">
 
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                                            <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                                        </svg>
+                                        <x-icon name="laptop" class="h-5 w-5" />
 
                                     </div>
 
@@ -481,24 +523,6 @@
                                     </div>
 
                                 </div>
-
-                            </td>
-
-
-                            <td class="px-6 py-4">
-
-                                <span class="font-mono text-xs font-medium text-gray-600">
-                                    {{ $device['device_uid'] }}
-                                </span>
-
-                            </td>
-
-
-                            <td class="px-6 py-4">
-
-                                <span class="rounded-lg bg-gray-100 px-2.5 py-1 font-mono text-xs font-semibold text-gray-600">
-                                    {{ $device['pairing_code'] }}
-                                </span>
 
                             </td>
 
@@ -553,15 +577,13 @@
 
     </div>
 
-    {{-- =========================================================
-        DEVICE COMMANDS + APP USAGE
-    ========================================================== --}}
-    <div class="grid grid-cols-1 gap-6 xl:grid-cols-5">
+    </div>
 
-        {{-- =====================================================
-            DEVICE COMMANDS
-        ====================================================== --}}
-        <div class="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm xl:col-span-3">
+    {{-- =========================================================
+        DEVICE COMMANDS
+    ========================================================== --}}
+    <div data-tab-panel="commands" class="hidden">
+    <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
             <div class="border-b border-gray-100 px-5 py-5 sm:px-6">
 
@@ -569,10 +591,7 @@
 
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
 
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h10" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m17 15 3 2-3 2" />
-                        </svg>
+                        <x-icon name="dash-menu" class="h-5 w-5" />
 
                     </div>
 
@@ -602,10 +621,7 @@
 
                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
 
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                                <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                            </svg>
+                            <x-icon name="laptop" class="h-5 w-5" />
 
                         </div>
 
@@ -684,22 +700,21 @@
 
         </div>
 
+    </div>
 
-        {{-- =====================================================
-            APPLICATION USAGE
-        ====================================================== --}}
-        <div class="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm xl:col-span-2">
+    {{-- =========================================================
+        APPLICATION USAGE
+    ========================================================== --}}
+    <div data-tab-panel="apps" class="hidden">
+    <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
-            <div class="border-b border-gray-100 px-5 py-5">
+            <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
 
                 <div class="flex items-center gap-3">
 
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
 
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8" />
-                            <path stroke-linecap="round" stroke-width="1.8" d="M3 9h18" />
-                        </svg>
+                        <x-icon name="dashboard" class="h-5 w-5" />
 
                     </div>
 
@@ -717,6 +732,11 @@
                     </div>
 
                 </div>
+
+                <a href="{{ route('analytics') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                    View in Overview
+                    <x-icon name="arrow-right" class="h-4 w-4" />
+                </a>
 
             </div>
 
@@ -741,7 +761,7 @@
                                 </p>
 
                                 <p class="mt-1 font-mono text-[10px] text-gray-400">
-                                    {{ $usage['rfid_uid'] }}
+                                    {{ $usage['student_external_id'] ?? 'No ID' }}
                                 </p>
 
                             </div>
@@ -787,6 +807,48 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tabs
+    |--------------------------------------------------------------------------
+    */
+    const tabButtons = document.querySelectorAll('[data-tab-target]');
+    const tabPanels = document.querySelectorAll('[data-tab-panel]');
+    const tabNames = Array.from(tabPanels).map(function (panel) {
+        return panel.dataset.tabPanel;
+    });
+
+    function activateTab(name) {
+        tabButtons.forEach(function (button) {
+            const isActive = button.dataset.tabTarget === name;
+
+            button.classList.toggle('bg-blue-600', isActive);
+            button.classList.toggle('text-white', isActive);
+            button.classList.toggle('shadow-sm', isActive);
+            button.classList.toggle('text-gray-500', !isActive);
+            button.classList.toggle('hover:bg-gray-50', !isActive);
+            button.classList.toggle('hover:text-gray-900', !isActive);
+            button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        tabPanels.forEach(function (panel) {
+            panel.classList.toggle('hidden', panel.dataset.tabPanel !== name);
+        });
+    }
+
+    tabButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const name = button.dataset.tabTarget;
+
+            activateTab(name);
+            history.replaceState(null, '', '#' + name);
+        });
+    });
+
+    const requestedTab = window.location.hash.replace('#', '');
+
+    activateTab(tabNames.includes(requestedTab) ? requestedTab : 'devices');
 
     /*
     |--------------------------------------------------------------------------

@@ -95,35 +95,7 @@
                                 class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20 backdrop-blur"
                             >
 
-                                <svg
-                                    class="h-8 w-8"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M12 3 5 6v5c0 4.7 2.9 8.6 7 10 4.1-1.4 7-5.3 7-10V6l-7-3Z"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M9 11V9a3 3 0 0 1 6 0v2"
-                                    />
-
-                                    <rect
-                                        x="8"
-                                        y="11"
-                                        width="8"
-                                        height="6"
-                                        rx="1.5"
-                                        stroke-width="1.8"
-                                    />
-                                </svg>
+                                <x-icon name="shield-check" class="h-8 w-8" />
 
                             </div>
 
@@ -151,33 +123,7 @@
 
                                 <div class="flex gap-3">
 
-                                    <svg
-                                        class="mt-0.5 h-5 w-5 shrink-0 text-blue-100"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="9"
-                                            stroke-width="1.8"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-width="1.8"
-                                            d="M12 8v4"
-                                        />
-
-                                        <circle
-                                            cx="12"
-                                            cy="16"
-                                            r=".8"
-                                            fill="currentColor"
-                                            stroke="none"
-                                        />
-                                    </svg>
+                                    <x-icon name="lock" class="mt-0.5 h-5 w-5 shrink-0 text-blue-100" />
 
 
                                     <div>
@@ -249,33 +195,7 @@
                                     class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
                                 >
 
-                                    <svg
-                                        class="h-5 w-5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M3 11.5 12 4l9 7.5"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M5 10v10h14V10"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M9 20v-6h6v6"
-                                        />
-                                    </svg>
+                                    <x-icon name="home" class="h-5 w-5" />
 
                                     Back to Dashboard
 
@@ -289,19 +209,7 @@
                                     class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-100"
                                 >
 
-                                    <svg
-                                        class="h-5 w-5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M19 12H5m7-7-7 7 7 7"
-                                        />
-                                    </svg>
+                                    <x-icon name="arrow-left" class="h-5 w-5" />
 
                                     Go Back
 
@@ -318,34 +226,7 @@
                                     <div
                                         class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500"
                                     >
-                                        <svg
-                                            class="h-5 w-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <circle
-                                                cx="12"
-                                                cy="12"
-                                                r="9"
-                                                stroke-width="1.8"
-                                            />
-
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M9.5 9a2.5 2.5 0 0 1 4.7 1.2c0 1.8-2.2 2.1-2.2 3.8"
-                                            />
-
-                                            <circle
-                                                cx="12"
-                                                cy="17"
-                                                r=".8"
-                                                fill="currentColor"
-                                                stroke="none"
-                                            />
-                                        </svg>
+                                        <x-icon name="question-mark-circle" class="h-5 w-5" />
                                     </div>
 
 

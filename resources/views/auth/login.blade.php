@@ -108,14 +108,7 @@
                         {{-- Validation Error --}}
                         @if ($errors->any())
                             <div class="mb-5 flex gap-3 rounded-2xl border border-red-300/30 bg-red-500/15 px-4 py-3.5 text-sm text-red-100">
-                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
+                                <x-icon name="exclamation-triangle" class="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
 
                                 <div>
                                     <p class="font-semibold">
@@ -142,14 +135,7 @@
 
                                 <div class="relative">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                                        <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0ZM4.5 20.25a8.25 8.25 0 0115 0"
-                                            />
-                                        </svg>
+                                        <x-icon name="user" class="h-5 w-5 text-slate-400" />
                                     </div>
 
                                     <input
@@ -186,14 +172,7 @@
 
                                 <div class="relative">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                                        <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M16.5 10.5V7.75a4.5 4.5 0 10-9 0v2.75m-.75 0h10.5A1.75 1.75 0 0119 12.25v6A1.75 1.75 0 0117.25 20H6.75A1.75 1.75 0 015 18.25v-6a1.75 1.75 0 011.75-1.75z"
-                                            />
-                                        </svg>
+                                        <x-icon name="lock" class="h-5 w-5 text-slate-400" />
                                     </div>
 
                                     <input
@@ -215,19 +194,7 @@
                             >
                                 <span>Sign In</span>
 
-                                <svg
-                                    class="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M5 12h14m-5-5l5 5-5 5"
-                                    />
-                                </svg>
+                                <x-icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                             </button>
 
 

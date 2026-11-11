@@ -38,20 +38,7 @@
             >
                 {{ $rangeLabel }}
 
-                <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.8"
-                        d="m6 9 6 6 6-6"
-                    />
-                </svg>
+                <x-icon name="chevron-down" class="h-4 w-4" aria-hidden="true" />
             </button>
 
 
@@ -126,19 +113,7 @@
                         class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm"
                     >
 
-                        <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                            />
-                        </svg>
+                        <x-icon name="laptop" class="h-6 w-6" />
 
                     </div>
 
@@ -174,7 +149,7 @@
 
                 <div
                     class="mt-3 flex items-center justify-between text-xs text-blue-100"
-                >
+                >d
 
                     {{-- <span>
                         {{ number_format($activeDevices ?? 0) }} active
@@ -223,19 +198,7 @@
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"
-                    />
-                </svg>
+                <x-icon name="logout" class="h-5 w-5" />
 
             </div>
 
@@ -279,19 +242,7 @@
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-violet-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
-                    />
-                </svg>
+                <x-icon name="users" class="h-5 w-5" />
 
             </div>
 
@@ -339,25 +290,7 @@
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    viewBox="0 0 24 24"
-                >
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                    />
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 7v5l3 2"
-                    />
-                </svg>
+                <x-icon name="clock" class="h-5 w-5" />
 
             </div>
 
@@ -481,23 +414,11 @@
 
                             <div class="flex items-center gap-1.5">
 
-                                <svg
-                                    class="h-4 w-4 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                                    />
-                                </svg>
+                                <x-icon name="laptop" class="h-4 w-4 text-gray-400" />
 
 
                                 <span class="font-medium text-gray-900">
-                                    {{ $session['workstation_name'] ?? ($session['device_uid'] ?? 'PC') }}
+                                    {{ $session['workstation_name']  ?? 'PC' }}
                                 </span>
 
                             </div>
@@ -505,25 +426,7 @@
 
                             <div class="flex items-center gap-1.5">
 
-                                <svg
-                                    class="h-4 w-4 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M12 7v5l3 2"
-                                    />
-                                </svg>
+                                <x-icon name="clock" class="h-4 w-4 text-gray-400" />
 
 
                                 <span>
@@ -559,10 +462,22 @@
 
                             <button
                                 type="button"
-                                class="force-end-session inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-100"
+                                class="manage-session inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs font-semibold text-gray-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                                 data-session-id="{{ $session['session_id'] }}"
+                                data-student-name="{{ $session['student_name'] }}"
+                                data-device-name="{{ $session['device_name'] }}"
+                                data-lock-url="{{ $session['lock_url'] }}"
+                                data-announce-url="{{ $session['announce_url'] }}"
+                                data-device-url="{{ $session['device_url'] }}"
+                                aria-haspopup="menu"
+                                aria-expanded="false"
+                                title="Manage this session"
                             >
-                                Force End
+                                <x-icon name="dots-horizontal" class="h-3.5 w-3.5" aria-hidden="true" />
+
+                                Manage
+
+                                <x-icon name="chevron-down" class="manage-chevron h-3 w-3" aria-hidden="true" />
                             </button>
 
                         </div>
@@ -585,19 +500,7 @@
                     class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400"
                 >
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                        />
-                    </svg>
+                    <x-icon name="laptop" class="h-5 w-5" />
 
                 </div>
 
@@ -614,6 +517,80 @@
             </div>
 
         </div>
+
+    </div>
+
+
+    {{-- Shared Manage menu for live sessions. One node for every card so it
+         can float above the card's overflow-hidden slide animation. --}}
+    <div
+        id="live-session-menu"
+        class="fixed z-50 hidden w-56 overflow-hidden rounded-2xl border border-gray-200 bg-white p-1.5 shadow-xl"
+        role="menu"
+        aria-label="Manage live session"
+    >
+
+        <div class="px-3 pb-1.5 pt-2">
+
+            <p
+                id="live-session-menu-title"
+                class="truncate text-xs font-semibold text-gray-900"
+            ></p>
+
+            <p
+                id="live-session-menu-subtitle"
+                class="truncate text-xs text-gray-500"
+            ></p>
+
+        </div>
+
+
+        <a
+            id="live-menu-view-device"
+            href="#"
+            class="live-menu-view-device flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-700"
+            role="menuitem"
+        >
+            <x-icon name="eye" class="h-4 w-4" aria-hidden="true" />
+
+            View Device
+        </a>
+
+
+        <button
+            type="button"
+            class="live-menu-lock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-amber-50 hover:text-amber-700"
+            role="menuitem"
+        >
+            <x-icon name="lock" class="h-4 w-4" aria-hidden="true" />
+
+            Remote Lock
+        </button>
+
+
+        <button
+            type="button"
+            class="live-menu-announce flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-sky-50 hover:text-sky-700"
+            role="menuitem"
+        >
+            <x-icon name="megaphone-a" class="h-4 w-4" aria-hidden="true" />
+
+            Send Announcement
+        </button>
+
+
+        <div class="my-1 h-px bg-gray-100"></div>
+
+
+        <button
+            type="button"
+            class="live-menu-force-end flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-red-600 transition hover:bg-red-50 hover:text-red-700"
+            role="menuitem"
+        >
+            <x-icon name="logout" class="h-4 w-4" aria-hidden="true" />
+
+            Force End
+        </button>
 
     </div>
 
@@ -993,29 +970,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-500"
                     >
 
-                        <svg
-                            class="h-7 w-7"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.7"
-                                d="M12 3a9 9 0 1 0 9 9h-9V3Z"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.7"
-                                d="M15 3.6A9 9 0 0 1 20.4 9H15V3.6Z"
-                            />
-
-                        </svg>
+                        <x-icon name="chart-pie" class="h-7 w-7" aria-hidden="true" />
 
                     </div>
 
@@ -1288,12 +1243,28 @@ document.addEventListener('DOMContentLoaded', function () {
         border-width: 0 !important;
     }
 
+
+    .manage-chevron {
+        transition: transform 160ms ease;
+    }
+
+    .manage-session[aria-expanded="true"] .manage-chevron {
+        transform: rotate(180deg);
+    }
+
 </style>
 
 
 {{-- =========================================================
     LIVE PC MONITORING
 ========================================================== --}}
+
+{{-- Icons reused by the live session cards that JavaScript builds. --}}
+<template id="icon-live-laptop"><x-icon name="laptop" class="h-4 w-4 text-gray-400" /></template>
+<template id="icon-live-clock"><x-icon name="clock" class="h-4 w-4 text-gray-400" /></template>
+<template id="icon-live-manage"><x-icon name="dots-horizontal" class="h-3.5 w-3.5" /></template>
+<template id="icon-live-chevron"><x-icon name="chevron-down" class="manage-chevron h-3 w-3" /></template>
+
 <script>
 
 (function () {
@@ -1316,6 +1287,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const csrfToken =
         document.querySelector('meta[name="csrf-token"]')?.content || '';
 
+    // The card template is a JavaScript string, so icons are cloned from the
+    // hidden <template> elements above instead of being duplicated by hand.
+    const iconMarkup = (id) =>
+        document.getElementById(id)?.innerHTML || '';
+
+    const menuEl =
+        document.getElementById('live-session-menu');
+
+    const menuTitleEl =
+        document.getElementById('live-session-menu-title');
+
+    const menuSubtitleEl =
+        document.getElementById('live-session-menu-subtitle');
+
+    let activeManageButton = null;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -1334,19 +1321,15 @@ document.addEventListener('DOMContentLoaded', function () {
     |--------------------------------------------------------------------------
     */
 
-    function forceEndSession(sessionId, button) {
+    function forceEndSession(sessionId) {
 
         if (!sessionId) {
             return;
         }
 
-        if (!window.confirm('End this session now? The student will be signed out on the dashboard.')) {
+        if (!window.confirm('End this session now? The student will be signed out.')) {
             return;
         }
-
-        button.disabled = true;
-        const originalText = button.textContent.trim();
-        button.textContent = 'Ending...';
 
         fetch(
             forceEndBase + '/' + encodeURIComponent(sessionId) + '/force-end',
@@ -1371,8 +1354,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             .catch(function () {
 
-                button.disabled = false;
-                button.textContent = originalText;
                 window.alert('Could not end the session. Please try again.');
 
             });
@@ -1380,19 +1361,206 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Manage menu (one floating menu shared by every live card)
+    |--------------------------------------------------------------------------
+    */
+
+    function closeManageMenu() {
+
+        if (!menuEl || menuEl.classList.contains('hidden')) {
+            return;
+        }
+
+        menuEl.classList.add('hidden');
+
+        if (activeManageButton) {
+
+            activeManageButton.setAttribute('aria-expanded', 'false');
+            activeManageButton = null;
+
+        }
+
+    }
+
+
+    function positionManageMenu(button) {
+
+        const rect = button.getBoundingClientRect();
+        const gap = 8;
+
+        menuEl.classList.remove('hidden');
+
+        const width = menuEl.offsetWidth;
+        const height = menuEl.offsetHeight;
+
+        const left = Math.min(
+            Math.max(gap, rect.right - width),
+            window.innerWidth - width - gap
+        );
+
+        let top = rect.bottom + gap;
+
+        if (top + height > window.innerHeight - gap) {
+            top = rect.top - height - gap;
+        }
+
+        menuEl.style.left = Math.max(gap, left) + 'px';
+        menuEl.style.top = Math.max(gap, top) + 'px';
+
+    }
+
+
+    function openManageMenu(button) {
+
+        if (!menuEl) {
+            return;
+        }
+
+        if (activeManageButton === button) {
+
+            closeManageMenu();
+            return;
+
+        }
+
+        closeManageMenu();
+
+        menuTitleEl.textContent =
+            button.getAttribute('data-student-name') || 'Live session';
+
+        menuSubtitleEl.textContent =
+            button.getAttribute('data-device-name') || 'Workstation';
+
+        menuEl.dataset.sessionId =
+            button.getAttribute('data-session-id') || '';
+
+        menuEl.dataset.lockUrl =
+            button.getAttribute('data-lock-url') || '';
+
+        menuEl.dataset.announceUrl =
+            button.getAttribute('data-announce-url') || '';
+
+        menuEl.dataset.deviceName =
+            button.getAttribute('data-device-name') || 'this PC';
+
+        const viewDeviceEl =
+            menuEl.querySelector('.live-menu-view-device');
+
+        if (viewDeviceEl) {
+
+            const deviceUrl =
+                button.getAttribute('data-device-url') || '';
+
+            viewDeviceEl.href = deviceUrl || '#';
+            viewDeviceEl.classList.toggle('hidden', !deviceUrl);
+
+        }
+
+        activeManageButton = button;
+
+        button.setAttribute('aria-expanded', 'true');
+
+        positionManageMenu(button);
+
+    }
+
+
+    if (menuEl) {
+
+        menuEl.querySelector('.live-menu-lock')
+            .addEventListener('click', function () {
+
+                const url = menuEl.dataset.lockUrl;
+                const deviceName = menuEl.dataset.deviceName;
+
+                closeManageMenu();
+
+                if (!url || typeof openRemoteLockModal !== 'function') {
+                    return;
+                }
+
+                openRemoteLockModal(url, deviceName);
+
+            });
+
+
+        menuEl.querySelector('.live-menu-announce')
+            .addEventListener('click', function () {
+
+                const url = menuEl.dataset.announceUrl;
+                const deviceName = menuEl.dataset.deviceName;
+
+                closeManageMenu();
+
+                if (!url || typeof openRemoteAnnounceModal !== 'function') {
+                    return;
+                }
+
+                openRemoteAnnounceModal(url, deviceName);
+
+            });
+
+
+        menuEl.querySelector('.live-menu-force-end')
+            .addEventListener('click', function () {
+
+                const sessionId = menuEl.dataset.sessionId;
+
+                closeManageMenu();
+
+                forceEndSession(sessionId);
+
+            });
+
+
+        document.addEventListener('click', function (event) {
+
+            if (menuEl.classList.contains('hidden')) {
+                return;
+            }
+
+            if (menuEl.contains(event.target)) {
+                return;
+            }
+
+            if (event.target.closest('.manage-session')) {
+                return;
+            }
+
+            closeManageMenu();
+
+        });
+
+
+        document.addEventListener('keydown', function (event) {
+
+            if (event.key === 'Escape') {
+                closeManageMenu();
+            }
+
+        });
+
+
+        window.addEventListener('scroll', closeManageMenu, true);
+        window.addEventListener('resize', closeManageMenu);
+
+    }
+
+
     listEl.addEventListener('click', function (event) {
 
         const button =
-            event.target.closest('.force-end-session');
+            event.target.closest('.manage-session');
 
         if (!button) {
             return;
         }
 
-        forceEndSession(
-            button.getAttribute('data-session-id'),
-            button
-        );
+        event.stopPropagation();
+
+        openManageMenu(button);
 
     });
 
@@ -1432,6 +1600,23 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(m).padStart(2, '0')
             + ':'
             + String(sec).padStart(2, '0');
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Escape values injected into HTML attributes
+    |--------------------------------------------------------------------------
+    */
+
+    function escapeAttr(value) {
+
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 
     }
 
@@ -1503,24 +1688,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <div class="flex items-center gap-1.5">
 
-                    <svg
-                        class="h-4 w-4 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                        />
-                    </svg>
+                    ${iconMarkup('icon-live-laptop')}
 
                     <span class="font-medium text-gray-900">
                         ${
                             session.workstation_name ||
-                            session.device_uid ||
                             'PC'
                         }
                     </span>
@@ -1530,25 +1702,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <div class="flex items-center gap-1.5">
 
-                    <svg
-                        class="h-4 w-4 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9"
-                        />
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 7v5l3 2"
-                        />
-                    </svg>
+                    ${iconMarkup('icon-live-clock')}
 
                     <span>
                         Started ${session.started_at_display || ''}
@@ -1585,10 +1739,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <button
                     type="button"
-                    class="force-end-session inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:bg-red-100"
-                    data-session-id="${session.session_id}"
+                    class="manage-session inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs font-semibold text-gray-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    data-session-id="${escapeAttr(session.session_id)}"
+                    data-student-name="${escapeAttr(session.student_name || 'Live session')}"
+                    data-device-name="${escapeAttr(session.device_name || session.workstation_name || 'Workstation')}"
+                    data-lock-url="${escapeAttr(session.lock_url || '')}"
+                    data-announce-url="${escapeAttr(session.announce_url || '')}"
+                    data-device-url="${escapeAttr(session.device_url || '')}"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    title="Manage this session"
                 >
-                    Force End
+                    ${iconMarkup('icon-live-manage')}
+
+                    Manage
+
+                    ${iconMarkup('icon-live-chevron')}
                 </button>
 
             </div>
@@ -1717,6 +1883,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         )
                     );
+
+
+                if (
+                    menuEl &&
+                    !menuEl.classList.contains('hidden') &&
+                    !currentIds.has(menuEl.dataset.sessionId)
+                ) {
+                    closeManageMenu();
+                }
 
 
                 const existing =
@@ -1961,5 +2136,10 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 </script>
+
+
+{{-- Shared device actions, same modals as the Devices page --}}
+<x-remote-lock-modal />
+<x-remote-announce-modal />
 
 @endsection

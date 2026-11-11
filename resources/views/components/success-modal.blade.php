@@ -6,9 +6,7 @@
         <!-- Added: id="success-modal-panel" and initial transform states (scale-95, translate-y-8, opacity-0) -->
         <div id="success-modal-panel" class="relative transform opacity-0 translate-y-8 scale-95 rounded-2xl border border-gray-200 bg-white p-8 text-left shadow-xl transition-all duration-500 ease-out w-full max-w-md flex flex-col items-center">
             <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-600">
-                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
+                <x-icon name="check" class="h-10 w-10" />
             </div>
 
             <div class="mt-6 text-center">

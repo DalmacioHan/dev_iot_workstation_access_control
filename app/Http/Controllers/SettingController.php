@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MisSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SettingController extends Controller
 {
+    public function __construct(private MisSettings $mis)
+    {
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Settings Page
@@ -19,8 +24,12 @@ class SettingController extends Controller
             ->pluck('value', 'key');
 
 
-        $studentApiUrl =
-            $settings->get('student_api_url', '');
+        // Show the value that is actually in use: the saved override when
+        // present, otherwise the MIS_API_BASE_URL fallback from .env.
+        $studentApiUrl = $this->mis->baseUrl();
+
+        // Resolved endpoint with the {cardId} placeholder kept visible.
+        $currentEndpoint = $this->mis->endpointFor();
 
 
         $pirTimeoutSeconds =
@@ -41,6 +50,7 @@ class SettingController extends Controller
             'admin.settings.index',
             compact(
                 'studentApiUrl',
+                'currentEndpoint',
                 'pirTimeoutSeconds',
                 'staleSessionMinutes'
             )
@@ -88,7 +98,7 @@ class SettingController extends Controller
                     ],
                     [
                         'value' =>
-                            $validated['student_api_url'],
+                            trim($validated['student_api_url']),
 
                         'updated_at' => now(),
 

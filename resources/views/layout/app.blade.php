@@ -73,20 +73,7 @@
                         </span>
 
 
-                        <svg
-                            class="h-5 w-5"
-                            aria-hidden="true"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
-                        </svg>
+                        <x-icon name="dash-menu" class="h-5 w-5" aria-hidden="true" />
 
                     </button>
 
@@ -181,19 +168,7 @@
                             </div>
 
 
-                            <svg
-                                class="hidden h-4 w-4 text-gray-400 md:block"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="m6 9 6 6 6-6"
-                                />
-                            </svg>
+                            <x-icon name="chevron-down" class="hidden h-4 w-4 text-gray-400 md:block" />
 
                         </button>
 
@@ -252,19 +227,7 @@
                                         class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
                                     >
 
-                                        <svg
-                                            class="h-5 w-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
-                                            />
-                                        </svg>
+                                        <x-icon name="dashboard" class="h-5 w-5" />
 
                                         Dashboard
 
@@ -281,19 +244,7 @@
                                         class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
                                     >
 
-                                        <svg
-                                            class="h-5 w-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M15 19a4 4 0 0 0-8 0M11 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7-3v6m3-3h-6"
-                                            />
-                                        </svg>
+                                        <x-icon name="user-plus" class="h-5 w-5" />
 
                                         Manage Account
 
@@ -312,28 +263,7 @@
                                             class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
                                         >
 
-                                            <svg
-                                                class="h-5 w-5"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="1.8"
-                                                    d="M12 2.75v2.1m0 14.3v2.1M4.46 4.46l1.49 1.49m12.1 12.1 1.49 1.49M2.75 12h2.1m14.3 0h2.1M4.46 19.54l1.49-1.49m12.1-12.1 1.49-1.49"
-                                                />
-
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="4"
-                                                    stroke-width="1.8"
-                                                />
-
-                                            </svg>
+                                            <x-icon name="settings" class="h-5 w-5" />
 
                                             System Settings
 
@@ -352,19 +282,7 @@
                                         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-red-600 transition hover:bg-red-50"
                                     >
 
-                                        <svg
-                                            class="h-5 w-5"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5m5 5H3"
-                                            />
-                                        </svg>
+                                        <x-icon name="logout" class="h-5 w-5" />
 
                                         Sign out
 
@@ -437,69 +355,12 @@
                                 : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                         >
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
-                                />
-                            </svg>
+                            <x-icon name="dashboard" class="h-5 w-5" />
 
                         </span>
 
                         <span>
                             Dashboard
-                        </span>
-
-                    </a>
-
-                </li>
-
-
-                {{-- =================================================
-                    ANALYTICS
-                ================================================== --}}
-                <li>
-
-                    <a
-                        href="{{ route('analytics') }}"
-                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('analytics')
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
-                    >
-
-                        <span
-                            class="flex h-9 w-9 items-center justify-center rounded-lg
-                            {{ request()->routeIs('analytics')
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
-                        >
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9V4"
-                                />
-                            </svg>
-
-                        </span>
-
-                        <span>
-                            Analytics
                         </span>
 
                     </a>
@@ -527,37 +388,7 @@
                                 : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                         >
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <rect
-                                    x="4"
-                                    y="4"
-                                    width="16"
-                                    height="16"
-                                    rx="2"
-                                    stroke-width="1.8"
-                                />
-
-                                <rect
-                                    x="9"
-                                    y="9"
-                                    width="6"
-                                    height="6"
-                                    stroke-width="1.8"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-width="1.8"
-                                    d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2"
-                                />
-
-                            </svg>
+                            <x-icon name="laptop" class="h-5 w-5" />
 
                         </span>
 
@@ -571,63 +402,151 @@
 
 
                 {{-- =================================================
-                    MONITORING
+                    INSIGHTS WITH SUBMENU
                 ================================================== --}}
                 <li>
 
-                    <a
-                        href="{{ route('monitoring') }}"
-                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('monitoring*')
+                    @php
+                        $insightsActive = request()->routeIs('analytics')
+                            || request()->routeIs('monitoring*')
+                            || request()->routeIs('reports*');
+                    @endphp
+
+                    <button
+                        type="button"
+                        class="group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ $insightsActive
                             ? 'bg-blue-50 text-blue-600'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                        aria-controls="insights-submenu"
+                        aria-expanded="{{ $insightsActive ? 'true' : 'false' }}"
+                        data-collapse-toggle="insights-submenu"
                     >
 
                         <span
-                            class="flex h-9 w-9 items-center justify-center rounded-lg
-                            {{ request()->routeIs('monitoring*')
+                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
+                            {{ $insightsActive
                                 ? 'bg-blue-600 text-white shadow-sm'
                                 : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                         >
 
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                            <x-icon name="chart-vertical" class="h-5 w-5" />
+
+                        </span>
+
+
+                        <span class="flex-1 text-left">
+                            Insights
+                        </span>
+
+
+                        <x-icon name="chevron-down" class="h-4 w-4 shrink-0 transition-transform duration-200 {{ $insightsActive ? 'rotate-180' : '' }}" />
+
+                    </button>
+
+
+                    <ul
+                        id="insights-submenu"
+                        class="mt-1 space-y-1 pl-6
+                        {{ $insightsActive ? '' : 'hidden' }}"
+                    >
+
+                        {{-- OVERVIEW --}}
+                        <li>
+
+                            <a
+                                href="{{ route('analytics') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('analytics')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
                             >
 
-                                <rect
-                                    x="3"
-                                    y="4"
-                                    width="18"
-                                    height="13"
-                                    rx="2"
-                                    stroke-width="1.8"
-                                />
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('analytics')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
 
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M7 11h2l2-4 3 8 2-4h2"
-                                />
+                                    <x-icon name="chart-vertical" class="h-4 w-4" />
 
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-width="1.8"
-                                    d="M9 21h6M12 17v4"
-                                />
+                                </span>
 
-                            </svg>
 
-                        </span>
+                                <span class="block truncate">
+                                    Overview
+                                </span>
 
-                        <span>
-                            Monitoring
-                        </span>
+                            </a>
 
-                    </a>
+                        </li>
+
+
+                        {{-- EVENT LOGS --}}
+                        <li>
+
+                            <a
+                                href="{{ route('monitoring') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('monitoring*')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('monitoring*')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <x-icon name="chart" class="h-4 w-4" />
+
+                                </span>
+
+
+                                <span class="block truncate">
+                                    Event Logs
+                                </span>
+
+                            </a>
+
+                        </li>
+
+
+                        {{-- REPORTS --}}
+                        <li>
+
+                            <a
+                                href="{{ route('reports.index') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('reports*')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('reports*')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <x-icon name="file" class="h-4 w-4" />
+
+                                </span>
+
+
+                                <span class="block truncate">
+                                    Reports
+                                </span>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
 
                 </li>
 
@@ -654,35 +573,7 @@
                                     : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                             >
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
-                                    />
-
-                                    <circle
-                                        cx="9"
-                                        cy="7"
-                                        r="4"
-                                        stroke-width="1.8"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
-                                    />
-
-                                </svg>
+                                <x-icon name="users" class="h-5 w-5" />
 
                             </span>
 
@@ -695,198 +586,6 @@
                     </li>
 
                 @endif
-
-
-                {{-- =================================================
-                    REPORTS WITH SUBMENU
-                ================================================== --}}
-                <li>
-
-                    {{-- Reports Parent Button --}}
-                    <button
-                        type="button"
-                        class="group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('reports*')
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
-                        aria-controls="reports-submenu"
-                        aria-expanded="{{ request()->routeIs('reports*') ? 'true' : 'false' }}"
-                        data-collapse-toggle="reports-submenu"
-                    >
-
-                        {{-- Parent Icon --}}
-                        <span
-                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
-                            {{ request()->routeIs('reports*')
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
-                        >
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M14 2v6h6M8 13h8M8 17h6M8 9h2"
-                                />
-
-                            </svg>
-
-                        </span>
-
-
-                        <span class="flex-1 text-left">
-                            Reports
-                        </span>
-
-
-                        {{-- Chevron --}}
-                        <svg
-                            class="h-4 w-4 shrink-0 transition-transform duration-200
-                            {{ request()->routeIs('reports*') ? 'rotate-180' : '' }}"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m6 9 6 6 6-6"
-                            />
-                        </svg>
-
-                    </button>
-
-
-                    {{-- =================================================
-                        REPORTS SUBMENU
-                    ================================================== --}}
-                    <ul
-                        id="reports-submenu"
-                        class="mt-1 space-y-1 pl-6
-                        {{ request()->routeIs('reports*') ? '' : 'hidden' }}"
-                    >
-
-                        {{-- =============================================
-                            ACCESS LOG REPORT
-                        ============================================== --}}
-                        <li>
-
-                            <a
-                                href="{{ route('reports.accesslog') }}"
-                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
-                                {{ request()->routeIs('reports')
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
-                            >
-
-                                <span
-                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
-                                    {{ request()->routeIs('reports')
-                                        ? 'bg-blue-100 text-blue-600'
-                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
-                                >
-
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M8 6h8M8 10h8M8 14h5M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
-                                        />
-
-                                    </svg>
-
-                                </span>
-
-
-                                <div class="min-w-0 text-left">
-
-                                    <span class="block truncate">
-                                        Access Log Report
-                                    </span>
-
-                                </div>
-
-                            </a>
-
-                        </li>
-
-
-                        {{-- =============================================
-                            SUMMARY REPORT
-                        ============================================== --}}
-                        <li>
-
-                            <a
-                                href="{{ route('reports.summary') }}"
-                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
-                                {{ request()->routeIs('reports.summary*')
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
-                            >
-
-                                <span
-                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
-                                    {{ request()->routeIs('reports.summary*')
-                                        ? 'bg-blue-100 text-blue-600'
-                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
-                                >
-
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7M20 16V6"
-                                        />
-
-                                    </svg>
-
-                                </span>
-
-
-                                <div class="min-w-0 text-left">
-
-                                    <span class="block truncate">
-                                        Summary Report
-                                    </span>
-
-                                </div>
-
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </li>
 
 
                 {{-- =================================================
@@ -911,28 +610,7 @@
                                     : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                             >
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="3"
-                                        stroke-width="1.8"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21h-4v-.07A1.7 1.7 0 0 0 8.97 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.53-1.03H3v-4h.07A1.7 1.7 0 0 0 4.6 8.94a1.7 1.7 0 0 0-.34-1.88L4.2 7l2.83-2.83.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 10 3.07V3h4v.07a1.7 1.7 0 0 0 1.03 1.53 1.7 1.7 0 0 0 1.88-.34l.06-.06L19.8 7l-.06.06a1.7 1.7 0 0 0-.34 1.88A1.7 1.7 0 0 0 20.93 10H21v4h-.07A1.7 1.7 0 0 0 19.4 15Z"
-                                    />
-
-                                </svg>
+                                <x-icon name="settings" class="h-5 w-5" />
 
                             </span>
 
@@ -968,19 +646,7 @@
                             class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white"
                         >
 
-                            <svg
-                                class="h-4 w-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"
-                                />
-                            </svg>
+                            <x-icon name="information-circle" class="h-4 w-4" />
 
                         </div>
 

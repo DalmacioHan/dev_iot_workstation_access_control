@@ -189,21 +189,7 @@
                                 class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-500/15 text-blue-200"
                             >
 
-                                <svg
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M9 12.75 11.25 15 15 9.75M12 3l7.5 3v5.25c0 4.695-3.177 8.927-7.5 9.75-4.323-.823-7.5-5.055-7.5-9.75V6L12 3Z"
-                                    />
-
-                                </svg>
+                                <x-icon name="check-circle" class="h-5 w-5" />
 
                             </div>
 
@@ -266,45 +252,7 @@
                                     class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-300/20 bg-blue-500/15 text-blue-200"
                                 >
 
-                                    <svg
-                                        class="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-
-                                        <rect
-                                            x="4"
-                                            y="10"
-                                            width="16"
-                                            height="11"
-                                            rx="2"
-                                            stroke-width="1.8"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M8 10V7a4 4 0 0 1 8 0v3"
-                                        />
-
-                                        <circle
-                                            cx="12"
-                                            cy="15"
-                                            r="1.2"
-                                            fill="currentColor"
-                                            stroke="none"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-width="1.8"
-                                            d="M12 16.2v2"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="key" class="h-6 w-6" aria-hidden="true" />
 
                                 </div>
 
@@ -338,21 +286,7 @@
                                     role="alert"
                                 >
 
-                                    <svg
-                                        class="mt-0.5 h-5 w-5 shrink-0 text-emerald-300"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M5 13l4 4L19 7"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="check" class="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
 
 
                                     <div>
@@ -388,21 +322,7 @@
                                     role="alert"
                                 >
 
-                                    <svg
-                                        class="mt-0.5 h-5 w-5 shrink-0 text-red-300"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M12 9v3m0 4h.01M10.29 3.86l-7.82 13.5A1 1 0 003.33 19h17.34a1 1 0 00.86-1.64l-7.82-13.5a1 1 0 00-1.72 0Z"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="exclamation-triangle" class="mt-0.5 h-5 w-5 shrink-0 text-red-300" />
 
 
                                     <div class="min-w-0">
@@ -470,28 +390,7 @@
                                             class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4"
                                         >
 
-                                            <svg
-                                                class="h-5 w-5 text-slate-400"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="1.8"
-                                                    d="M4 6h16v12H4z"
-                                                />
-
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="1.8"
-                                                    d="m4 7 8 6 8-6"
-                                                />
-
-                                            </svg>
+                                            <x-icon name="mail" class="h-5 w-5 text-slate-400" />
 
                                         </div>
 
@@ -534,28 +433,7 @@
                                     class="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white shadow-lg shadow-blue-900/30 transition hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300/30"
                                 >
 
-                                    <svg
-                                        class="h-5 w-5 transition-transform group-hover:translate-x-0.5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M22 2 11 13"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="m22 2-7 20-4-9-9-4 20-7Z"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="mail" class="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
 
 
                                     <span>
@@ -601,21 +479,7 @@
                                     class="group flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10"
                                 >
 
-                                    <svg
-                                        class="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M15 19l-7-7 7-7"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="arrow-left" class="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
 
                                     Back to Sign In
 
