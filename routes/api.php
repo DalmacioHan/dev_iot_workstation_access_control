@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\AccessController;
-use App\Http\Controllers\API\DeviceController;
+use App\Http\Controllers\Api\AccessController;
+use App\Http\Controllers\Api\DeviceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

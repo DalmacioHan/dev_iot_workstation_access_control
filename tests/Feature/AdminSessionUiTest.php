@@ -7,6 +7,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 it('allows staff to force-end a live session', function () {
     $device = sessionTestDevice();
     $sessionId = sessionTestStart($device);
