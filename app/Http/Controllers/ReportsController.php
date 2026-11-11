@@ -21,88 +21,241 @@ class ReportsController extends Controller
 
     public function index(Request $request)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Filter Options
-        |--------------------------------------------------------------------------
-        */
+        $tab = $request->query('tab') === 'students'
+            ? 'students'
+            : 'access';
 
-        $courses = PcAccessLogs::query()
-            ->whereNotNull('course')
-            ->where('course', '!=', '')
-            ->distinct()
-            ->orderBy('course')
-            ->pluck('course');
+        $resolved = $this->applyResolvedPeriod($request);
 
+        $step = (int) $request->query('step', 0);
 
-        $devices = Device::query()
-            ->whereNotNull('workstation_name')
-            ->where('workstation_name', '!=', '')
-            ->distinct()
-            ->orderBy('workstation_name')
-            ->pluck('workstation_name');
+        if ($step < 1 || $step > 4) {
+            /*
+            | Legacy links that already point at a specific report
+            | should land on the review step instead of starting over.
+            */
+            $step = $request->has('tab') ? 4 : 1;
+        }
 
+        $data = [
+            'step' => $step,
+            'tab' => $tab,
+            'period' => $resolved['period'],
+            'isAllTime' => $resolved['all_time'],
+            'dateFrom' => $resolved['date_from'],
+            'dateTo' => $resolved['date_to'],
+            'reportTitle' => $tab === 'students'
+                ? 'Student totals'
+                : 'Activity records',
+        ];
 
-        $events = PcAccessLogs::query()
-            ->whereNotNull('event_type')
-            ->where('event_type', '!=', '')
-            ->distinct()
-            ->orderBy('event_type')
-            ->pluck('event_type');
-
-
-        $results = PcAccessLogs::query()
-            ->whereNotNull('result')
-            ->where('result', '!=', '')
-            ->distinct()
-            ->orderBy('result')
-            ->pluck('result');
-
-
-        $reasons = PcAccessLogs::query()
-            ->whereNotNull('reason')
-            ->where('reason', '!=', '')
-            ->distinct()
-            ->orderBy('reason')
-            ->pluck('reason');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Access Logs
-        |--------------------------------------------------------------------------
-        */
-
-        $logs = $this
-            ->filteredLogsQuery($request)
-            ->orderBy(
-                'pc_access_logs.occurred_at',
-                'asc'
-            )
-            ->paginate(20)
-            ->appends(
-                $request->query()
+        if ($step === 3) {
+            $data = array_merge(
+                $data,
+                $this->filterOptions()
             );
 
+            $data['columns'] = $this->selectedColumns($request);
+        }
 
-        $columns =
-            $this->selectedColumns(
-                $request
-            );
+        if ($step === 4) {
 
+            if ($tab === 'students') {
+
+                $filters = $this->summaryFilters($request);
+
+                $data['students'] = $this
+                    ->studentSummaryQuery($filters)
+                    ->orderBy('student_name')
+                    ->paginate(20)
+                    ->withQueryString();
+
+                $data['dateFrom'] = $filters['date_from'];
+                $data['dateTo'] = $filters['date_to'];
+                $data['isAllTime'] = $filters['all_time'];
+
+            } else {
+
+                $data['logs'] = $this
+                    ->filteredLogsQuery($request)
+                    ->orderBy(
+                        'pc_access_logs.occurred_at',
+                        'asc'
+                    )
+                    ->paginate(20)
+                    ->withQueryString();
+
+                $data['columns'] = $this->selectedColumns($request);
+            }
+        }
 
         return view(
-            'admin.reports.AccessLogReport.index',
-            compact(
-                'logs',
-                'courses',
-                'devices',
-                'events',
-                'results',
-                'reasons',
-                'columns'
-            )
+            'admin.reports.index',
+            $data
         );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REPORT PERIOD
+    |--------------------------------------------------------------------------
+    */
+
+    private function resolvePeriod(Request $request): array
+    {
+        $period = $request->input('period');
+
+        if (!$period) {
+
+            if ($request->input('range') === 'all') {
+
+                $period = 'all';
+
+            } else {
+
+                $today = now()->toDateString();
+                $monthStart = now()->startOfMonth()->toDateString();
+                $weekStart = now()->subDays(6)->toDateString();
+
+                $dateFrom = $request->filled('date_from')
+                    ? $request->date_from
+                    : $monthStart;
+
+                $dateTo = $request->filled('date_to')
+                    ? $request->date_to
+                    : $today;
+
+                if ($dateFrom === $today && $dateTo === $today) {
+                    $period = 'today';
+                } elseif ($dateFrom === $weekStart && $dateTo === $today) {
+                    $period = 'week';
+                } elseif (
+                    $dateFrom === $monthStart
+                    && in_array($dateTo, [$today, now()->endOfMonth()->toDateString()], true)
+                ) {
+                    $period = 'month';
+                } else {
+                    $period = 'custom';
+                }
+            }
+        }
+
+        if ($period === 'all') {
+            return [
+                'period' => 'all',
+                'all_time' => true,
+                'date_from' => null,
+                'date_to' => null,
+            ];
+        }
+
+        $today = now()->toDateString();
+
+        switch ($period) {
+
+            case 'today':
+                $dateFrom = $today;
+                $dateTo = $today;
+                break;
+
+            case 'week':
+                $dateFrom = now()->subDays(6)->toDateString();
+                $dateTo = $today;
+                break;
+
+            case 'custom':
+                $dateFrom = $request->filled('date_from')
+                    ? $request->date_from
+                    : now()->startOfMonth()->toDateString();
+
+                $dateTo = $request->filled('date_to')
+                    ? $request->date_to
+                    : $today;
+                break;
+
+            case 'month':
+            default:
+                $period = 'month';
+                $dateFrom = now()->startOfMonth()->toDateString();
+                $dateTo = $today;
+                break;
+        }
+
+        try {
+
+            if (Carbon::parse($dateTo)->lt(Carbon::parse($dateFrom))) {
+                $dateTo = $dateFrom;
+            }
+
+        } catch (\Throwable $e) {
+
+            $dateFrom = now()->startOfMonth()->toDateString();
+            $dateTo = now()->toDateString();
+        }
+
+        return [
+            'period' => $period,
+            'all_time' => false,
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+        ];
+    }
+
+
+    private function applyResolvedPeriod(Request $request): array
+    {
+        $resolved = $this->resolvePeriod($request);
+
+        $request->merge([
+            'period' => $resolved['period'],
+            'range' => $resolved['all_time'] ? 'all' : null,
+            'date_from' => $resolved['date_from'],
+            'date_to' => $resolved['date_to'],
+        ]);
+
+        return $resolved;
+    }
+
+
+    private function filterOptions(): array
+    {
+        return [
+            'courses' => PcAccessLogs::query()
+                ->whereNotNull('course')
+                ->where('course', '!=', '')
+                ->distinct()
+                ->orderBy('course')
+                ->pluck('course'),
+
+            'devices' => Device::query()
+                ->whereNotNull('workstation_name')
+                ->where('workstation_name', '!=', '')
+                ->distinct()
+                ->orderBy('workstation_name')
+                ->pluck('workstation_name'),
+
+            'events' => PcAccessLogs::query()
+                ->whereNotNull('event_type')
+                ->where('event_type', '!=', '')
+                ->distinct()
+                ->orderBy('event_type')
+                ->pluck('event_type'),
+
+            'results' => PcAccessLogs::query()
+                ->whereNotNull('result')
+                ->where('result', '!=', '')
+                ->distinct()
+                ->orderBy('result')
+                ->pluck('result'),
+
+            'reasons' => PcAccessLogs::query()
+                ->whereNotNull('reason')
+                ->where('reason', '!=', '')
+                ->distinct()
+                ->orderBy('reason')
+                ->pluck('reason'),
+        ];
     }
 
 
@@ -352,6 +505,8 @@ class ReportsController extends Controller
         Request $request
     ) {
 
+        $this->applyResolvedPeriod($request);
+
         $query = DB::table(
             'pc_access_logs'
         )
@@ -487,40 +642,32 @@ class ReportsController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Date From
+        | Date Range
         |--------------------------------------------------------------------------
         */
 
-        if (
-            $request->filled(
-                'date_from'
-            )
-        ) {
+        if ($request->input('range') !== 'all') {
+
+            $dateFrom = $request->filled('date_from')
+                ? $request->date_from
+                : now()->startOfMonth()->toDateString();
+
+            $dateTo = $request->filled('date_to')
+                ? $request->date_to
+                : now()->toDateString();
+
 
             $query->whereDate(
                 'pc_access_logs.occurred_at',
                 '>=',
-                $request->date_from
+                $dateFrom
             );
-        }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Date To
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            $request->filled(
-                'date_to'
-            )
-        ) {
 
             $query->whereDate(
                 'pc_access_logs.occurred_at',
                 '<=',
-                $request->date_to
+                $dateTo
             );
         }
 
@@ -631,132 +778,6 @@ class ReportsController extends Controller
     |--------------------------------------------------------------------------
     |--------------------------------------------------------------------------
     */
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SUMMARY REPORT PAGE
-    |--------------------------------------------------------------------------
-    */
-
-    public function summaryReport(
-        Request $request
-    ) {
-
-        $filters =
-            $this->summaryFilters(
-                $request
-            );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Filter Options
-        |--------------------------------------------------------------------------
-        */
-
-        $courses = PcAccessLogs::query()
-            ->whereNotNull(
-                'course'
-            )
-            ->where(
-                'course',
-                '!=',
-                ''
-            )
-            ->distinct()
-            ->orderBy(
-                'course'
-            )
-            ->pluck(
-                'course'
-            );
-
-
-        $devices = Device::query()
-            ->whereNotNull(
-                'workstation_name'
-            )
-            ->where(
-                'workstation_name',
-                '!=',
-                ''
-            )
-            ->distinct()
-            ->orderBy(
-                'workstation_name'
-            )
-            ->pluck(
-                'workstation_name'
-            );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Student Summary
-        |--------------------------------------------------------------------------
-        |
-        | One row = one student.
-        |
-        */
-
-        $students = $this
-            ->studentSummaryQuery(
-                $filters
-            )
-            ->orderBy(
-                'student_name'
-            )
-            ->paginate(20)
-            ->withQueryString();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Date Values
-        |--------------------------------------------------------------------------
-        */
-
-        $dateFrom =
-            $filters['date_from'];
-
-
-        $dateTo =
-            $filters['date_to'];
-
-
-        $periodLabel =
-            Carbon::parse(
-                $dateFrom
-            )->format(
-                'M d, Y'
-            )
-            . ' – ' .
-            Carbon::parse(
-                $dateTo
-            )->format(
-                'M d, Y'
-            );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Return Summary View
-        |--------------------------------------------------------------------------
-        */
-
-        return view(
-            'admin.reports.SummaryReport.index',
-            compact(
-                'students',
-                'courses',
-                'devices',
-                'dateFrom',
-                'dateTo',
-                'periodLabel'
-            )
-        );
-    }
 
 
     /*
@@ -918,46 +939,30 @@ class ReportsController extends Controller
         array $filters
     ) {
 
-        $startDate =
-            Carbon::parse(
-                $filters['date_from']
-            )->startOfDay();
-
-
-        $endDate =
-            Carbon::parse(
-                $filters['date_to']
-            )->endOfDay();
-
-
-        $query = DB::table(
-            'pc_access_logs'
-        )
+        $query = DB::table('pc_access_logs')
             ->leftJoin(
                 'devices',
                 'pc_access_logs.device_id',
                 '=',
                 'devices.id'
             )
-
-            /*
-            |--------------------------------------------------------------------------
-            | TIME IN records represent access attempts.
-            |--------------------------------------------------------------------------
-            */
-
             ->where(
                 'pc_access_logs.event_type',
                 'time_in'
-            )
+            );
 
-            ->whereBetween(
+        if (!($filters['all_time'] ?? false)) {
+
+            $query->whereBetween(
                 'pc_access_logs.occurred_at',
                 [
-                    $startDate,
-                    $endDate,
+                    Carbon::parse($filters['date_from'])->startOfDay(),
+                    Carbon::parse($filters['date_to'])->endOfDay(),
                 ]
-            )
+            );
+        }
+
+        $query
 
             /*
             |--------------------------------------------------------------------------
@@ -1158,6 +1163,8 @@ class ReportsController extends Controller
         Request $request
     ): array {
 
+        $this->applyResolvedPeriod($request);
+
         $validated =
             $request->validate([
                 'date_from' => [
@@ -1186,35 +1193,27 @@ class ReportsController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Default Date Range
+        | Optional Date Range
         |--------------------------------------------------------------------------
         |
-        | Current month.
+        | Defaults to the current month. “All time” skips the range entirely.
         |
         */
 
-        $dateFrom =
-            $validated['date_from']
-            ?? now()
-                ->startOfMonth()
-                ->toDateString();
+        $allTime = $request->input('range') === 'all';
 
+        $dateFrom = $allTime
+            ? null
+            : (($validated['date_from'] ?? null) ?: now()->startOfMonth()->toDateString());
 
-        $dateTo =
-            $validated['date_to']
-            ?? now()
-                ->endOfMonth()
-                ->toDateString();
+        $dateTo = $allTime
+            ? null
+            : (($validated['date_to'] ?? null) ?: now()->toDateString());
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Protect against invalid reversed ranges.
-        |--------------------------------------------------------------------------
-        */
 
         if (
-            Carbon::parse($dateTo)
+            !$allTime
+            && Carbon::parse($dateTo)
                 ->lt(
                     Carbon::parse(
                         $dateFrom
@@ -1242,6 +1241,9 @@ class ReportsController extends Controller
             'device' =>
                 $validated['device']
                 ?? null,
+
+            'all_time' =>
+                $allTime,
         ];
     }
 

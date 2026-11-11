@@ -636,7 +636,7 @@
 
 
                                 <span class="block truncate">
-                                    Usage Analytics
+                                    Overview
                                 </span>
 
                             </a>
@@ -644,7 +644,7 @@
                         </li>
 
 
-                        {{-- MONITORING --}}
+                        {{-- EVENT LOGS --}}
                         <li>
 
                             <a
@@ -693,7 +693,7 @@
 
 
                                 <span class="block truncate">
-                                    Monitoring
+                                    Event Logs
                                 </span>
 
                             </a>
@@ -701,20 +701,20 @@
                         </li>
 
 
-                        {{-- ACCESS LOG --}}
+                        {{-- REPORTS --}}
                         <li>
 
                             <a
-                                href="{{ route('reports.accesslog') }}"
+                                href="{{ route('reports.index') }}"
                                 class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
-                                {{ request()->routeIs('reports.accesslog*')
+                                {{ request()->routeIs('reports*')
                                     ? 'bg-blue-50 text-blue-600'
                                     : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
                             >
 
                                 <span
                                     class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
-                                    {{ request()->routeIs('reports.accesslog*')
+                                    {{ request()->routeIs('reports*')
                                         ? 'bg-blue-100 text-blue-600'
                                         : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
                                 >
@@ -737,51 +737,7 @@
 
 
                                 <span class="block truncate">
-                                    Access Log
-                                </span>
-
-                            </a>
-
-                        </li>
-
-
-                        {{-- STUDENT SUMMARY --}}
-                        <li>
-
-                            <a
-                                href="{{ route('reports.summary') }}"
-                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
-                                {{ request()->routeIs('reports.summary*')
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
-                            >
-
-                                <span
-                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
-                                    {{ request()->routeIs('reports.summary*')
-                                        ? 'bg-blue-100 text-blue-600'
-                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
-                                >
-
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7M20 16V6"
-                                        />
-                                    </svg>
-
-                                </span>
-
-
-                                <span class="block truncate">
-                                    Student Summary
+                                    Reports
                                 </span>
 
                             </a>

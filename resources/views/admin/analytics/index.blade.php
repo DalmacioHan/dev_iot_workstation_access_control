@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Usage Analytics')
+@section('title', 'Overview')
 
 @section('content')
 
@@ -13,16 +13,16 @@
                 <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 16v-4m4 4V8m4 8v-7m4 7V5" />
                 </svg>
-                Analytics
+                Insights
             </div>
 
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                Usage Analytics
+                Overview
             </h1>
 
             <p class="mt-1 max-w-2xl text-sm text-gray-500">
                 Access patterns across students, courses, applications, and workstations.
-                For full searchable records, open Access Log or Student Summary.
+                For full searchable records, open Reports.
             </p>
         </div>
     </div>
@@ -40,7 +40,7 @@
 
             </span>
             <h3 class="text-sm font-bold text-gray-900">
-                Filter Analytics
+                Filters
             </h3>
         </div>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
@@ -189,7 +189,7 @@
                 <div id="top-students-chart" class="min-h-70"></div>
                 <div>
                     <div class="flex justify-end px-6">
-                        <a href="{{ route('reports.summary') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        <a href="{{ route('reports.index', ['tab' => 'students', 'step' => 4]) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                             View Report
                             <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
                         </a>
@@ -219,7 +219,7 @@
                 </table>
                 <div>
                     <div class="flex justify-end px-6 pb-5 pt-5">
-                        <a href="{{ route('reports.summary') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        <a href="{{ route('reports.index', ['tab' => 'students', 'step' => 4]) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                             View Report
                             <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
                         </a>
@@ -240,7 +240,7 @@
             </div>
             <div>
                 <div class="flex justify-end px-6 pb-5">
-                    <a href="{{ route('reports.accesslog') }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                    <a href="{{ route('reports.index', ['tab' => 'access', 'step' => 4]) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
                         View Report
                         <svg class="w-4 h-4 ms-1.5 -me-0.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
                     </a>

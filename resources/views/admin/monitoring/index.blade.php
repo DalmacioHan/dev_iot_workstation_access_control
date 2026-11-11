@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Monitoring')
+@section('title', 'Event Logs')
 
 @section('content')
 
@@ -14,14 +14,14 @@
         <div>
 
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                Monitoring
+                Event Logs
             </h1>
 
 
             <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
                 A current snapshot of workstation devices, access events,
                 device commands, and application usage. For full searchable
-                records and exports, use Access Log or Student Summary.
+                records and exports, open Reports.
             </p>
 
         </div>
@@ -173,7 +173,7 @@
     ========================================================== --}}
     <div class="mb-6 flex flex-col gap-3 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
 
-        <div class="flex flex-wrap items-center gap-1" role="tablist" aria-label="Monitoring views">
+        <div class="flex flex-wrap items-center gap-1" role="tablist" aria-label="Event log views">
 
             <button
                 type="button"
@@ -282,7 +282,7 @@
                     <option value="DENIED">Denied</option>
                 </select>
 
-                <a href="{{ route('reports.accesslog', ['date_from' => now()->toDateString(), 'date_to' => now()->toDateString()]) }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                <a href="{{ route('reports.index', ['tab' => 'access', 'date_from' => now()->toDateString(), 'date_to' => now()->toDateString(), 'step' => 4]) }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
                     Open full access log
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
@@ -788,7 +788,7 @@
                 </div>
 
                 <a href="{{ route('analytics') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
-                    View in Usage Analytics
+                    View in Overview
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
                     </svg>
