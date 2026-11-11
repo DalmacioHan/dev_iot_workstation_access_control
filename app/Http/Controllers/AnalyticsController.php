@@ -10,67 +10,38 @@ use Carbon\Carbon;
 class AnalyticsController extends Controller
 {
     public function index(Request $request){
-        $rangeLabels = [
-            'today' => 'Today',
-            'last_7_days' => 'Last 7 days',
-            'last_30_days' => 'Last 30 days',
-            'last_90_days' => 'Last 90 days',
-            'last_Year' => 'Last Year',
-            'all_time' => 'All Time',
-        ];
-        $ALLOWEDRanges = array_keys($rangeLabels);
-
-        $studentRange = $request->query('students_range', 'today');
-        $courseRange = $request->query('courses_range', 'today');
-        $peakRange = $request->query('peak_range', 'today');
-
-        $studentRange = in_array($studentRange, $ALLOWEDRanges, true) ? $studentRange : 'today';
-        $courseRange = in_array($courseRange, $ALLOWEDRanges, true) ? $courseRange : 'today';
-        $peakRange = in_array($peakRange, $ALLOWEDRanges, true) ? $peakRange : 'today';
-
         $now = now();
-        $todayStart = $now->copy()->startOfDay();
-        $todayEnd = $now->copy()->endOfDay();
-
-        $rangeStart = function (string $range) use ($now): Carbon {
-            return match ($range) {
-                'today' => $now->copy()->startOfDay(),
-                'last_7_days' => $now->copy()->subDays(6)->startOfDay(),
-                'last_30_days' => $now->copy()->subDays(29)->startOfDay(),
-                'last_90_days' => $now->copy()->subDays(89)->startOfDay(),
-                'last_Year' => $now->copy()->subYear()->startOfDay(),
-                'all_time' => Carbon::create(1970, 1, 1)->startOfDay(),
-                default => $now->copy()->startOfDay(),
-            };
-        };
-        $rangeEnd = fn (string $range): Carbon => $now->copy()->endOfDay();
+        $validated = $request->validate([
+            'date_from' => ['nullable', 'date'],
+            'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
+        ]);
+        $dateFrom = Carbon::parse($validated['date_from'] ?? $now->toDateString())->startOfDay();
+        $dateTo = Carbon::parse($validated['date_to'] ?? $now->toDateString())->endOfDay();
 
         //Card data
         $popularWorkstation = PcAccessLogs::select('device_id', PcAccessLogs::raw('COUNT(*) as total'))
-            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->with('device')
             ->groupBy('device_id')
             ->orderBy('total', 'desc')
-            ->take(1)
-            ->get();
-        $topApplication = PcAppUsage::select('app_name', PcAppUsage::raw('COUNT(*) as total'))
-            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->get(1);
+        $popularApplication = PcAppUsage::select('app_name', PcAppUsage::raw('COUNT(*) as total'))
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->groupBy('app_name')
             ->orderBy('total', 'desc')
-            ->take(1)
-            ->get();
+            ->get(1);
         $failedEvents = PcAccessLogs::whereIn('result', ['denied', 'fail'])
-            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->count();
         $successfulEvents = PcAccessLogs::where('event_type', 'time_in')
             ->where('result', 'allowed')
-            ->whereBetween('occurred_at', [$todayStart, $todayEnd])
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->count();
 
         //line chart - only count time_in, not time_out
         $peakHoursByHour = PcAccessLogs::query()
             ->selectRaw('HOUR(occurred_at) as hour, COUNT(DISTINCT session_id) as total')
-            ->whereBetween('occurred_at', [$rangeStart($peakRange), $rangeEnd($peakRange)])
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->where('event_type', 'time_in')
             ->where('result', 'allowed')
             ->whereNotNull('student_name')
@@ -85,10 +56,10 @@ class AnalyticsController extends Controller
         })->values();
 
         //table data - count distinct sessions, add total time
-        $topStudents = PcAccessLogs::query()
+        $topAccessStudents = PcAccessLogs::query()
             ->select('student_name')
             ->selectRaw('COUNT(DISTINCT session_id) as total')
-            ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->where('event_type', 'time_in')
             ->where('result', 'allowed')
             ->whereNotNull('student_name')
@@ -98,11 +69,11 @@ class AnalyticsController extends Controller
             ->orderBy('total', 'desc')
             ->take(10)
             ->get()
-            ->map(function ($student) use ($studentRange, $rangeStart, $rangeEnd) {
+            ->map(function ($student) use ($dateFrom, $dateTo) {
                 $sessionIds = PcAccessLogs::where('student_name', $student->student_name)
                     ->where('event_type', 'time_in')
                     ->where('result', 'allowed')
-                    ->whereBetween('occurred_at', [$rangeStart($studentRange), $rangeEnd($studentRange)])
+                    ->whereBetween('occurred_at', [$dateFrom, $dateTo])
                     ->whereNotNull('session_id')
                     ->pluck('session_id')
                     ->unique();
@@ -123,10 +94,40 @@ class AnalyticsController extends Controller
                 return $student;
             });
 
+        $topUsageStudents = PcAccessLogs::query()
+            ->select('student_name')
+            ->selectRaw('SUM(TIMESTAMPDIFF(SECOND, in_time, out_time)) as total_seconds')
+            ->fromSub(function ($query) use ($dateFrom, $dateTo) {
+                $query->from('pc_access_logs')
+                    ->select('student_name', 'session_id')
+                    ->selectRaw("MIN(CASE WHEN event_type = 'time_in' THEN occurred_at END) as in_time")
+                    ->selectRaw("MAX(CASE WHEN event_type = 'time_out' THEN occurred_at END) as out_time")
+                    ->whereBetween('occurred_at', [$dateFrom, $dateTo])
+                    ->where('result', 'allowed')
+                    ->whereNotNull('student_name')
+                    ->where('student_name', '<>', '')
+                    ->whereNotNull('session_id')
+                    ->groupBy('session_id', 'student_name');
+            }, 'sessions_summary')
+            ->groupBy('student_name')
+            ->orderByDesc('total_seconds')
+            ->take(10)
+            ->get()
+            ->map(function ($student) {
+                $totalSeconds = (int) ($student->total_seconds ?? 0);
+
+                $h = intdiv($totalSeconds, 3600);
+                $m = intdiv($totalSeconds % 3600, 60);
+                $s = $totalSeconds % 60;
+
+                $student->total_time = "{$h}h {$m}m {$s}s";
+                return $student;
+            });
+
         $topCourses = PcAccessLogs::query()
             ->select('course')
             ->selectRaw('COUNT(DISTINCT session_id) as total')
-            ->whereBetween('occurred_at', [$rangeStart($courseRange), $rangeEnd($courseRange)])
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->where('event_type', 'time_in')
             ->where('result', 'allowed')
             ->whereNotNull('course')
@@ -136,11 +137,11 @@ class AnalyticsController extends Controller
             ->orderBy('total', 'desc')
             ->take(10)
             ->get()
-            ->map(function ($course) use ($courseRange, $rangeStart, $rangeEnd) {
+            ->map(function ($course) use ($dateFrom, $dateTo) {
                 $sessionIds = PcAccessLogs::where('course', $course->course)
                     ->where('event_type', 'time_in')
                     ->where('result', 'allowed')
-                    ->whereBetween('occurred_at', [$rangeStart($courseRange), $rangeEnd($courseRange)])
+                    ->whereBetween('occurred_at', [$dateFrom, $dateTo])
                     ->whereNotNull('session_id')
                     ->pluck('session_id')
                     ->unique();
@@ -161,17 +162,32 @@ class AnalyticsController extends Controller
                 return $course;
             });
 
-        $studentRangeLabel = $rangeLabels[$studentRange];
-        $courseRangeLabel = $rangeLabels[$courseRange];
-        $peakRangeLabel = $rangeLabels[$peakRange];
+        $topApplication = PcAppUsage::query()
+            ->select('app_name')
+            ->selectRaw('COUNT(DISTINCT session_id) as total_sessions')
+            ->selectRaw('SUM(seconds) as total_seconds')
+            ->whereBetween('occurred_at', [$dateFrom, $dateTo])
+            ->whereNotNull('app_name')
+            ->where('app_name', '<>', '')
+            ->groupBy('app_name')
+            ->orderByDesc('total_sessions')
+            ->take(10)
+            ->get()
+            ->map(function ($app) {
+                $totalSeconds = (int) ($app->total_seconds ?? 0);
 
+                $h = intdiv($totalSeconds, 3600);
+                $m = intdiv($totalSeconds % 3600, 60);
+                $s = $totalSeconds % 60;
+
+                $app->total_time = "{$h}h {$m}m {$s}s";
+                return $app;
+            });
 
         return view('admin.analytics.index', compact(
-            'failedEvents', 'popularWorkstation', 'successfulEvents', 'topApplication',
-            'topStudents', 'topCourses', 'rangeLabels',
-            'studentRange', 'courseRange',
-            'studentRangeLabel', 'courseRangeLabel',
-            'peakHours', 'peakRange', 'peakRangeLabel'
+            'failedEvents', 'popularWorkstation', 'successfulEvents', 'popularApplication',
+            'topAccessStudents', 'topCourses', 'topApplication', 'peakHours', 'topUsageStudents',
+            'dateFrom', 'dateTo'
             ));
     }
 }
