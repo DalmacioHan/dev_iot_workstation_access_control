@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Monitoring')
+@section('title', 'Event Logs')
 
 @section('content')
 
@@ -14,13 +14,14 @@
         <div>
 
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                Workstation Monitoring
+                Event Logs
             </h1>
 
 
             <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-                Monitor registered workstation devices, access events,
-                device commands, and application usage.
+                A current snapshot of workstation devices, access events,
+                device commands, and application usage. For full searchable
+                records and exports, open Reports.
             </p>
 
         </div>
@@ -166,9 +167,82 @@
         </div>
 
     </div>
+
+    {{-- =========================================================
+        TABS
+    ========================================================== --}}
+    <div class="mb-6 flex flex-col gap-3 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+
+        <div class="flex flex-wrap items-center gap-1" role="tablist" aria-label="Event log views">
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="devices"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
+                    <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
+                </svg>
+                Devices
+            </button>
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="access"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
+                    <path stroke-linecap="round" stroke-width="1.8" d="M14 2v6h6M8 13h8M8 17h6" />
+                </svg>
+                Access Events
+            </button>
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="commands"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h10" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m17 15 3 2-3 2" />
+                </svg>
+                Commands
+            </button>
+
+            <button
+                type="button"
+                role="tab"
+                data-tab-target="apps"
+                aria-selected="false"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8" />
+                    <path stroke-linecap="round" stroke-width="1.8" d="M3 9h18" />
+                </svg>
+                Application Usage
+            </button>
+
+        </div>
+
+        <p class="px-3 text-xs text-gray-400">
+            Showing the latest 10 records per view.
+        </p>
+
+    </div>
+
     {{-- =========================================================
         ACCESS EVENTS
     ========================================================== --}}
+    <div data-tab-panel="access" class="hidden">
     <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
         <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -200,11 +274,22 @@
             </div>
 
 
-            <select id="access-filter" class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50">
-                <option value="all">All results</option>
-                <option value="ALLOWED">Allowed</option>
-                <option value="DENIED">Denied</option>
-            </select>
+            <div class="flex flex-wrap items-center gap-2">
+
+                <select id="access-filter" class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50">
+                    <option value="all">All results</option>
+                    <option value="ALLOWED">Allowed</option>
+                    <option value="DENIED">Denied</option>
+                </select>
+
+                <a href="{{ route('reports.index', ['tab' => 'access', 'date_from' => now()->toDateString(), 'date_to' => now()->toDateString(), 'step' => 4]) }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                    Open full access log
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                </a>
+
+            </div>
 
         </div>
 
@@ -370,9 +455,12 @@
 
     </div>
 
+    </div>
+
     {{-- =========================================================
         DEVICE MONITORING
     ========================================================== --}}
+    <div data-tab-panel="devices" class="hidden">
     <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
         <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -404,9 +492,16 @@
             </div>
 
 
-            <div class="relative">
+            <div class="flex flex-wrap items-center gap-2">
 
-                <input type="text" id="device-search" placeholder="Search workstation..." class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-9 pr-4 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-64">
+                <input type="text" id="device-search" placeholder="Search workstation..." class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50 sm:w-56">
+
+                <a href="{{ route('device') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                    Manage devices
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                </a>
 
             </div>
 
@@ -423,14 +518,6 @@
 
                         <th class="px-6 py-3.5">
                             Workstation
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Device UID
-                        </th>
-
-                        <th class="px-6 py-3.5">
-                            Pairing Code
                         </th>
 
                         <th class="px-6 py-3.5">
@@ -485,24 +572,6 @@
                             </td>
 
 
-                            <td class="px-6 py-4">
-
-                                <span class="font-mono text-xs font-medium text-gray-600">
-                                    {{ $device['device_uid'] }}
-                                </span>
-
-                            </td>
-
-
-                            <td class="px-6 py-4">
-
-                                <span class="rounded-lg bg-gray-100 px-2.5 py-1 font-mono text-xs font-semibold text-gray-600">
-                                    {{ $device['pairing_code'] }}
-                                </span>
-
-                            </td>
-
-
                             <td class="whitespace-nowrap px-6 py-4">
 
                                 <div class="flex items-center gap-2">
@@ -553,15 +622,13 @@
 
     </div>
 
-    {{-- =========================================================
-        DEVICE COMMANDS + APP USAGE
-    ========================================================== --}}
-    <div class="grid grid-cols-1 gap-6 xl:grid-cols-5">
+    </div>
 
-        {{-- =====================================================
-            DEVICE COMMANDS
-        ====================================================== --}}
-        <div class="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm xl:col-span-3">
+    {{-- =========================================================
+        DEVICE COMMANDS
+    ========================================================== --}}
+    <div data-tab-panel="commands" class="hidden">
+    <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
             <div class="border-b border-gray-100 px-5 py-5 sm:px-6">
 
@@ -684,13 +751,15 @@
 
         </div>
 
+    </div>
 
-        {{-- =====================================================
-            APPLICATION USAGE
-        ====================================================== --}}
-        <div class="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm xl:col-span-2">
+    {{-- =========================================================
+        APPLICATION USAGE
+    ========================================================== --}}
+    <div data-tab-panel="apps" class="hidden">
+    <div class="mb-6 overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
 
-            <div class="border-b border-gray-100 px-5 py-5">
+            <div class="flex flex-col gap-4 border-b border-gray-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
 
                 <div class="flex items-center gap-3">
 
@@ -717,6 +786,13 @@
                     </div>
 
                 </div>
+
+                <a href="{{ route('analytics') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
+                    View in Overview
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                </a>
 
             </div>
 
@@ -787,6 +863,48 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tabs
+    |--------------------------------------------------------------------------
+    */
+    const tabButtons = document.querySelectorAll('[data-tab-target]');
+    const tabPanels = document.querySelectorAll('[data-tab-panel]');
+    const tabNames = Array.from(tabPanels).map(function (panel) {
+        return panel.dataset.tabPanel;
+    });
+
+    function activateTab(name) {
+        tabButtons.forEach(function (button) {
+            const isActive = button.dataset.tabTarget === name;
+
+            button.classList.toggle('bg-blue-600', isActive);
+            button.classList.toggle('text-white', isActive);
+            button.classList.toggle('shadow-sm', isActive);
+            button.classList.toggle('text-gray-500', !isActive);
+            button.classList.toggle('hover:bg-gray-50', !isActive);
+            button.classList.toggle('hover:text-gray-900', !isActive);
+            button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        tabPanels.forEach(function (panel) {
+            panel.classList.toggle('hidden', panel.dataset.tabPanel !== name);
+        });
+    }
+
+    tabButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const name = button.dataset.tabTarget;
+
+            activateTab(name);
+            history.replaceState(null, '', '#' + name);
+        });
+    });
+
+    const requestedTab = window.location.hash.replace('#', '');
+
+    activateTab(tabNames.includes(requestedTab) ? requestedTab : 'devices');
 
     /*
     |--------------------------------------------------------------------------

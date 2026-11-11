@@ -7,6 +7,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->withoutVite();
+});
+
 it('allows staff to force-end a live session', function () {
     $device = sessionTestDevice();
     $sessionId = sessionTestStart($device);
@@ -44,4 +48,33 @@ it('does not flag a session whose workstation is still checking in', function ()
         ->assertOk()
         ->assertJsonCount(1)
         ->assertJsonPath('0.is_stale', false);
+});
+
+it('exposes workstation actions with each live session', function () {
+    $device = sessionTestDevice();
+    sessionTestStart($device);
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->getJson(route('dashboard.active-sessions'))
+        ->assertOk()
+        ->assertJsonCount(1)
+        ->assertJsonPath('0.device_id', $device->id)
+        ->assertJsonPath('0.device_name', "{$device->workstation_name} ({$device->device_uid})")
+        ->assertJsonPath('0.lock_url', route('device.lock', $device->id))
+        ->assertJsonPath('0.announce_url', route('device.announce', $device->id))
+        ->assertJsonPath('0.device_url', route('device.show', $device->id));
+});
+
+it('renders the manage control on the dashboard live board', function () {
+    $device = sessionTestDevice();
+    sessionTestStart($device);
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertSee('manage-session', false)
+        ->assertSee('live-session-menu', false)
+        ->assertDontSee('force-end-session', false);
 });

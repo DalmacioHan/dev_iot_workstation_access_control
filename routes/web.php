@@ -38,13 +38,28 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[AdminController::class,'dashboard'])->name('dashboard');
     Route::get('/analytics',[AnalyticsController::class,'index'])->name('analytics');
     
-    // Reports
-    // Access log report
-    Route::get('/reports/accesslog',[ReportsController::class,'index'])->name('reports.accesslog');
+    // Reports (Access Log + Student Summary)
+    Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
+
+    Route::get('/reports/accesslog', function () {
+        return redirect()->route('reports.index', array_merge(
+            request()->query(),
+            ['tab' => 'access', 'step' => 4]
+        ));
+    })->name('reports.accesslog');
+
+    Route::get('/reports/summary', function () {
+        return redirect()->route('reports.index', array_merge(
+            request()->query(),
+            ['tab' => 'students', 'step' => 4]
+        ));
+    })->name('reports.summary');
+
+    // Access log PDF
     Route::get('/reports/accesslog/preview-pdf', [ReportsController::class, 'previewPdf'])->name('reports.accesslog.preview');
     Route::get('/reports/accesslog/pdf',[ReportsController::class,'exportPdf'])->name('reports.accesslog.pdf');
-    //Summary report
-    Route::get('/reports/summary',[ReportsController::class,'summaryReport'])->name('reports.summary');
+
+    // Summary report PDF
     Route::get('/reports/summary/preview-pdf', [ReportsController::class, 'summaryPreviewPdf'])->name('reports.summary.preview');
     Route::get('/reports/summary/pdf',[ReportsController::class,'summaryExportPdf'])->name('reports.summary.pdf');
     // Device Management
