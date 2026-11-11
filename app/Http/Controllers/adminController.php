@@ -328,6 +328,11 @@ class AdminController extends Controller
         $isStale = $lastSeen === null
             || $lastSeen->lt(Carbon::now()->subMinutes($warningMinutes));
 
+        $deviceName = $session->workstation_name ?: ($session->device_uid ?: 'Workstation');
+        $deviceName = $session->workstation_name && $session->device_uid
+            ? "{$session->workstation_name} ({$session->device_uid})"
+            : $deviceName;
+
         return [
             'session_id' => $session->session_id,
             'student_name' => $session->student_name,
@@ -335,6 +340,11 @@ class AdminController extends Controller
             'course' => $session->course,
             'workstation_name' => $session->workstation_name,
             'device_uid' => $session->device_uid,
+            'device_id' => (int) $session->device_id,
+            'device_name' => $deviceName,
+            'lock_url' => route('device.lock', $session->device_id),
+            'announce_url' => route('device.announce', $session->device_id),
+            'device_url' => route('device.show', $session->device_id),
             'started_at' => $startedAt->toIso8601String(),
             'started_at_ts' => $startedAt->timestamp,
             'started_at_display' => $startedAt->format('h:i A'),
