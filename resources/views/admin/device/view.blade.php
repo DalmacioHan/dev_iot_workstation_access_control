@@ -109,117 +109,32 @@
 
                 <div class="flex flex-wrap items-center gap-2.5">
 
-                    {{-- Remote Lock (one-click) --}}
+                    {{-- Manage --}}
                     <button
                         type="button"
-                        onclick="openRemoteLockModal('{{ route('device.lock', $device->id) }}', '{{ $device->workstation_name }} ({{ $device->device_uid }})')"
-                        style="background-color:#f59e0b;color:#ffffff;"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-300/50"
-                    >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-                        </svg>
-                        Remote Lock
-                    </button>
-
-                    {{-- Send Announcement (one-click) --}}
-                    <button
-                        type="button"
-                        onclick="openRemoteAnnounceModal('{{ route('device.announce', $device->id) }}', '{{ $device->workstation_name }} ({{ $device->device_uid }})')"
-                        style="background-color:#0284c7;color:#ffffff;"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-300/50"
-                    >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>
-                        </svg>
-                        Announcement
-                    </button>
-
-                    {{-- Actions dropdown --}}
-                    <div class="relative">
-                        <button
-                            type="button"
-                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 backdrop-blur-sm transition hover:bg-white/25 focus:outline-none focus:ring-4 focus:ring-white/30"
-                            data-dropdown-toggle="dropdown-device-actions"
-                        >
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/>
-                            </svg>
-                            Actions
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="m6 9 6 6 6-6"/>
-                            </svg>
-                        </button>
-
-                        <div
-                            id="dropdown-device-actions"
-                            class="absolute right-0 z-50 mt-2 hidden w-56 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl"
-                        >
-                            <ul class="p-2 text-sm text-gray-700">
-                                <li>
-                                    <button
-                                        type="button"
-                                        onclick="openRemoteLockModal('{{ route('device.lock', $device->id) }}', '{{ $device->workstation_name }} ({{ $device->device_uid }})')"
-                                        class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-amber-50 hover:text-amber-700"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                                  d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-                                        </svg>
-                                        Remote Lock PC
-                                    </button>
-                                </li>
-
-                                <li>
-                                    <button
-                                        type="button"
-                                        onclick="openRemoteAnnounceModal('{{ route('device.announce', $device->id) }}', '{{ $device->workstation_name }} ({{ $device->device_uid }})')"
-                                        class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-sky-50 hover:text-sky-700"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                                  d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>
-                                        </svg>
-                                        Send Announcement
-                                    </button>
-                                </li>
-                                
-                                @if(auth()->user()->isSuperAdmin())
-                                <li>
-                                    
-                                    <a
-                                        href="{{ route('device.edit', $device->id) }}"
-                                        class="flex items-center gap-3 rounded-xl px-3 py-2.5 transition hover:bg-blue-50 hover:text-blue-600"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                        Edit Device
-                                    </a>
-                                    @endif
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {{-- Edit Device --}}
-                    @if(auth()->user()->isSuperAdmin())
-                    <a
-                        href="{{ route('device.edit', $device->id) }}"
+                        id="device-detail-manage"
                         class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-4 focus:ring-white/30"
+                        data-device-name="{{ $device->workstation_name }} ({{ $device->device_uid }})"
+                        data-lock-url="{{ route('device.lock', $device->id) }}"
+                        data-announce-url="{{ route('device.announce', $device->id) }}"
+                        @if(auth()->user()->isSuperAdmin())
+                            data-edit-url="{{ route('device.edit', $device->id) }}"
+                        @endif
+                        aria-haspopup="menu"
+                        aria-expanded="false"
                     >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" d="M4 7h16M4 17h16"/>
+                            <circle cx="9" cy="7" r="2"/>
+                            <circle cx="15" cy="17" r="2"/>
                         </svg>
-                        Edit Device
-                    </a>
-                    @endif
+
+                        Manage
+
+                        <svg class="device-detail-chevron h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -427,7 +342,234 @@
     </div>
 
     
-    
+    {{-- Manage menu (fixed so the hero card's overflow-hidden cannot clip it) --}}
+    <div
+        id="device-detail-menu"
+        class="fixed z-50 hidden w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl"
+        role="menu"
+        aria-label="Manage device"
+    >
+
+        <div class="px-3 pb-1.5 pt-2">
+            <p
+                id="device-detail-menu-title"
+                class="truncate text-xs font-semibold text-slate-900"
+            ></p>
+        </div>
+
+
+        <button
+            type="button"
+            class="device-detail-lock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-amber-50 hover:text-amber-700"
+            role="menuitem"
+        >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+            </svg>
+
+            Remote Lock
+        </button>
+
+
+        <button
+            type="button"
+            class="device-detail-announce flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-sky-50 hover:text-sky-700"
+            role="menuitem"
+        >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>
+            </svg>
+
+            Send Announcement
+        </button>
+
+
+        @if(auth()->user()->isSuperAdmin())
+            <div class="my-1 h-px bg-slate-100"></div>
+
+            <a
+                id="device-detail-edit"
+                href="{{ route('device.edit', $device->id) }}"
+                class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-blue-50 hover:text-blue-700"
+                role="menuitem"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+
+                Edit Device
+            </a>
+        @endif
+
+    </div>
+
+
+    <style>
+        .device-detail-chevron {
+            transition: transform 160ms ease;
+        }
+
+        #device-detail-manage[aria-expanded="true"] .device-detail-chevron {
+            transform: rotate(180deg);
+        }
+    </style>
+
+
+    <script>
+        (function () {
+
+            const buttonEl =
+                document.getElementById('device-detail-manage');
+
+            const menuEl =
+                document.getElementById('device-detail-menu');
+
+            const titleEl =
+                document.getElementById('device-detail-menu-title');
+
+            if (!buttonEl || !menuEl) {
+                return;
+            }
+
+
+            function closeMenu() {
+
+                menuEl.classList.add('hidden');
+                buttonEl.setAttribute('aria-expanded', 'false');
+
+            }
+
+
+            function openMenu() {
+
+                titleEl.textContent =
+                    buttonEl.getAttribute('data-device-name') || 'Device';
+
+                menuEl.classList.remove('hidden');
+
+                const rect = buttonEl.getBoundingClientRect();
+                const gap = 8;
+
+                const width = menuEl.offsetWidth;
+                const height = menuEl.offsetHeight;
+
+                const left = Math.min(
+                    Math.max(gap, rect.right - width),
+                    window.innerWidth - width - gap
+                );
+
+                let top = rect.bottom + gap;
+
+                if (top + height > window.innerHeight - gap) {
+                    top = rect.top - height - gap;
+                }
+
+                menuEl.style.left = Math.max(gap, left) + 'px';
+                menuEl.style.top = Math.max(gap, top) + 'px';
+
+                buttonEl.setAttribute('aria-expanded', 'true');
+
+            }
+
+
+            buttonEl.addEventListener('click', function (event) {
+
+                event.stopPropagation();
+
+                if (menuEl.classList.contains('hidden')) {
+                    openMenu();
+                } else {
+                    closeMenu();
+                }
+
+            });
+
+
+            menuEl.querySelector('.device-detail-lock')
+                .addEventListener('click', function () {
+
+                    const url =
+                        buttonEl.getAttribute('data-lock-url');
+
+                    const deviceName =
+                        buttonEl.getAttribute('data-device-name') || 'this PC';
+
+                    closeMenu();
+
+                    if (!url || typeof openRemoteLockModal !== 'function') {
+                        return;
+                    }
+
+                    openRemoteLockModal(url, deviceName);
+
+                });
+
+
+            menuEl.querySelector('.device-detail-announce')
+                .addEventListener('click', function () {
+
+                    const url =
+                        buttonEl.getAttribute('data-announce-url');
+
+                    const deviceName =
+                        buttonEl.getAttribute('data-device-name') || 'this PC';
+
+                    closeMenu();
+
+                    if (!url || typeof openRemoteAnnounceModal !== 'function') {
+                        return;
+                    }
+
+                    openRemoteAnnounceModal(url, deviceName);
+
+                });
+
+
+            const editEl =
+                document.getElementById('device-detail-edit');
+
+            if (editEl) {
+                editEl.addEventListener('click', closeMenu);
+            }
+
+
+            document.addEventListener('click', function (event) {
+
+                if (menuEl.classList.contains('hidden')) {
+                    return;
+                }
+
+                if (menuEl.contains(event.target)) {
+                    return;
+                }
+
+                if (buttonEl.contains(event.target)) {
+                    return;
+                }
+
+                closeMenu();
+
+            });
+
+
+            document.addEventListener('keydown', function (event) {
+
+                if (event.key === 'Escape') {
+                    closeMenu();
+                }
+
+            });
+
+
+            window.addEventListener('scroll', closeMenu, true);
+            window.addEventListener('resize', closeMenu);
+
+        })();
+    </script>
+
 
 <x-remote-lock-modal />
 <x-remote-announce-modal />

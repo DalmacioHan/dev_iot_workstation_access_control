@@ -463,51 +463,6 @@
 
 
                 {{-- =================================================
-                    ANALYTICS
-                ================================================== --}}
-                <li>
-
-                    <a
-                        href="{{ route('analytics') }}"
-                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('analytics')
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
-                    >
-
-                        <span
-                            class="flex h-9 w-9 items-center justify-center rounded-lg
-                            {{ request()->routeIs('analytics')
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
-                        >
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9V4"
-                                />
-                            </svg>
-
-                        </span>
-
-                        <span>
-                            Analytics
-                        </span>
-
-                    </a>
-
-                </li>
-
-
-                {{-- =================================================
                     DEVICES
                 ================================================== --}}
                 <li>
@@ -571,21 +526,30 @@
 
 
                 {{-- =================================================
-                    MONITORING
+                    INSIGHTS WITH SUBMENU
                 ================================================== --}}
                 <li>
 
-                    <a
-                        href="{{ route('monitoring') }}"
-                        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('monitoring*')
+                    @php
+                        $insightsActive = request()->routeIs('analytics')
+                            || request()->routeIs('monitoring*')
+                            || request()->routeIs('reports*');
+                    @endphp
+
+                    <button
+                        type="button"
+                        class="group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+                        {{ $insightsActive
                             ? 'bg-blue-50 text-blue-600'
                             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                        aria-controls="insights-submenu"
+                        aria-expanded="{{ $insightsActive ? 'true' : 'false' }}"
+                        data-collapse-toggle="insights-submenu"
                     >
 
                         <span
-                            class="flex h-9 w-9 items-center justify-center rounded-lg
-                            {{ request()->routeIs('monitoring*')
+                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
+                            {{ $insightsActive
                                 ? 'bg-blue-600 text-white shadow-sm'
                                 : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
                         >
@@ -596,38 +560,235 @@
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
-
-                                <rect
-                                    x="3"
-                                    y="4"
-                                    width="18"
-                                    height="13"
-                                    rx="2"
-                                    stroke-width="1.8"
-                                />
-
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     stroke-width="1.8"
-                                    d="M7 11h2l2-4 3 8 2-4h2"
+                                    d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9V4"
                                 />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-width="1.8"
-                                    d="M9 21h6M12 17v4"
-                                />
-
                             </svg>
 
                         </span>
 
-                        <span>
-                            Monitoring
+
+                        <span class="flex-1 text-left">
+                            Insights
                         </span>
 
-                    </a>
+
+                        <svg
+                            class="h-4 w-4 shrink-0 transition-transform duration-200
+                            {{ $insightsActive ? 'rotate-180' : '' }}"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m6 9 6 6 6-6"
+                            />
+                        </svg>
+
+                    </button>
+
+
+                    <ul
+                        id="insights-submenu"
+                        class="mt-1 space-y-1 pl-6
+                        {{ $insightsActive ? '' : 'hidden' }}"
+                    >
+
+                        {{-- OVERVIEW --}}
+                        <li>
+
+                            <a
+                                href="{{ route('analytics') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('analytics')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('analytics')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9V4"
+                                        />
+                                    </svg>
+
+                                </span>
+
+
+                                <span class="block truncate">
+                                    Usage Analytics
+                                </span>
+
+                            </a>
+
+                        </li>
+
+
+                        {{-- MONITORING --}}
+                        <li>
+
+                            <a
+                                href="{{ route('monitoring') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('monitoring*')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('monitoring*')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M7 11h2l2-4 3 8 2-4h2"
+                                        />
+                                        <rect
+                                            x="3"
+                                            y="4"
+                                            width="18"
+                                            height="13"
+                                            rx="2"
+                                            stroke-width="1.8"
+                                        />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-width="1.8"
+                                            d="M9 21h6M12 17v4"
+                                        />
+                                    </svg>
+
+                                </span>
+
+
+                                <span class="block truncate">
+                                    Monitoring
+                                </span>
+
+                            </a>
+
+                        </li>
+
+
+                        {{-- ACCESS LOG --}}
+                        <li>
+
+                            <a
+                                href="{{ route('reports.accesslog') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('reports.accesslog*')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('reports.accesslog*')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M8 6h8M8 10h8M8 14h5M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
+                                        />
+                                    </svg>
+
+                                </span>
+
+
+                                <span class="block truncate">
+                                    Access Log
+                                </span>
+
+                            </a>
+
+                        </li>
+
+
+                        {{-- STUDENT SUMMARY --}}
+                        <li>
+
+                            <a
+                                href="{{ route('reports.summary') }}"
+                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
+                                {{ request()->routeIs('reports.summary*')
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
+                            >
+
+                                <span
+                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
+                                    {{ request()->routeIs('reports.summary*')
+                                        ? 'bg-blue-100 text-blue-600'
+                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
+                                >
+
+                                    <svg
+                                        class="h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.8"
+                                            d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7M20 16V6"
+                                        />
+                                    </svg>
+
+                                </span>
+
+
+                                <span class="block truncate">
+                                    Student Summary
+                                </span>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
 
                 </li>
 
@@ -695,198 +856,6 @@
                     </li>
 
                 @endif
-
-
-                {{-- =================================================
-                    REPORTS WITH SUBMENU
-                ================================================== --}}
-                <li>
-
-                    {{-- Reports Parent Button --}}
-                    <button
-                        type="button"
-                        class="group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
-                        {{ request()->routeIs('reports*')
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
-                        aria-controls="reports-submenu"
-                        aria-expanded="{{ request()->routeIs('reports*') ? 'true' : 'false' }}"
-                        data-collapse-toggle="reports-submenu"
-                    >
-
-                        {{-- Parent Icon --}}
-                        <span
-                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
-                            {{ request()->routeIs('reports*')
-                                ? 'bg-blue-600 text-white shadow-sm'
-                                : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200' }}"
-                        >
-
-                            <svg
-                                class="h-5 w-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.8"
-                                    d="M14 2v6h6M8 13h8M8 17h6M8 9h2"
-                                />
-
-                            </svg>
-
-                        </span>
-
-
-                        <span class="flex-1 text-left">
-                            Reports
-                        </span>
-
-
-                        {{-- Chevron --}}
-                        <svg
-                            class="h-4 w-4 shrink-0 transition-transform duration-200
-                            {{ request()->routeIs('reports*') ? 'rotate-180' : '' }}"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m6 9 6 6 6-6"
-                            />
-                        </svg>
-
-                    </button>
-
-
-                    {{-- =================================================
-                        REPORTS SUBMENU
-                    ================================================== --}}
-                    <ul
-                        id="reports-submenu"
-                        class="mt-1 space-y-1 pl-6
-                        {{ request()->routeIs('reports*') ? '' : 'hidden' }}"
-                    >
-
-                        {{-- =============================================
-                            ACCESS LOG REPORT
-                        ============================================== --}}
-                        <li>
-
-                            <a
-                                href="{{ route('reports.accesslog') }}"
-                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
-                                {{ request()->routeIs('reports')
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
-                            >
-
-                                <span
-                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
-                                    {{ request()->routeIs('reports')
-                                        ? 'bg-blue-100 text-blue-600'
-                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
-                                >
-
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M8 6h8M8 10h8M8 14h5M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"
-                                        />
-
-                                    </svg>
-
-                                </span>
-
-
-                                <div class="min-w-0 text-left">
-
-                                    <span class="block truncate">
-                                        Access Log Report
-                                    </span>
-
-                                </div>
-
-                            </a>
-
-                        </li>
-
-
-                        {{-- =============================================
-                            SUMMARY REPORT
-                        ============================================== --}}
-                        <li>
-
-                            <a
-                                href="{{ route('reports.summary') }}"
-                                class="group flex items-center gap-3 rounded-xl py-2.5 pl-4 pr-3 text-sm font-medium transition
-                                {{ request()->routeIs('reports.summary*')
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}"
-                            >
-
-                                <span
-                                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg
-                                    {{ request()->routeIs('reports.summary*')
-                                        ? 'bg-blue-100 text-blue-600'
-                                        : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }}"
-                                >
-
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7M20 16V6"
-                                        />
-
-                                    </svg>
-
-                                </span>
-
-
-                                <div class="min-w-0 text-left">
-
-                                    <span class="block truncate">
-                                        Summary Report
-                                    </span>
-
-                                </div>
-
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </li>
 
 
                 {{-- =================================================

@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Analytics')
+@section('title', 'Usage Analytics')
 
 @section('content')
 
@@ -21,7 +21,8 @@
             </h1>
 
             <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                Review access patterns across students, courses, applications, and workstations.
+                Access patterns across students, courses, applications, and workstations.
+                For full searchable records, open Access Log or Student Summary.
             </p>
         </div>
     </div>

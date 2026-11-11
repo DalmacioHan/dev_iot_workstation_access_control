@@ -211,76 +211,36 @@
 
                             {{-- Actions --}}
                             <td class="px-6 py-5 sm:px-8">
-                                <div class="flex items-center justify-center gap-1">
+                                <div class="flex items-center justify-center">
 
-                                    {{-- View --}}
-                                    <a
-                                        href="{{ route('device.show', $device->id) }}"
-                                        class="group/action rounded-xl p-2.5 text-slate-400 transition hover:bg-blue-50 hover:text-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-100"
-                                        title="View Details"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0Z"/>
-                                        </svg>
-                                    </a>
-
-                                    {{-- Remote Lock --}}
                                     <button
                                         type="button"
-                                        onclick="openRemoteLockModal('{{ route('device.lock', $device->id) }}', '{{ $device->workstation_name }} ({{ $device->device_uid }})')"
-                                        class="rounded-xl p-2.5 text-slate-400 transition hover:bg-violet-50 hover:text-violet-600 focus:outline-none focus:ring-4 focus:ring-violet-100"
-                                        title="Remote Lock"
+                                        class="device-manage inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                                        data-device-name="{{ $device->workstation_name }} ({{ $device->device_uid }})"
+                                        data-view-url="{{ route('device.show', $device->id) }}"
+                                        data-lock-url="{{ route('device.lock', $device->id) }}"
+                                        data-announce-url="{{ route('device.announce', $device->id) }}"
+                                        @if(auth()->user()->isSuperAdmin())
+                                            data-edit-url="{{ route('device.edit', $device->id) }}"
+                                            data-delete-url="{{ route('device.destroy', $device->id) }}"
+                                            data-delete-message="Are you sure you want to delete {{ $device->workstation_name }} ({{ $device->device_uid }})? This action cannot be undone."
+                                        @endif
+                                        aria-haspopup="menu"
+                                        aria-expanded="false"
+                                        title="Manage this device"
                                     >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" d="M4 7h16M4 17h16"/>
+                                            <circle cx="9" cy="7" r="2"/>
+                                            <circle cx="15" cy="17" r="2"/>
+                                        </svg>
+
+                                        Manage
+
+                                        <svg class="device-manage-chevron h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
                                         </svg>
                                     </button>
-
-                                    {{-- Send Announcement --}}
-                                    <button
-                                        type="button"
-                                        onclick="openRemoteAnnounceModal('{{ route('device.announce', $device->id) }}', '{{ $device->workstation_name }} ({{ $device->device_uid }})')"
-                                        class="rounded-xl p-2.5 text-slate-400 transition hover:bg-sky-50 hover:text-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-100"
-                                        title="Send Announcement"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>
-                                        </svg>
-                                    </button>
-
-                                    {{-- Edit --}}
-                                    @if(auth()->user()->isSuperAdmin())
-                                    <a
-                                        href="{{ route('device.edit', $device->id) }}"
-                                        class="rounded-xl p-2.5 text-slate-400 transition hover:bg-amber-50 hover:text-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-100"
-                                        title="Edit"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                    </a>
-                                    @endif
-
-                                    {{-- Delete --}}
-                                    @if(auth()->user()->isSuperAdmin())
-                                    <button
-                                        type="button"
-                                        onclick="openDeleteModal('{{ route('device.destroy', $device->id) }}', 'Are you sure you want to delete {{ $device->workstation_name }} ({{ $device->device_uid }})? This action cannot be undone.')"
-                                        class="rounded-xl p-2.5 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-4 focus:ring-red-100"
-                                        title="Delete"
-                                    >
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </button>
-                                    @endif
 
                                 </div>
                             </td>
@@ -327,6 +287,342 @@
             {{ $devices->onEachSide(1)->links('vendor.pagination.flowbite') }}
         </div>
     @endif
+
+    {{-- Shared Manage menu. One fixed node for every row so the table's
+         overflow-x-auto wrapper cannot clip it. --}}
+    <div
+        id="device-actions-menu"
+        class="fixed z-50 hidden w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl"
+        role="menu"
+        aria-label="Manage device"
+    >
+
+        <div class="px-3 pb-1.5 pt-2">
+            <p
+                id="device-actions-menu-title"
+                class="truncate text-xs font-semibold text-slate-900"
+            ></p>
+        </div>
+
+
+        <a
+            id="device-menu-view"
+            href="#"
+            class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-blue-50 hover:text-blue-700"
+            role="menuitem"
+        >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0Z"/>
+            </svg>
+
+            View Device
+        </a>
+
+
+        <button
+            type="button"
+            class="device-menu-lock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-amber-50 hover:text-amber-700"
+            role="menuitem"
+        >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+            </svg>
+
+            Remote Lock
+        </button>
+
+
+        <button
+            type="button"
+            class="device-menu-announce flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-sky-50 hover:text-sky-700"
+            role="menuitem"
+        >
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>
+            </svg>
+
+            Send Announcement
+        </button>
+
+
+        @if(auth()->user()->isSuperAdmin())
+            <div class="my-1 h-px bg-slate-100"></div>
+
+            <a
+                id="device-menu-edit"
+                href="#"
+                class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-amber-50 hover:text-amber-700"
+                role="menuitem"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+
+                Edit Device
+            </a>
+
+
+            <button
+                type="button"
+                class="device-menu-delete flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-red-600 transition hover:bg-red-50 hover:text-red-700"
+                role="menuitem"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+
+                Delete Device
+            </button>
+        @endif
+
+    </div>
+
+
+    <style>
+        .device-manage-chevron {
+            transition: transform 160ms ease;
+        }
+
+        .device-manage[aria-expanded="true"] .device-manage-chevron {
+            transform: rotate(180deg);
+        }
+    </style>
+
+
+    <script>
+        (function () {
+
+            const menuEl =
+                document.getElementById('device-actions-menu');
+
+            const titleEl =
+                document.getElementById('device-actions-menu-title');
+
+            const viewEl =
+                document.getElementById('device-menu-view');
+
+            const editEl =
+                document.getElementById('device-menu-edit');
+
+            let activeButton = null;
+
+
+            if (!menuEl) {
+                return;
+            }
+
+
+            function closeMenu() {
+
+                if (menuEl.classList.contains('hidden')) {
+                    return;
+                }
+
+                menuEl.classList.add('hidden');
+
+                if (activeButton) {
+                    activeButton.setAttribute('aria-expanded', 'false');
+                    activeButton = null;
+                }
+
+            }
+
+
+            function positionMenu(button) {
+
+                const rect = button.getBoundingClientRect();
+                const gap = 8;
+
+                menuEl.classList.remove('hidden');
+
+                const width = menuEl.offsetWidth;
+                const height = menuEl.offsetHeight;
+
+                const left = Math.min(
+                    Math.max(gap, rect.right - width),
+                    window.innerWidth - width - gap
+                );
+
+                let top = rect.bottom + gap;
+
+                if (top + height > window.innerHeight - gap) {
+                    top = rect.top - height - gap;
+                }
+
+                menuEl.style.left = Math.max(gap, left) + 'px';
+                menuEl.style.top = Math.max(gap, top) + 'px';
+
+            }
+
+
+            function openMenu(button) {
+
+                if (activeButton === button) {
+                    closeMenu();
+                    return;
+                }
+
+                closeMenu();
+
+                titleEl.textContent =
+                    button.getAttribute('data-device-name') || 'Device';
+
+                if (viewEl) {
+                    viewEl.href =
+                        button.getAttribute('data-view-url') || '#';
+                }
+
+                if (editEl) {
+                    editEl.href =
+                        button.getAttribute('data-edit-url') || '#';
+                }
+
+                menuEl.dataset.lockUrl =
+                    button.getAttribute('data-lock-url') || '';
+
+                menuEl.dataset.announceUrl =
+                    button.getAttribute('data-announce-url') || '';
+
+                menuEl.dataset.deleteUrl =
+                    button.getAttribute('data-delete-url') || '';
+
+                menuEl.dataset.deleteMessage =
+                    button.getAttribute('data-delete-message') || '';
+
+                menuEl.dataset.deviceName =
+                    button.getAttribute('data-device-name') || 'this PC';
+
+                activeButton = button;
+
+                button.setAttribute('aria-expanded', 'true');
+
+                positionMenu(button);
+
+            }
+
+
+            document.addEventListener('click', function (event) {
+
+                const button = event.target.closest('.device-manage');
+
+                if (!button) {
+                    return;
+                }
+
+                event.stopPropagation();
+
+                openMenu(button);
+
+            });
+
+
+            menuEl.querySelector('.device-menu-lock')
+                .addEventListener('click', function () {
+
+                    const url = menuEl.dataset.lockUrl;
+                    const deviceName = menuEl.dataset.deviceName;
+
+                    closeMenu();
+
+                    if (!url || typeof openRemoteLockModal !== 'function') {
+                        return;
+                    }
+
+                    openRemoteLockModal(url, deviceName);
+
+                });
+
+
+            menuEl.querySelector('.device-menu-announce')
+                .addEventListener('click', function () {
+
+                    const url = menuEl.dataset.announceUrl;
+                    const deviceName = menuEl.dataset.deviceName;
+
+                    closeMenu();
+
+                    if (!url || typeof openRemoteAnnounceModal !== 'function') {
+                        return;
+                    }
+
+                    openRemoteAnnounceModal(url, deviceName);
+
+                });
+
+
+            const deleteEl =
+                menuEl.querySelector('.device-menu-delete');
+
+            if (deleteEl) {
+
+                deleteEl.addEventListener('click', function () {
+
+                    const url = menuEl.dataset.deleteUrl;
+                    const message = menuEl.dataset.deleteMessage;
+
+                    closeMenu();
+
+                    if (!url || typeof openDeleteModal !== 'function') {
+                        return;
+                    }
+
+                    openDeleteModal(url, message);
+
+                });
+
+            }
+
+
+            [viewEl, editEl].forEach(function (link) {
+
+                if (link) {
+                    link.addEventListener('click', closeMenu);
+                }
+
+            });
+
+
+            document.addEventListener('click', function (event) {
+
+                if (menuEl.classList.contains('hidden')) {
+                    return;
+                }
+
+                if (menuEl.contains(event.target)) {
+                    return;
+                }
+
+                if (event.target.closest('.device-manage')) {
+                    return;
+                }
+
+                closeMenu();
+
+            });
+
+
+            document.addEventListener('keydown', function (event) {
+
+                if (event.key === 'Escape') {
+                    closeMenu();
+                }
+
+            });
+
+
+            window.addEventListener('scroll', closeMenu, true);
+            window.addEventListener('resize', closeMenu);
+
+        })();
+    </script>
+
 
     <x-remote-lock-modal />
     <x-remote-announce-modal />
