@@ -53,9 +53,7 @@
 
                         @if ($number < $step)
 
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m5 13 4 4L19 7" />
-                            </svg>
+                            <x-icon name="check" class="h-4 w-4" />
 
                         @else
 

@@ -38,20 +38,7 @@
             >
                 {{ $rangeLabel }}
 
-                <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.8"
-                        d="m6 9 6 6 6-6"
-                    />
-                </svg>
+                <x-icon name="chevron-down" class="h-4 w-4" aria-hidden="true" />
             </button>
 
 
@@ -126,19 +113,7 @@
                         class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm"
                     >
 
-                        <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                            />
-                        </svg>
+                        <x-icon name="laptop" class="h-6 w-6" />
 
                     </div>
 
@@ -223,19 +198,7 @@
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"
-                    />
-                </svg>
+                <x-icon name="logout" class="h-5 w-5" />
 
             </div>
 
@@ -279,19 +242,7 @@
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-violet-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
-                    />
-                </svg>
+                <x-icon name="users" class="h-5 w-5" />
 
             </div>
 
@@ -339,25 +290,7 @@
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600"
             >
 
-                <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    viewBox="0 0 24 24"
-                >
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                    />
-
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 7v5l3 2"
-                    />
-                </svg>
+                <x-icon name="clock" class="h-5 w-5" />
 
             </div>
 
@@ -481,19 +414,7 @@
 
                             <div class="flex items-center gap-1.5">
 
-                                <svg
-                                    class="h-4 w-4 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                                    />
-                                </svg>
+                                <x-icon name="laptop" class="h-4 w-4 text-gray-400" />
 
 
                                 <span class="font-medium text-gray-900">
@@ -505,25 +426,7 @@
 
                             <div class="flex items-center gap-1.5">
 
-                                <svg
-                                    class="h-4 w-4 text-gray-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.6"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="9"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M12 7v5l3 2"
-                                    />
-                                </svg>
+                                <x-icon name="clock" class="h-4 w-4 text-gray-400" />
 
 
                                 <span>
@@ -570,31 +473,11 @@
                                 aria-expanded="false"
                                 title="Manage this session"
                             >
-                                <svg
-                                    class="h-3.5 w-3.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path stroke-linecap="round" d="M4 7h16M4 17h16"/>
-                                    <circle cx="9" cy="7" r="2"/>
-                                    <circle cx="15" cy="17" r="2"/>
-                                </svg>
+                                <x-icon name="dots-horizontal" class="h-3.5 w-3.5" aria-hidden="true" />
 
                                 Manage
 
-                                <svg
-                                    class="manage-chevron h-3 w-3"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
-                                </svg>
+                                <x-icon name="chevron-down" class="manage-chevron h-3 w-3" aria-hidden="true" />
                             </button>
 
                         </div>
@@ -617,19 +500,7 @@
                     class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400"
                 >
 
-                    <svg
-                        class="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                        />
-                    </svg>
+                    <x-icon name="laptop" class="h-5 w-5" />
 
                 </div>
 
@@ -680,17 +551,7 @@
             class="live-menu-view-device flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-blue-50 hover:text-blue-700"
             role="menuitem"
         >
-            <svg
-                class="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-            >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0Z"/>
-            </svg>
+            <x-icon name="eye" class="h-4 w-4" aria-hidden="true" />
 
             View Device
         </a>
@@ -701,20 +562,7 @@
             class="live-menu-lock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-amber-50 hover:text-amber-700"
             role="menuitem"
         >
-            <svg
-                class="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-                />
-            </svg>
+            <x-icon name="lock" class="h-4 w-4" aria-hidden="true" />
 
             Remote Lock
         </button>
@@ -725,20 +573,7 @@
             class="live-menu-announce flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-sky-50 hover:text-sky-700"
             role="menuitem"
         >
-            <svg
-                class="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"
-                />
-            </svg>
+            <x-icon name="megaphone-a" class="h-4 w-4" aria-hidden="true" />
 
             Send Announcement
         </button>
@@ -752,20 +587,7 @@
             class="live-menu-force-end flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-red-600 transition hover:bg-red-50 hover:text-red-700"
             role="menuitem"
         >
-            <svg
-                class="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-                />
-            </svg>
+            <x-icon name="logout" class="h-4 w-4" aria-hidden="true" />
 
             Force End
         </button>
@@ -1148,29 +970,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-500"
                     >
 
-                        <svg
-                            class="h-7 w-7"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.7"
-                                d="M12 3a9 9 0 1 0 9 9h-9V3Z"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.7"
-                                d="M15 3.6A9 9 0 0 1 20.4 9H15V3.6Z"
-                            />
-
-                        </svg>
+                        <x-icon name="chart-pie" class="h-7 w-7" aria-hidden="true" />
 
                     </div>
 
@@ -1458,6 +1258,13 @@ document.addEventListener('DOMContentLoaded', function () {
 {{-- =========================================================
     LIVE PC MONITORING
 ========================================================== --}}
+
+{{-- Icons reused by the live session cards that JavaScript builds. --}}
+<template id="icon-live-laptop"><x-icon name="laptop" class="h-4 w-4 text-gray-400" /></template>
+<template id="icon-live-clock"><x-icon name="clock" class="h-4 w-4 text-gray-400" /></template>
+<template id="icon-live-manage"><x-icon name="dots-horizontal" class="h-3.5 w-3.5" /></template>
+<template id="icon-live-chevron"><x-icon name="chevron-down" class="manage-chevron h-3 w-3" /></template>
+
 <script>
 
 (function () {
@@ -1479,6 +1286,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const csrfToken =
         document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    // The card template is a JavaScript string, so icons are cloned from the
+    // hidden <template> elements above instead of being duplicated by hand.
+    const iconMarkup = (id) =>
+        document.getElementById(id)?.innerHTML || '';
 
     const menuEl =
         document.getElementById('live-session-menu');
@@ -1876,19 +1688,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <div class="flex items-center gap-1.5">
 
-                    <svg
-                        class="h-4 w-4 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9.75 17L8 20h8l-1.75-3M5 4h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"
-                        />
-                    </svg>
+                    ${iconMarkup('icon-live-laptop')}
 
                     <span class="font-medium text-gray-900">
                         ${
@@ -1902,25 +1702,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <div class="flex items-center gap-1.5">
 
-                    <svg
-                        class="h-4 w-4 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        viewBox="0 0 24 24"
-                    >
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="9"
-                        />
-
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 7v5l3 2"
-                        />
-                    </svg>
+                    ${iconMarkup('icon-live-clock')}
 
                     <span>
                         Started ${session.started_at_display || ''}
@@ -1968,31 +1750,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     aria-expanded="false"
                     title="Manage this session"
                 >
-                    <svg
-                        class="h-3.5 w-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                    >
-                        <path stroke-linecap="round" d="M4 7h16M4 17h16"/>
-                        <circle cx="9" cy="7" r="2"/>
-                        <circle cx="15" cy="17" r="2"/>
-                    </svg>
+                    ${iconMarkup('icon-live-manage')}
 
                     Manage
 
-                    <svg
-                        class="manage-chevron h-3 w-3"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
-                    </svg>
+                    ${iconMarkup('icon-live-chevron')}
                 </button>
 
             </div>

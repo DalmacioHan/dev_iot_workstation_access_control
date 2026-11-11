@@ -32,9 +32,7 @@
 
             <button type="button" id="refresh-monitoring" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
 
-                <svg id="refresh-icon" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7" />
-                </svg>
+                <x-icon name="refresh" class="h-4 w-4" id="refresh-icon" />
 
                 Refresh
 
@@ -57,10 +55,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="4" y="4" width="16" height="16" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M15 2v2M9 2v2M15 20v2M9 20v2M20 15h2M20 9h2M2 15h2M2 9h2" />
-                    </svg>
+                    <x-icon name="calendar" class="h-5 w-5" />
 
                 </div>
 
@@ -90,10 +85,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                    </svg>
+                    <x-icon name="laptop" class="h-5 w-5" />
 
                 </div>
 
@@ -118,10 +110,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m8 12 2.5 2.5L16 9" />
-                    </svg>
+                    <x-icon name="search" class="h-5 w-5" />
 
                 </div>
 
@@ -146,10 +135,7 @@
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M12 7v5l3 2" />
-                    </svg>
+                    <x-icon name="clock" class="h-5 w-5" />
 
                 </div>
 
@@ -182,10 +168,7 @@
                 aria-selected="false"
                 class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
             >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                    <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                </svg>
+                <x-icon name="laptop" class="h-4 w-4" />
                 Devices
             </button>
 
@@ -196,10 +179,7 @@
                 aria-selected="false"
                 class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
             >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
-                    <path stroke-linecap="round" stroke-width="1.8" d="M14 2v6h6M8 13h8M8 17h6" />
-                </svg>
+                <x-icon name="file" class="h-4 w-4" />
                 Access Events
             </button>
 
@@ -210,10 +190,7 @@
                 aria-selected="false"
                 class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
             >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h10" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m17 15 3 2-3 2" />
-                </svg>
+                <x-icon name="dash-menu" class="h-4 w-4" />
                 Commands
             </button>
 
@@ -224,10 +201,7 @@
                 aria-selected="false"
                 class="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900"
             >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8" />
-                    <path stroke-linecap="round" stroke-width="1.8" d="M3 9h18" />
-                </svg>
+                <x-icon name="dashboard" class="h-4 w-4" />
                 Application Usage
             </button>
 
@@ -251,10 +225,7 @@
 
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M14 2v6h6M8 13h8M8 17h6" />
-                    </svg>
+                    <x-icon name="file" class="h-5 w-5" />
 
                 </div>
 
@@ -284,9 +255,7 @@
 
                 <a href="{{ route('reports.index', ['tab' => 'access', 'date_from' => now()->toDateString(), 'date_to' => now()->toDateString(), 'step' => 4]) }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
                     Open full access log
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
-                    </svg>
+                    <x-icon name="arrow-right" class="h-4 w-4" />
                 </a>
 
             </div>
@@ -410,9 +379,7 @@
                                         class="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700"
                                         title="{{ $log['ended_reason'] ?? 'Session closed automatically' }}"
                                     >
-                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v5m0 3.5v.5M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z" />
-                                        </svg>
+                                        <x-icon name="exclamation-triangle" class="h-3.5 w-3.5" />
                                         Did not log out manually
                                     </p>
                                 @endif
@@ -465,10 +432,7 @@
 
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                        <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                    </svg>
+                    <x-icon name="laptop" class="h-5 w-5" />
 
                 </div>
 
@@ -494,9 +458,7 @@
 
                 <a href="{{ route('device') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
                     Manage devices
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
-                    </svg>
+                    <x-icon name="arrow-right" class="h-4 w-4" />
                 </a>
 
             </div>
@@ -543,10 +505,7 @@
 
                                     <div class="flex h-10 w-10 items-center justify-center rounded-xl {{ $device['is_paired'] ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400' }}">
 
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                                            <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                                        </svg>
+                                        <x-icon name="laptop" class="h-5 w-5" />
 
                                     </div>
 
@@ -632,10 +591,7 @@
 
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
 
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h10" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m17 15 3 2-3 2" />
-                        </svg>
+                        <x-icon name="dash-menu" class="h-5 w-5" />
 
                     </div>
 
@@ -665,10 +621,7 @@
 
                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-500">
 
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <rect x="3" y="4" width="18" height="13" rx="2" stroke-width="1.8" />
-                                <path stroke-linecap="round" stroke-width="1.8" d="M9 21h6M12 17v4" />
-                            </svg>
+                            <x-icon name="laptop" class="h-5 w-5" />
 
                         </div>
 
@@ -761,10 +714,7 @@
 
                     <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
 
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8" />
-                            <path stroke-linecap="round" stroke-width="1.8" d="M3 9h18" />
-                        </svg>
+                        <x-icon name="dashboard" class="h-5 w-5" />
 
                     </div>
 
@@ -785,9 +735,7 @@
 
                 <a href="{{ route('analytics') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 hover:text-gray-900">
                     View in Overview
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14M13 6l6 6-6 6" />
-                    </svg>
+                    <x-icon name="arrow-right" class="h-4 w-4" />
                 </a>
 
             </div>

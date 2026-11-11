@@ -8,10 +8,7 @@
         <div>
             <div class="flex items-center gap-2">
                 <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
-                    </svg>
+                    <x-icon name="chart-pie" class="h-4 w-4" />
                 </span>
                 <h3 class="text-base font-bold text-gray-900">
                     Report Analytics & Highlights
@@ -41,10 +38,7 @@
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                 <div class="flex items-center gap-2">
                     <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                        </svg>
+                        <x-icon name="chart-pie" class="h-4 w-4" />
                     </span>
                     <div>
                         <h4 class="text-sm font-bold text-gray-900">
@@ -108,9 +102,7 @@
             <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
                 <div class="flex items-center gap-2.5 border-b border-gray-100 pb-3">
                     <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
+                        <x-icon name="users" class="h-4 w-4" />
                     </span>
                     <div>
                         <h4 class="text-sm font-bold text-gray-900">
@@ -166,9 +158,7 @@
             <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
                 <div class="flex items-center gap-2.5 border-b border-gray-100 pb-3">
                     <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        <x-icon name="clock" class="h-4 w-4" />
                     </span>
                     <div>
                         <h4 class="text-sm font-bold text-gray-900">
@@ -229,10 +219,7 @@
             <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
                 <div class="flex items-center gap-2.5 border-b border-gray-100 pb-3">
                     <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14l9-5-9-5-9 5 9 5z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                        </svg>
+                        <x-icon name="verified-check" class="h-4 w-4" />
                     </span>
                     <div>
                         <h4 class="text-sm font-bold text-gray-900">
@@ -285,9 +272,7 @@
             <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
                 <div class="flex items-center gap-2.5 border-b border-gray-100 pb-3">
                     <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        <x-icon name="clock" class="h-4 w-4" />
                     </span>
                     <div>
                         <h4 class="text-sm font-bold text-gray-900">
@@ -348,9 +333,7 @@
 <div class="mb-3 flex items-center justify-between">
     <div class="flex items-center gap-2">
         <span class="flex h-6 w-6 items-center justify-center rounded-md bg-gray-100 text-gray-600">
-            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-            </svg>
+            <x-icon name="dash-menu" class="h-3.5 w-3.5" />
         </span>
         <h3 class="text-sm font-bold text-gray-900">
             Student Summary Details
@@ -446,9 +429,7 @@
 
                                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 text-gray-400">
 
-                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5M4 19h16M8 16v-4M12 16V8M16 16v-7M20 16V6" />
-                                    </svg>
+                                    <x-icon name="chart-vertical" class="h-7 w-7" />
 
                                 </div>
 
@@ -520,10 +501,7 @@ document.addEventListener('DOMContentLoaded', function () {
         pieEl.innerHTML = `
             <div class="flex min-h-[220px] flex-col items-center justify-center text-center p-4">
                 <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-400">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                    </svg>
+                    <x-icon name="chart-pie" class="h-6 w-6" />
                 </div>
                 <h5 class="mt-2 text-xs font-bold text-gray-800">No course data recorded</h5>
                 <p class="mt-0.5 text-[11px] text-gray-400">No student activity was found for the selected report filters.</p>

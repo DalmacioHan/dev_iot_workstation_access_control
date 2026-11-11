@@ -16,15 +16,7 @@
         <div>
             <div class="mb-2 flex items-center gap-2">
                 <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
-                    <svg class="h-4 w-4"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke="currentColor"
-                         stroke-width="2">
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M12 6v12m6-6H6" />
-                    </svg>
+                    <x-icon name="plus" class="h-4 w-4" />
                 </span>
 
                 <span class="text-xs font-bold uppercase tracking-[0.18em] text-blue-700">
@@ -44,15 +36,7 @@
         <a href="{{ route('device') }}"
            class="inline-flex h-10 items-center justify-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-100 sm:self-auto">
 
-            <svg class="h-4 w-4"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor"
-                 stroke-width="2">
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M19 12H5m6-6-6 6 6 6" />
-            </svg>
+            <x-icon name="arrow-left" class="h-4 w-4" />
 
             Back to Devices
         </a>
@@ -83,15 +67,7 @@
                     {{-- Icon --}}
                     <div class="mb-8 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/20 bg-white/15 text-white shadow-lg backdrop-blur-sm">
 
-                        <svg class="h-10 w-10"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.6">
-                            <rect x="4" y="3" width="16" height="18" rx="2"/>
-                            <path stroke-linecap="round" d="M8 7h8M8 11h8M8 15h5"/>
-                            <circle cx="17" cy="17" r="1"/>
-                        </svg>
+                        <x-icon name="laptop" class="h-10 w-10" />
 
                     </div>
 
@@ -159,14 +135,7 @@
                     <div class="flex items-start gap-4">
 
                         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-700">
-                            <svg class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor"
-                                 stroke-width="2">
-                                <rect x="4" y="4" width="16" height="16" rx="2"/>
-                                <path stroke-linecap="round" d="M8 8h8M8 12h8M8 16h4"/>
-                            </svg>
+                            <x-icon name="file" class="h-5 w-5" />
                         </div>
 
                         <div>
@@ -211,15 +180,7 @@
                             <div class="relative">
 
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                                    <svg class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         stroke-width="2">
-                                        <rect x="3" y="4" width="18" height="16" rx="2"/>
-                                        <path stroke-linecap="round"
-                                              d="M8 17h8M9 7h6"/>
-                                    </svg>
+                                    <x-icon name="laptop" class="h-4 w-4" />
                                 </div>
 
                                 <input type="text"
@@ -234,15 +195,7 @@
 
                             @error('workstation_name')
                                 <div class="mt-2 flex items-center gap-1.5 text-xs font-medium text-red-600">
-                                    <svg class="h-3.5 w-3.5"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         stroke-width="2">
-                                        <circle cx="12" cy="12" r="9"/>
-                                        <path stroke-linecap="round"
-                                              d="M12 8v4m0 4h.01"/>
-                                    </svg>
+                                    <x-icon name="information-circle" class="h-3.5 w-3.5" />
                                     {{ $message }}
                                 </div>
                             @enderror
@@ -260,15 +213,7 @@
                             <div class="flex items-start gap-3">
 
                                 <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-                                    <svg class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         stroke-width="2">
-                                        <path stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              d="m5 12 4 4L19 6" />
-                                    </svg>
+                                    <x-icon name="check" class="h-4 w-4" />
                                 </div>
 
                                 <div>
@@ -299,15 +244,7 @@
                         <button type="submit"
                                 class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
 
-                            <svg class="h-4 w-4"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor"
-                                 stroke-width="2">
-                                <path stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      d="m5 12 4 4L19 6" />
-                            </svg>
+                            <x-icon name="check" class="h-4 w-4" />
 
                             Save Device
                         </button>

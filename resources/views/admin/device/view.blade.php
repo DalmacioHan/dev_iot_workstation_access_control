@@ -12,10 +12,7 @@
     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
-                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 3h6m-7 4h8m-9 0v14h10V7M9 7V3h6v4"/>
-                </svg>
+                <x-icon name="laptop" class="h-3.5 w-3.5" />
                 Device Management
             </div>
 
@@ -32,10 +29,7 @@
             href="{{ route('device') }}"
             class="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-100"
         >
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-            </svg>
+            <x-icon name="arrow-left" class="h-4 w-4" />
             Back to Devices
         </a>
     </div>
@@ -51,10 +45,7 @@
 
                 <div class="flex items-start gap-4">
                     <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white ring-1 ring-white/20 backdrop-blur-sm">
-                        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                  d="M4 6.5A2.5 2.5 0 016.5 4h11A2.5 2.5 0 0120 6.5v11a2.5 2.5 0 01-2.5 2.5h-11A2.5 2.5 0 014 17.5v-11zM8 8h8v8H8V8zm-4 3h2m12 0h2M8 4v2m8-2v2m-8 12v2m8-2v2"/>
-                        </svg>
+                        <x-icon name="laptop" class="h-7 w-7" />
                     </div>
 
                     <div class="min-w-0">
@@ -118,17 +109,11 @@
                         aria-haspopup="menu"
                         aria-expanded="false"
                     >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" d="M4 7h16M4 17h16"/>
-                            <circle cx="9" cy="7" r="2"/>
-                            <circle cx="15" cy="17" r="2"/>
-                        </svg>
+                        <x-icon name="dots-horizontal" class="h-4 w-4" aria-hidden="true" />
 
                         Manage
 
-                        <svg class="device-detail-chevron h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
-                        </svg>
+                        <x-icon name="chevron-down" class="device-detail-chevron h-4 w-4" aria-hidden="true" />
                     </button>
                 </div>
             </div>
@@ -138,10 +123,7 @@
                 <div class="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
                     <div class="flex items-center gap-3">
                         <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                            <svg class="h-5 w-5 text-blue-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                      d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <x-icon name="clock" class="h-5 w-5 text-blue-100" />
                         </div>
 
                         <div>
@@ -164,10 +146,7 @@
             <div>
                 <div class="flex items-center gap-2">
                     <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                  d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <x-icon name="clock" class="h-5 w-5" />
                     </div>
 
                     <h2 class="text-lg font-bold text-slate-900">
@@ -189,10 +168,7 @@
             @if($accessLogs->isEmpty())
                 <div class="flex min-h-[180px] flex-col items-center justify-center px-6 py-10 text-center">
                     <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                  d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <x-icon name="clock" class="h-6 w-6" />
                     </div>
 
                     <h3 class="mt-4 text-sm font-semibold text-slate-700">
@@ -249,10 +225,7 @@
             <div>
                 <div class="flex items-center gap-2">
                     <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                  d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-                        </svg>
+                        <x-icon name="lock" class="h-5 w-5" />
                     </div>
 
                     <h2 class="text-lg font-bold text-slate-900">
@@ -273,10 +246,7 @@
         @if($commands->isEmpty())
             <div class="flex min-h-[140px] flex-col items-center justify-center px-6 py-8 text-center">
                 <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                              d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+                    <x-icon name="clock" class="h-6 w-6" />
                 </div>
 
                 <h3 class="mt-4 text-sm font-semibold text-slate-700">
@@ -358,10 +328,7 @@
             class="device-detail-lock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-amber-50 hover:text-amber-700"
             role="menuitem"
         >
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-            </svg>
+            <x-icon name="lock" class="h-4 w-4" aria-hidden="true" />
 
             Remote Lock
         </button>
@@ -372,10 +339,7 @@
             class="device-detail-announce flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-sky-50 hover:text-sky-700"
             role="menuitem"
         >
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/>
-            </svg>
+            <x-icon name="megaphone-a" class="h-4 w-4" aria-hidden="true" />
 
             Send Announcement
         </button>
@@ -390,10 +354,7 @@
                 class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-blue-50 hover:text-blue-700"
                 role="menuitem"
             >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                </svg>
+                <x-icon name="edit" class="h-4 w-4" aria-hidden="true" />
 
                 Edit Device
             </a>

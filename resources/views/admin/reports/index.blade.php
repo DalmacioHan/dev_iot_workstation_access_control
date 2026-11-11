@@ -52,10 +52,7 @@
 
             <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
 
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M14 2v6h6M8 13h8M8 17h6" />
-                </svg>
+                <x-icon name="file" class="h-4 w-4" />
 
             </span>
 

@@ -100,10 +100,7 @@
                                 <div class="flex items-center gap-2">
 
                                     <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
-                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                            <rect x="4" y="4" width="16" height="16" rx="2" />
-                                            <rect x="9" y="9" width="6" height="6" />
-                                        </svg>
+                                        <x-icon name="file" class="h-4 w-4" />
                                     </span>
 
                                     <div>
@@ -165,9 +162,7 @@
                                         class="mt-2 flex items-center gap-1.5 text-[11px] font-semibold text-amber-600"
                                         title="{{ $log->ended_reason ?? 'Session closed automatically' }}"
                                     >
-                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v5m0 3.5v.5M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z" />
-                                        </svg>
+                                        <x-icon name="exclamation-triangle" class="h-3.5 w-3.5" />
                                         Did not log out manually
                                     </span>
                                 @endif
@@ -187,9 +182,7 @@
 
                                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 text-gray-400">
 
-                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2Z" />
-                                    </svg>
+                                    <x-icon name="file" class="h-7 w-7" />
 
                                 </div>
 

@@ -101,41 +101,7 @@
                                 class="mb-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/15 shadow-lg backdrop-blur-sm"
                             >
 
-                                <svg
-                                    class="h-8 w-8"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M11.42 15.17 17.25 21a2.121 2.121 0 0 0 3-3l-5.84-5.84"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M14.83 8.58 17.4 6A4.5 4.5 0 0 0 11 2.6L8.42 5.17"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.8"
-                                        d="M5.17 8.42 2.59 11.01A4.5 4.5 0 0 0 9 17.4l2.58-2.57"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-width="1.8"
-                                        d="m8.5 8.5 7 7"
-                                    />
-
-                                </svg>
+                                <x-icon name="settings" class="h-8 w-8" />
 
                             </div>
 
@@ -180,28 +146,7 @@
                                         class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10"
                                     >
 
-                                        <svg
-                                            class="h-5 w-5"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-
-                                            <circle
-                                                cx="12"
-                                                cy="12"
-                                                r="9"
-                                                stroke-width="1.8"
-                                            />
-
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="1.8"
-                                                d="M12 7.5V12l3 2"
-                                            />
-
-                                        </svg>
+                                        <x-icon name="clock" class="h-5 w-5" />
 
                                     </div>
 
@@ -310,28 +255,7 @@
                                     class="group inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
                                 >
 
-                                    <svg
-                                        class="h-5 w-5 transition-transform duration-500 group-hover:rotate-180"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M20 7v5h-5"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M19 12a7 7 0 1 0-2.05 4.95"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="refresh" class="h-5 w-5 transition-transform duration-500 group-hover:rotate-180" />
 
                                     Check Again
 
@@ -355,28 +279,7 @@
                                     class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-500"
                                 >
 
-                                    <svg
-                                        class="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-
-                                        <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="9"
-                                            stroke-width="1.8"
-                                        />
-
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="1.8"
-                                            d="M12 7.5V12l3 2"
-                                        />
-
-                                    </svg>
+                                    <x-icon name="clock" class="h-6 w-6" />
 
                                 </div>
 

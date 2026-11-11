@@ -38,9 +38,7 @@
             <span
                 class="pointer-events-none absolute right-4 top-4 z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-300 bg-white transition peer-checked:border-blue-600 peer-checked:bg-blue-600"
             >
-                <svg class="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m5 13 4 4L19 7" />
-                </svg>
+                <x-icon name="check" class="h-3.5 w-3.5 text-white" />
             </span>
 
             <span
@@ -51,9 +49,7 @@
 
                 <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 6h8M8 10h8M8 14h5M6 2h9l5 5v15H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" />
-                    </svg>
+                    <x-icon name="file" class="h-5 w-5" />
 
                 </span>
 
@@ -86,9 +82,7 @@
             <span
                 class="pointer-events-none absolute right-4 top-4 z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-300 bg-white transition peer-checked:border-blue-600 peer-checked:bg-blue-600"
             >
-                <svg class="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m5 13 4 4L19 7" />
-                </svg>
+                <x-icon name="check" class="h-3.5 w-3.5 text-white" />
             </span>
 
             <span
@@ -99,9 +93,7 @@
 
                 <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
 
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 20v-1.5A3.5 3.5 0 0 0 12.5 15h-5A3.5 3.5 0 0 0 4 18.5V20M10 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM20 20v-1.5a3.5 3.5 0 0 0-2.6-3.4M15.5 4.2a3.5 3.5 0 0 1 0 6.6" />
-                    </svg>
+                    <x-icon name="users" class="h-5 w-5" />
 
                 </span>
 
@@ -129,9 +121,7 @@
             class="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
         >
             Next: choose period
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-5-5 5 5-5 5" />
-            </svg>
+            <x-icon name="arrow-right" class="h-4 w-4" />
         </button>
 
     </div>
