@@ -102,11 +102,11 @@
                         </span>
 
                         <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-950">
-                            Register your device
+                            Register your PC or workstation to the system
                         </h2>
 
                         <p class="mt-3 text-sm leading-6 text-slate-500">
-                            Add a device to your system so it can be assigned and identified as a workstation.
+                            Add a PC or workstation to your system so it can be assigned and identified as a workstation.
                         </p>
                     </div>
 
@@ -115,23 +115,8 @@
                     <div class="space-y-4">
 
                         <div class="flex items-start gap-3">
-                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-xs font-bold text-blue-700">
-                                01
-                            </div>
-
-                            <div>
-                                <p class="text-sm font-semibold text-slate-800">
-                                    Find the device code
-                                </p>
-                                <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                                    Locate the unique code assigned to your ESP device.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
                             <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-xs font-bold text-indigo-700">
-                                02
+                                01
                             </div>
 
                             <div>
@@ -139,7 +124,7 @@
                                     Choose a workstation name
                                 </p>
                                 <p class="mt-0.5 text-xs leading-5 text-slate-500">
-                                    Give the device an easy-to-recognize workstation name.
+                                    Give  an easy-to-recognize workstation name.
                                 </p>
                             </div>
                         </div>
@@ -206,68 +191,6 @@
                     @csrf
 
                     <div class="space-y-6">
-
-                        {{-- Device Code --}}
-                        <div>
-
-                            <div class="mb-2 flex items-center justify-between gap-3">
-                                <label for="device_uid"
-                                       class="block text-sm font-semibold text-slate-800">
-                                    Device Code
-                                    <span class="text-red-500">*</span>
-                                </label>
-
-                                <span class="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                                    Required
-                                </span>
-                            </div>
-
-                            <div class="relative">
-
-                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                                    <svg class="h-4 w-4"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         stroke-width="2">
-                                        <path stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Z" />
-                                        <path stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              d="M8 9.5h8M8 13h4" />
-                                    </svg>
-                                </div>
-
-                                <input type="text"
-                                       id="device_uid"
-                                       name="device_uid"
-                                       value="{{ old('device_uid') }}"
-                                       placeholder="e.g. 12345"
-                                       autocomplete="off"
-                                       class="block h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm font-medium text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                                       required />
-
-                            </div>
-
-                            @error('device_uid')
-                                <div class="mt-2 flex items-center gap-1.5 text-xs font-medium text-red-600">
-                                    <svg class="h-3.5 w-3.5"
-                                         fill="none"
-                                         viewBox="0 0 24 24"
-                                         stroke="currentColor"
-                                         stroke-width="2">
-                                        <circle cx="12" cy="12" r="9"/>
-                                        <path stroke-linecap="round"
-                                              d="M12 8v4m0 4h.01"/>
-                                    </svg>
-                                    {{ $message }}
-                                </div>
-                            @enderror
-
-
-
-                        </div>
 
 
                         {{-- Workstation Name --}}

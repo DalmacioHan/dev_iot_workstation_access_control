@@ -97,11 +97,6 @@
                                 <span class="font-mono font-semibold text-white">
                                     {{ $device->pairing_code }}
                                 </span>
-                            @else
-                                <span>Device Code</span>
-                                <span class="font-mono font-semibold text-white">
-                                    {{ $device->device_uid }}
-                                </span>
                             @endif
                         </div>
                     </div>

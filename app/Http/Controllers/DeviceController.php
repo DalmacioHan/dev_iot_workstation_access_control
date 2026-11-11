@@ -21,7 +21,7 @@ class DeviceController extends Controller
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function($q) use ($search) {
-                $q->where('device_uid', 'like', "%{$search}%");
+                $q->where('workstation_name', 'like', "%{$search}%");
                 
             });
         }
@@ -43,14 +43,12 @@ class DeviceController extends Controller
     public function store(Request $request)
 {
     $validated = $request->validate([
-        'device_uid' => 'required|string|max:100|unique:devices,device_uid',
-        'workstation_name'=> 'required|string|max:255',
+        'workstation_name'=> 'required|string|max:255|unique:devices,workstation_name',
     ]);
     
     $pairingCode = strtoupper(Str::random(6));
 
     Device::create([
-        'device_uid'   => $validated['device_uid'],
         'workstation_name'=> $validated['workstation_name'],
         'pairing_code' => $pairingCode,
         'is_paired'    => false, 
@@ -64,7 +62,7 @@ class DeviceController extends Controller
     public function update(Request $request, Device $device){
         
         $request->validate([
-            'workstation_name' => 'required',
+            'workstation_name' => 'required|string|max:255|unique:devices,workstation_name,' . $device->id,
             'is_paired' => 'required|boolean',
         ]);
 
@@ -101,7 +99,7 @@ public function show(Device $device ){
         
         $device->delete();
 
-        return redirect()->route('device')->with('success', "Device '{$device->device_uid}' was successfully deleted.");
+        return redirect()->route('device')->with('success', "Device '{$device->workstation_name}' was successfully deleted.");
     }
 
     public function lockDevice(Request $request, Device $device)
@@ -124,7 +122,7 @@ public function show(Device $device ){
             'status'  => 'pending',
         ]);
 
-        $name = $device->workstation_name ?? $device->device_uid;
+        $name = $device->workstation_name;
         $sessionNote = $closed > 0
             ? " {$closed} open session" . ($closed === 1 ? ' was' : 's were') . ' closed.'
             : '';
@@ -144,7 +142,7 @@ public function show(Device $device ){
             'status'  => 'pending',
         ]);
 
-        $name = $device->workstation_name ?? $device->device_uid;
+        $name = $device->workstation_name;
 
         return redirect()->back()->with('success', "Announcement sent to '{$name}'. It will display on the PC within a few seconds if online.");
     }

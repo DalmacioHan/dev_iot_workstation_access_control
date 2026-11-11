@@ -52,7 +52,7 @@
                     <input type="hidden" name="status" value="{{ request('status') }}">
                 @endif
 
-                <label for="search" class="sr-only">Search devices</label>
+                <label for="search" class="sr-only">Search Workstation</label>
 
                 <div class="relative">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
@@ -68,7 +68,7 @@
                         name="search"
                         value="{{ request('search') }}"
                         class="block h-12 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-11 pr-11 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-                        placeholder="Search by device code or name..."
+                        placeholder="Search by workstation name..."
                     />
 
                     @if(request('search'))
@@ -144,9 +144,6 @@
                 <thead class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
                     <tr>
                         <th scope="col" class="px-6 py-4 font-semibold sm:px-8">
-                            Device
-                        </th>
-                        <th scope="col" class="px-6 py-4 font-semibold sm:px-8">
                             Workstation Name
                         </th>
                         <th scope="col" class="px-6 py-4 text-center font-semibold">
@@ -162,26 +159,7 @@
                     @forelse($devices as $device)
                         <tr class="group bg-white transition-colors hover:bg-blue-50/30">
 
-                            {{-- Device Code --}}
-                            <td class="px-6 py-5 sm:px-8">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-colors group-hover:bg-blue-100 group-hover:text-blue-600">
-                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                                d="M4 6.5A2.5 2.5 0 016.5 4h11A2.5 2.5 0 0120 6.5v11a2.5 2.5 0 01-2.5 2.5h-11A2.5 2.5 0 014 17.5v-11z"/>
-                                        </svg>
-                                    </div>
-
-                                    <div class="min-w-0">
-                                        <p class="font-mono text-sm font-semibold text-slate-800">
-                                            {{ $device->device_uid }}
-                                        </p>
-                                        <p class="mt-0.5 text-xs text-slate-400">
-                                            Device Code
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
+                           
 
                             {{-- Workstation --}}
                             <td class="px-6 py-5 sm:px-8">

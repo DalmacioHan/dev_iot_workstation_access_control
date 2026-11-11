@@ -288,7 +288,7 @@ class AdminController extends Controller
                 'pc_access_logs.course',
                 'pc_access_logs.occurred_at as started_at'
             )
-            ->selectRaw('devices.workstation_name, devices.device_uid, devices.last_seen_at as device_last_seen_at')
+            ->selectRaw('devices.workstation_name,devices.last_seen_at as device_last_seen_at')
             ->join('devices', 'devices.id', '=', 'pc_access_logs.device_id')
             ->orderBy('pc_access_logs.occurred_at', 'desc');
     }
@@ -334,7 +334,6 @@ class AdminController extends Controller
             'student_external_id' => $session->student_external_id,
             'course' => $session->course,
             'workstation_name' => $session->workstation_name,
-            'device_uid' => $session->device_uid,
             'started_at' => $startedAt->toIso8601String(),
             'started_at_ts' => $startedAt->timestamp,
             'started_at_display' => $startedAt->format('h:i A'),

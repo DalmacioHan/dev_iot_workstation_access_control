@@ -118,7 +118,6 @@
                 <th>Student ID</th>
                 <th>Course</th>
                 <th>Allowed</th>
-                <th>Denied</th>
                 <th>Sessions</th>
                 <th>Workstations</th>
                 <th>First Access</th>
@@ -133,7 +132,6 @@
                     <td>{{ $student->student_external_id }}</td>
                     <td>{{ $student->course ?: '—' }}</td>
                     <td>{{ number_format($student->allowed_accesses) }}</td>
-                    <td>{{ number_format($student->denied_accesses) }}</td>
                     <td>{{ number_format($student->total_sessions) }}</td>
                     <td>{{ number_format($student->workstations_used) }}</td>
                     <td class="muted">

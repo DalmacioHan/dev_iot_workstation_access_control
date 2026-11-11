@@ -174,7 +174,7 @@
 
                 <div
                     class="mt-3 flex items-center justify-between text-xs text-blue-100"
-                >
+                >d
 
                     {{-- <span>
                         {{ number_format($activeDevices ?? 0) }} active
@@ -497,7 +497,7 @@
 
 
                                 <span class="font-medium text-gray-900">
-                                    {{ $session['workstation_name'] ?? ($session['device_uid'] ?? 'PC') }}
+                                    {{ $session['workstation_name']  ?? 'PC' }}
                                 </span>
 
                             </div>
@@ -1520,7 +1520,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="font-medium text-gray-900">
                         ${
                             session.workstation_name ||
-                            session.device_uid ||
                             'PC'
                         }
                     </span>
