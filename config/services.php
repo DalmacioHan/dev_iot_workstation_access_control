@@ -51,6 +51,9 @@ return [
         'url' => env('MIS_API_BASE_URL', 'http://localhost:5080'),
         'timeout' => env('MIS_API_TIMEOUT', 3),
         'key' => env('MIS_API_KEY', ''),
+        // {cardId} / {cardNo} are replaced with the scanned RFID UID. Change
+        // this when the real UISA endpoint has a different path.
+        'student_path' => env('MIS_API_STUDENT_PATH', '/api/students/{cardId}'),
     ],
 
 ];

@@ -328,10 +328,9 @@ class AdminController extends Controller
         $isStale = $lastSeen === null
             || $lastSeen->lt(Carbon::now()->subMinutes($warningMinutes));
 
-        $deviceName = $session->workstation_name ?: ($session->device_uid ?: 'Workstation');
-        $deviceName = $session->workstation_name && $session->device_uid
-            ? "{$session->workstation_name} ({$session->device_uid})"
-            : $deviceName;
+        // devices.device_uid was dropped from the schema; the workstation name
+        // is the only human-readable identifier left.
+        $deviceName = $session->workstation_name ?: 'Workstation';
 
         return [
             'session_id' => $session->session_id,
@@ -339,7 +338,7 @@ class AdminController extends Controller
             'student_external_id' => $session->student_external_id,
             'course' => $session->course,
             'workstation_name' => $session->workstation_name,
-            'device_uid' => $session->device_uid,
+            'device_uid' => null,
             'device_id' => (int) $session->device_id,
             'device_name' => $deviceName,
             'lock_url' => route('device.lock', $session->device_id),

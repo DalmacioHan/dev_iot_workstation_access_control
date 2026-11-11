@@ -60,7 +60,7 @@ it('exposes workstation actions with each live session', function () {
         ->assertOk()
         ->assertJsonCount(1)
         ->assertJsonPath('0.device_id', $device->id)
-        ->assertJsonPath('0.device_name', "{$device->workstation_name} ({$device->device_uid})")
+        ->assertJsonPath('0.device_name', $device->workstation_name)
         ->assertJsonPath('0.lock_url', route('device.lock', $device->id))
         ->assertJsonPath('0.announce_url', route('device.announce', $device->id))
         ->assertJsonPath('0.device_url', route('device.show', $device->id));
