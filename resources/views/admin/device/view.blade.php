@@ -225,7 +225,7 @@
                                 </p>
 
                                 <p class="mt-0.5 truncate text-xs text-slate-400">
-                                    RFID: {{ $log->rfid_uid }}
+                                    Student No: {{ $log->student_external_id ?: '—' }}
                                     
                                 </p>
                             </div>

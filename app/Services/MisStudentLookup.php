@@ -14,15 +14,19 @@ use Illuminate\Support\Facades\Http;
  */
 class MisStudentLookup
 {
+    public function __construct(private MisSettings $settings)
+    {
+    }
+
     /**
      * @return array{0: array<string, string>|null, 1: string|null}
      *         [student, reason]. A null student always has a reason.
      */
     public function lookup(string $cardId): array
     {
-        $timeout = (float) config('services.mis.timeout', 3);
-        $base = rtrim((string) config('services.mis.url', 'http://localhost:5080'), '/');
-        $path = (string) config('services.mis.student_path', '/api/students/{cardId}');
+        $timeout = $this->settings->timeout();
+        $base = $this->settings->baseUrl();
+        $path = $this->settings->studentPath();
         $path = str_replace(
             ['{cardId}', '{cardNo}'],
             rawurlencode($cardId),
@@ -34,7 +38,7 @@ class MisStudentLookup
         try {
             $request = Http::timeout($timeout);
 
-            $misKey = (string) config('services.mis.key');
+            $misKey = $this->settings->apiKey();
             if ($misKey !== '') {
                 $request = $request->withHeaders(['X-API-Key' => $misKey]);
             }

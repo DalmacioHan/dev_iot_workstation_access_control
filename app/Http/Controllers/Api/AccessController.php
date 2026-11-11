@@ -182,7 +182,11 @@ class AccessController extends Controller
         $snapshot = $student === null
             ? []
             : [
-                'student_external_id' => $student['studentNumber'] ?: $student['cardId'],
+                // The student number is the identity. The RFID UID is only the
+                // lookup key, so never substitute it for a missing StudentNo.
+                'student_external_id' => ($student['studentNumber'] ?? '') !== ''
+                    ? $student['studentNumber']
+                    : null,
                 'student_name'        => trim(($student['firstName'] ?? '') . ' ' . ($student['middleName'] ?? '') . ' ' . ($student['lastName'] ?? '')),
                 'course'              => $student['course'] ?? null,
             ];

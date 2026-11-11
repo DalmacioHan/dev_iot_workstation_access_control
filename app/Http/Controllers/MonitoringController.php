@@ -92,18 +92,21 @@ class MonitoringController extends Controller
                 ];
             });
 
-        // Fetch App Usage Data
-        $appUsage = PcAppUsage::latest('occurred_at')
+        // Fetch App Usage Data. The student number comes from the session's
+        // access log, never from the RFID UID.
+        $appUsage = PcAppUsage::with('accessLog')
+            ->latest('occurred_at')
             ->limit(10)
             ->get()
             ->map(function ($usage) {
                 return [
-                    'id'          => $usage->id,
-                    'session_id'  => $usage->session_id,
-                    'rfid_uid'    => $usage->rfid_uid,
-                    'app_name'    => $usage->app_name,
-                    'seconds'     => $usage->seconds,
-                    'occurred_at' => $usage->occurred_at ? $usage->occurred_at->format('h:i A') : '—',
+                    'id'                  => $usage->id,
+                    'session_id'          => $usage->session_id,
+                    'student_external_id' => optional($usage->accessLog)->student_external_id,
+                    'student_name'        => optional($usage->accessLog)->student_name,
+                    'app_name'            => $usage->app_name,
+                    'seconds'             => $usage->seconds,
+                    'occurred_at'         => $usage->occurred_at ? $usage->occurred_at->format('h:i A') : '—',
                 ];
             });
 

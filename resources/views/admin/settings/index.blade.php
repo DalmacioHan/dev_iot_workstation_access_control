@@ -409,12 +409,13 @@
                         <div>
 
                             <h2 class="text-lg font-bold text-gray-900">
-                                Student System Integration
+                                MIS / Library System Integration
                             </h2>
 
                             <p class="mt-1 text-sm leading-6 text-gray-500">
-                                Configure the API address used to communicate
-                                with your external student system.
+                                Configure the API address used for RFID student
+                                lookups against the university MIS or the
+                                simulated Library database.
                             </p>
 
                         </div>
@@ -428,7 +429,7 @@
                             for="student_api_url"
                             class="mb-2 block text-sm font-semibold text-gray-900"
                         >
-                            Student API URL
+                            MIS / Library API URL
                             <span class="text-red-500">*</span>
                         </label>
 
@@ -479,8 +480,10 @@
 
 
                         <p class="mt-2 text-xs leading-5 text-gray-400">
-                            Enter the base URL supplied by the external student
-                            information system.
+                            Base URL supplied by the university MIS (or the
+                            simulated LibraryApi). Saving here overrides
+                            <span class="font-mono">MIS_API_BASE_URL</span>
+                            from <span class="font-mono">.env</span>.
                         </p>
 
                     </div>
@@ -530,14 +533,20 @@
                             <div>
 
                                 <p class="text-xs font-semibold text-blue-800">
-                                    API configuration
+                                    Current endpoint
+                                </p>
+
+                                <p class="mt-1 break-all text-xs leading-5 text-blue-700">
+                                    <span class="font-mono">
+                                        {{ $currentEndpoint ?? '—' }}
+                                    </span>
                                 </p>
 
                                 <p class="mt-1 text-xs leading-5 text-blue-700">
-                                    Example:
-                                    <span class="font-mono">
-                                        https://student-system.example.com/api
-                                    </span>
+                                    This is what RFID scans use right now. A
+                                    blank saved value falls back to
+                                    <span class="font-mono">MIS_API_BASE_URL</span>
+                                    in <span class="font-mono">.env</span>.
                                 </p>
 
                             </div>

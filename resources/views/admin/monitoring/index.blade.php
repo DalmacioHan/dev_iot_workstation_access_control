@@ -377,10 +377,6 @@
                                     {{ $log['event_type'] }}
                                 </p>
 
-                                <p class="mt-1 font-mono text-[10px] text-gray-400">
-                                    {{ $log['rfid_uid'] }}
-                                </p>
-
                             </td>
 
 
@@ -817,7 +813,7 @@
                                 </p>
 
                                 <p class="mt-1 font-mono text-[10px] text-gray-400">
-                                    {{ $usage['rfid_uid'] }}
+                                    {{ $usage['student_external_id'] ?? 'No ID' }}
                                 </p>
 
                             </div>
