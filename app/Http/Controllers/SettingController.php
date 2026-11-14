@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\KioskSettings;
 use App\Services\MisSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SettingController extends Controller
 {
-    public function __construct(private MisSettings $mis)
-    {
+    public function __construct(
+        private MisSettings $mis,
+        private KioskSettings $kiosk
+    ) {
     }
 
     /*
@@ -32,13 +35,6 @@ class SettingController extends Controller
         $currentEndpoint = $this->mis->endpointFor();
 
 
-        $pirTimeoutSeconds =
-            (int) $settings->get(
-                'pir_timeout_seconds',
-                60
-            );
-
-
         $staleSessionMinutes =
             (int) $settings->get(
                 'stale_session_minutes',
@@ -46,13 +42,25 @@ class SettingController extends Controller
             );
 
 
+        // Clamped kiosk behavior values (same payload the devices receive).
+        $kiosk = $this->kiosk->all();
+
+        $noPresenceTimeoutSeconds = $kiosk['no_presence_timeout_seconds'];
+        $inactivityWarningSeconds = $kiosk['inactivity_warning_seconds'];
+        $shutdownGraceSeconds = $kiosk['shutdown_grace_seconds'];
+        $disableTaskManager = $kiosk['disable_task_manager'];
+
+
         return view(
             'admin.settings.index',
             compact(
                 'studentApiUrl',
                 'currentEndpoint',
-                'pirTimeoutSeconds',
-                'staleSessionMinutes'
+                'staleSessionMinutes',
+                'noPresenceTimeoutSeconds',
+                'inactivityWarningSeconds',
+                'shutdownGraceSeconds',
+                'disableTaskManager'
             )
         );
     }
@@ -73,70 +81,70 @@ class SettingController extends Controller
                 'max:500',
             ],
 
-            'pir_timeout_seconds' => [
-                'required',
-                'integer',
-                'min:5',
-                'max:3600',
-            ],
-
             'stale_session_minutes' => [
                 'required',
                 'integer',
                 'min:1',
                 'max:1440',
             ],
+
+            'kiosk_no_presence_timeout_seconds' => [
+                'required',
+                'integer',
+                'min:' . KioskSettings::MIN_NO_PRESENCE,
+                'max:' . KioskSettings::MAX_NO_PRESENCE,
+            ],
+
+            'kiosk_inactivity_warning_seconds' => [
+                'required',
+                'integer',
+                'min:' . KioskSettings::MIN_WARNING,
+                'max:' . KioskSettings::MAX_WARNING,
+            ],
+
+            'kiosk_shutdown_grace_seconds' => [
+                'required',
+                'integer',
+                'min:' . KioskSettings::MIN_GRACE,
+                'max:' . KioskSettings::MAX_GRACE,
+            ],
+
+            'kiosk_disable_task_manager' => [
+                'nullable',
+                'boolean',
+            ],
         ]);
 
 
-        DB::transaction(function () use ($validated) {
-
-            DB::table('system_settings')
-                ->updateOrInsert(
-                    [
-                        'key' => 'student_api_url',
-                    ],
-                    [
-                        'value' =>
-                            trim($validated['student_api_url']),
-
-                        'updated_at' => now(),
-
-                        'created_at' => now(),
-                    ]
-                );
+        $values = [
+            'student_api_url' => trim($validated['student_api_url']),
+            'stale_session_minutes' => (string) $validated['stale_session_minutes'],
+            KioskSettings::NO_PRESENCE_KEY => (string) $validated['kiosk_no_presence_timeout_seconds'],
+            KioskSettings::WARNING_KEY => (string) $validated['kiosk_inactivity_warning_seconds'],
+            KioskSettings::GRACE_KEY => (string) $validated['kiosk_shutdown_grace_seconds'],
+            KioskSettings::TASK_MANAGER_KEY => $request->boolean('kiosk_disable_task_manager') ? '1' : '0',
+        ];
 
 
-            DB::table('system_settings')
-                ->updateOrInsert(
-                    [
-                        'key' => 'pir_timeout_seconds',
-                    ],
-                    [
-                        'value' =>
-                            (string) $validated['pir_timeout_seconds'],
+        DB::transaction(function () use ($values) {
 
-                        'updated_at' => now(),
+            foreach ($values as $key => $value) {
 
-                        'created_at' => now(),
-                    ]
-                );
+                DB::table('system_settings')
+                    ->updateOrInsert(
+                        [
+                            'key' => $key,
+                        ],
+                        [
+                            'value' => $value,
 
+                            'updated_at' => now(),
 
-            DB::table('system_settings')
-                ->updateOrInsert(
-                    [
-                        'key' => 'stale_session_minutes',
-                    ],
-                    [
-                        'value' =>
-                            (string) $validated['stale_session_minutes'],
+                            'created_at' => now(),
+                        ]
+                    );
 
-                        'updated_at' => now(),
-
-                        'created_at' => now(),
-                    ]
-                );
+            }
 
         });
 

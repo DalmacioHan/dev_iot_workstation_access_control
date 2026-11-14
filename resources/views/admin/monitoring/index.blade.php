@@ -497,7 +497,7 @@
 
                     @foreach ($devices as $device)
 
-                        <tr class="device-row transition hover:bg-gray-50/80" data-search="{{ strtolower($device['workstation_name'] . ' ' . $device['device_uid'] . ' ' . $device['pairing_code']) }}">
+                        <tr class="device-row transition hover:bg-gray-50/80" data-search="{{ strtolower($device['workstation_name'] . ' ' . $device['pairing_code']) }}">
 
                             <td class="px-6 py-4">
 

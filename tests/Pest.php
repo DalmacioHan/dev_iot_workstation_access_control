@@ -48,7 +48,6 @@ expect()->extend('toBeOne', function () {
 function sessionTestDevice(array $attributes = []): Device
 {
     return Device::create(array_merge([
-        'device_uid'       => 'TEST-PC-1',
         'workstation_name' => 'Test Workstation',
         'is_paired'        => true,
         'api_token'        => 'test-token',

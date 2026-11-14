@@ -4,31 +4,41 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Device;
+use App\Services\KioskSettings;
 use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeviceController extends Controller
 {
-    public function __construct(private SessionService $sessions)
-    {
+    public function __construct(
+        private SessionService $sessions,
+        private KioskSettings $kiosk
+    ) {
     }
 
     public function activate(Request $request)
     {
+        // devices.device_uid was dropped from the schema; workstation_name is
+        // now the device identity. device_uid is still accepted as an alias so
+        // older clients keep working.
         $validated = $request->validate([
-            'device_uid'   => 'required|string',
-            'pairing_code' => 'required|string', 
+            'workstation_name' => 'required_without:device_uid|string|max:255',
+            'device_uid'       => 'required_without:workstation_name|string|max:255',
+            'pairing_code'     => 'required|string|max:32',
         ]);
 
-        $device = Device::where('device_uid', $validated['device_uid'])
-                        ->where('pairing_code', $validated['pairing_code'])
+        $name = trim((string) ($validated['workstation_name'] ?? $validated['device_uid']));
+        $code = strtoupper(trim($validated['pairing_code']));
+
+        $device = Device::where('workstation_name', $name)
+                        ->where('pairing_code', $code)
                         ->first();
 
         if (!$device) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Device UID or Pairing Code.'
+                'message' => 'Invalid workstation name or pairing code.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -43,9 +53,10 @@ class DeviceController extends Controller
             'api_token'    => $token, 
         ]);
         return response()->json([
-            'success' => true,
-            'message' => 'Device successfully linked and activated!',
-            'token'   => $token,
+            'success'          => true,
+            'message'          => 'Device successfully linked and activated!',
+            'token'            => $token,
+            'workstation_name' => $device->workstation_name,
         ], Response::HTTP_OK);
     }
     
@@ -72,6 +83,21 @@ class DeviceController extends Controller
             'success'      => true,
             'message'      => 'Heartbeat Acknowledged. Device status: Online',
             'last_seen_at' => $device->last_seen_at->toIso8601String(),
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Global kiosk behavior config (power / idle timers + Task Manager flag).
+     * The desktop client (through the privileged agent) fetches this at
+     * startup and keeps the last copy as its offline fallback.
+     */
+    public function config()
+    {
+        return response()->json([
+            'success'    => true,
+            'config'     => $this->kiosk->all(),
+            'version'    => $this->kiosk->version(),
+            'fetched_at' => now()->toIso8601String(),
         ], Response::HTTP_OK);
     }
 

@@ -100,7 +100,7 @@
                         type="button"
                         id="device-detail-manage"
                         class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-4 focus:ring-white/30"
-                        data-device-name="{{ $device->workstation_name }} ({{ $device->device_uid }})"
+                        data-device-name="{{ $device->workstation_name }}"
                         data-lock-url="{{ route('device.lock', $device->id) }}"
                         data-announce-url="{{ route('device.announce', $device->id) }}"
                         @if(auth()->user()->isSuperAdmin())

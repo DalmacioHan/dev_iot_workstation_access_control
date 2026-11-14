@@ -32,7 +32,6 @@ class MonitoringController extends Controller
     ->map(function ($device) {
         return [
             'id'               => $device->id,
-            'device_uid'       => $device->device_uid,
             'workstation_name' => $device->workstation_name,
             'pairing_code'     => $device->pairing_code,
             'is_paired'        => (bool) $device->is_paired,

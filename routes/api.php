@@ -16,6 +16,9 @@ Route::middleware(['device.auth', 'reap.sessions'])->group(function () {
     // heartbeat route
     Route::post('/device/ping',[DeviceController::class,'heartbeat']);
 
+    // global kiosk behavior config (idle/shutdown timers + Task Manager flag)
+    Route::get('/device/config',[DeviceController::class,'config']);
+
     // remote command delivery (kiosk polls every ~10s) + ack
     Route::post('/device/commands',[DeviceController::class,'commands']);
     Route::post('/device/ack',[DeviceController::class,'ack']);

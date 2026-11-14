@@ -30,8 +30,8 @@
 
 
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-            Configure external student-system connectivity and workstation
-            sensor behavior.
+            Configure external student-system connectivity, workstation power
+            and idle behavior, and stale-session cleanup.
         </p>
 
     </div>
@@ -201,7 +201,7 @@
                             </div>
 
 
-                            {{-- PIR --}}
+                            {{-- Power & idle --}}
                             <div class="flex items-start gap-3">
 
                                 <div
@@ -214,12 +214,13 @@
                                 <div>
 
                                     <p class="text-sm font-semibold">
-                                        PIR Sensor
+                                        Power &amp; Idle
                                     </p>
 
                                     <p class="mt-1 text-xs leading-5 text-blue-100">
-                                        Control how long a workstation waits
-                                        without motion before becoming idle.
+                                        Control the no-presence timeout,
+                                        the warning countdown, and the
+                                        shutdown grace period.
                                     </p>
 
                                 </div>
@@ -426,7 +427,7 @@
 
 
                 {{-- =================================================
-                    PIR SENSOR
+                    KIOSK POWER & IDLE
                 ================================================== --}}
                 <div
                     class="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
@@ -438,7 +439,7 @@
                             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600"
                         >
 
-                            <x-icon name="wifi" class="h-5 w-5" />
+                            <x-icon name="bolt" class="h-5 w-5" />
 
                         </div>
 
@@ -446,12 +447,13 @@
                         <div>
 
                             <h2 class="text-lg font-bold text-gray-900">
-                                PIR Sensor Behavior
+                                Kiosk Power &amp; Idle
                             </h2>
 
                             <p class="mt-1 text-sm leading-6 text-gray-500">
-                                Configure how long the workstation waits
-                                without detected movement.
+                                These values are delivered to every kiosk at
+                                app start. Each kiosk keeps the last copy so it
+                                still works while the server is offline.
                             </p>
 
                         </div>
@@ -462,10 +464,10 @@
                     <div>
 
                         <label
-                            for="pir_timeout_seconds"
+                            for="kiosk_no_presence_timeout_seconds"
                             class="mb-2 block text-sm font-semibold text-gray-900"
                         >
-                            Inactivity Timeout
+                            No-Presence Timeout
                             <span class="text-red-500">*</span>
                         </label>
 
@@ -483,12 +485,12 @@
 
                             <input
                                 type="number"
-                                id="pir_timeout_seconds"
-                                name="pir_timeout_seconds"
-                                min="5"
-                                max="3600"
+                                id="kiosk_no_presence_timeout_seconds"
+                                name="kiosk_no_presence_timeout_seconds"
+                                min="30"
+                                max="86400"
                                 step="1"
-                                value="{{ old('pir_timeout_seconds', $pirTimeoutSeconds ?? 60) }}"
+                                value="{{ old('kiosk_no_presence_timeout_seconds', $noPresenceTimeoutSeconds ?? 300) }}"
                                 required
                                 class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-24 text-sm font-semibold text-gray-900 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
                             >
@@ -507,7 +509,7 @@
                         </div>
 
 
-                        @error('pir_timeout_seconds')
+                        @error('kiosk_no_presence_timeout_seconds')
 
                             <p class="mt-1.5 text-xs font-medium text-red-600">
                                 {{ $message }}
@@ -517,62 +519,196 @@
 
 
                         <p class="mt-2 text-xs leading-5 text-gray-400">
-                            Allowed range: 5 to 3,600 seconds.
-                            For example, 60 seconds means the workstation
-                            becomes idle after one minute without detected motion.
+                            The kiosk treats the station as empty when both the
+                            PIR sensor and the keyboard/mouse have been silent
+                            for this long. Allowed range: 30 to 86,400 seconds
+                            (default 300 = 5 minutes).
                         </p>
 
                     </div>
 
 
-                    {{-- Quick values --}}
+                    {{-- Warning countdown --}}
                     <div class="mt-5">
 
-                        <p class="mb-2 text-xs font-semibold text-gray-500">
-                            Quick presets
-                        </p>
+                        <label
+                            for="kiosk_inactivity_warning_seconds"
+                            class="mb-2 block text-sm font-semibold text-gray-900"
+                        >
+                            Warning Countdown
+                            <span class="text-red-500">*</span>
+                        </label>
 
 
-                        <div class="flex flex-wrap gap-2">
+                        <div class="relative">
 
-                            <button
-                                type="button"
-                                data-pir-value="30"
-                                class="pir-preset rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
                             >
-                                30 sec
-                            </button>
+
+                                <x-icon name="clock" class="h-5 w-5 text-gray-400" />
+
+                            </div>
 
 
-                            <button
-                                type="button"
-                                data-pir-value="60"
-                                class="pir-preset rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                            <input
+                                type="number"
+                                id="kiosk_inactivity_warning_seconds"
+                                name="kiosk_inactivity_warning_seconds"
+                                min="3"
+                                max="120"
+                                step="1"
+                                value="{{ old('kiosk_inactivity_warning_seconds', $inactivityWarningSeconds ?? 10) }}"
+                                required
+                                class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-24 text-sm font-semibold text-gray-900 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
                             >
-                                1 min
-                            </button>
 
 
-                            <button
-                                type="button"
-                                data-pir-value="120"
-                                class="pir-preset rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4"
                             >
-                                2 min
-                            </button>
-
-
-                            <button
-                                type="button"
-                                data-pir-value="300"
-                                class="pir-preset rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
-                            >
-                                5 min
-                            </button>
+                                <span
+                                    class="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500"
+                                >
+                                    seconds
+                                </span>
+                            </div>
 
                         </div>
 
+
+                        @error('kiosk_inactivity_warning_seconds')
+
+                            <p class="mt-1.5 text-xs font-medium text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+
+                        <p class="mt-2 text-xs leading-5 text-gray-400">
+                            How long the "Are you still there?" prompt counts
+                            down before the station locks and starts the
+                            shutdown countdown. Allowed range: 3 to 120 seconds.
+                        </p>
+
                     </div>
+
+
+                    {{-- Shutdown grace --}}
+                    <div class="mt-5">
+
+                        <label
+                            for="kiosk_shutdown_grace_seconds"
+                            class="mb-2 block text-sm font-semibold text-gray-900"
+                        >
+                            Shutdown Grace Period
+                            <span class="text-red-500">*</span>
+                        </label>
+
+
+                        <div class="relative">
+
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5"
+                            >
+
+                                <x-icon name="clock" class="h-5 w-5 text-gray-400" />
+
+                            </div>
+
+
+                            <input
+                                type="number"
+                                id="kiosk_shutdown_grace_seconds"
+                                name="kiosk_shutdown_grace_seconds"
+                                min="5"
+                                max="3600"
+                                step="1"
+                                value="{{ old('kiosk_shutdown_grace_seconds', $shutdownGraceSeconds ?? 90) }}"
+                                required
+                                class="block w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-24 text-sm font-semibold text-gray-900 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                            >
+
+
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4"
+                            >
+                                <span
+                                    class="rounded-lg bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500"
+                                >
+                                    seconds
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        @error('kiosk_shutdown_grace_seconds')
+
+                            <p class="mt-1.5 text-xs font-medium text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+
+                        <p class="mt-2 text-xs leading-5 text-gray-400">
+                            How long the locked screen stays up before the PC
+                            powers down. Staff can still scan a card or cancel
+                            with the admin PIN. Allowed range: 5 to 3,600 seconds.
+                        </p>
+
+                    </div>
+
+
+                    {{-- Task Manager policy --}}
+                    <label
+                        class="mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4"
+                    >
+
+                        <input
+                            type="checkbox"
+                            id="kiosk_disable_task_manager"
+                            name="kiosk_disable_task_manager"
+                            value="1"
+                            @checked(old('kiosk_disable_task_manager', $disableTaskManager ?? false))
+                            class="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        >
+
+
+                        <span>
+
+                            <span class="block text-sm font-semibold text-gray-900">
+                                Disable Task Manager
+                            </span>
+
+                            <span class="mt-1 block text-xs leading-5 text-gray-500">
+                                The kiosk agent applies this machine-wide policy
+                                so students cannot end the kiosk process.
+                            </span>
+
+                        </span>
+
+                    </label>
+
+
+                    @error('kiosk_disable_task_manager')
+
+                        <p class="mt-1.5 text-xs font-medium text-red-600">
+                            {{ $message }}
+                        </p>
+
+                    @enderror
+
+
+                    <p
+                        class="mt-5 rounded-2xl border border-blue-100 bg-blue-50/70 p-4 text-xs leading-5 text-blue-700"
+                    >
+                        Changes apply the next time each kiosk app starts. The
+                        kiosk keeps the last downloaded copy, so it still uses
+                        these timers if the server is temporarily offline.
+                    </p>
 
                 </div>
 
@@ -722,63 +858,5 @@
 </div>
 
 
-{{-- =========================================================
-    PIR PRESETS
-========================================================== --}}
-@push('scripts')
-
-<script>
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    const pirInput =
-        document.getElementById('pir_timeout_seconds');
-
-    const presetButtons =
-        document.querySelectorAll('.pir-preset');
-
-
-    presetButtons.forEach(function (button) {
-
-        button.addEventListener('click', function () {
-
-            if (!pirInput) {
-                return;
-            }
-
-
-            pirInput.value =
-                button.dataset.pirValue;
-
-
-            pirInput.focus();
-
-
-            presetButtons.forEach(function (item) {
-
-                item.classList.remove(
-                    'border-blue-200',
-                    'bg-blue-50',
-                    'text-blue-600'
-                );
-
-            });
-
-
-            button.classList.add(
-                'border-blue-200',
-                'bg-blue-50',
-                'text-blue-600'
-            );
-
-        });
-
-    });
-
-});
-
-</script>
-
-@endpush
 
 @endsection

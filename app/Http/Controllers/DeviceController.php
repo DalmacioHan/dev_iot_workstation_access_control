@@ -49,7 +49,7 @@ class DeviceController extends Controller
     $pairingCode = strtoupper(Str::random(6));
 
     Device::create([
-        'workstation_name'=> $validated['workstation_name'],
+        'workstation_name'=> trim($validated['workstation_name']),
         'pairing_code' => $pairingCode,
         'is_paired'    => false, 
     ]);
@@ -66,14 +66,26 @@ class DeviceController extends Controller
             'is_paired' => 'required|boolean',
         ]);
 
+        $isPaired = (bool) $request->input('is_paired');
+
         $device->update([
-            'workstation_name' => $request->input('workstation_name'),
-            'is_paired' => $request->input('is_paired'),
+            'workstation_name' => trim($request->input('workstation_name')),
+            'is_paired' => $isPaired,
         ]);
 
-        
+        $message = 'Device updated successfully.';
 
-        return redirect()->route('device', $device)->with('success', 'Device updated successfully.');
+        // Pairing clears the code, so unpairing must mint a fresh one or the
+        // device can never be paired again.
+        if (!$isPaired && empty($device->pairing_code)) {
+            $code = strtoupper(Str::random(6));
+
+            $device->update(['pairing_code' => $code]);
+
+            $message = "Device updated. New pairing code: {$code}";
+        }
+
+        return redirect()->route('device', $device)->with('success', $message);
     }
     public function edit(Device $device){
         return view('admin.device.edit', compact('device'));
