@@ -156,20 +156,39 @@ class AccessController extends Controller
             ->where('event_type', 'time_in')
             ->first();
 
+        $recorded = 0;
+
         foreach ($validated['apps'] as $app) {
+            $name = trim((string) ($app['app'] ?? ''));
+
+            if ($name === '' || $this->isDeniedAppUsageName($name)) {
+                continue;
+            }
+
             PcAppUsage::create([
                 'session_id'  => $validated['session_id'],
                 'rfid_uid'    => $session?->rfid_uid,
-                'app_name'    => $app['app'],
+                'app_name'    => $name,
                 'seconds'     => $app['seconds'],
                 'occurred_at' => $occurredAt,
             ]);
+
+            $recorded++;
         }
 
         return response()->json([
             'success'  => true,
-            'recorded' => count($validated['apps']),
+            'recorded' => $recorded,
         ], Response::HTTP_OK);
+    }
+
+    /**
+     * Defense-in-depth: ignore pure shell/system components if reported.
+     * Explorer window validity is enforced client-side, so "explorer" is allowed.
+     */
+    private function isDeniedAppUsageName(string $appName): bool
+    {
+        return in_array(mb_strtolower($appName), self::SYSTEM_APP_USAGE_DENYLIST, true);
     }
 
     /**
