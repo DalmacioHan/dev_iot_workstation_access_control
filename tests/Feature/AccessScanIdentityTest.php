@@ -86,7 +86,7 @@ it('shows the student number, not the RFID UID, on the monitoring page', functio
     ]);
 
     $this->actingAs($user)
-        ->get(route('monitoring'))
+        ->get(route('monitoring', ['tab' => 'access']))
         ->assertOk()
         ->assertSee('2310111-1')
         ->assertDontSee('04A3B2C1');
