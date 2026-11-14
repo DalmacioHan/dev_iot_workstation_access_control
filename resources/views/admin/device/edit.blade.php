@@ -93,15 +93,21 @@
 
             <div class="p-5">
                 <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    Configuration
+                    Status
                 </p>
 
                 <p class="mt-1.5 text-sm font-semibold text-slate-700">
-                    @if(empty($device->pairing_code))
-                        Standard
-                    @else
-                        Pairing Mode
-                    @endif
+                    {{ $device->is_paired ? 'Paired' : (!empty($device->pairing_code) ? 'Pending pairing' : 'Unpaired') }}
+                </p>
+            </div>
+
+            <div class="p-5">
+                <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Pairing Code
+                </p>
+
+                <p class="mt-1.5 truncate text-sm font-semibold text-slate-700">
+                    {{ $device->pairing_code ?: '—' }}
                 </p>
             </div>
 
@@ -193,37 +199,41 @@
                 {{-- ================================================= --}}
                 <div>
 
-                    @if(empty($device->pairing_code))
+                    <label for="is_paired" class="mb-2 block text-sm font-semibold text-slate-800">
+                        Status
+                    </label>
 
-                        {{-- Pairing Mode --}}
-                        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                    <select
+                        id="is_paired"
+                        name="is_paired"
+                        class="block h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-medium text-slate-900 shadow-sm outline-none transition hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                    >
+                        <option value="1" @selected(old('is_paired', $device->is_paired ? '1' : '0') == '1')>Paired</option>
+                        <option value="0" @selected(old('is_paired', $device->is_paired ? '1' : '0') == '0')>Unpaired</option>
+                    </select>
 
-                            <div class="flex items-start gap-3">
-
-                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-amber-600 shadow-sm ring-1 ring-amber-200">
-                                    <x-icon name="exclamation-triangle" class="h-5 w-5" />
-                                </div>
-
-                                <div>
-                                    <div class="flex flex-wrap items-center gap-2">
-                                        <p class="text-sm font-bold text-amber-900">
-                                            Device is in pairing mode
-                                        </p>
-
-                                        <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700">
-                                            Restricted
-                                        </span>
-                                    </div>
-
-                                    <p class="mt-1.5 text-xs leading-5 text-amber-800/80">
-                                        This device cannot be deactivated until the pairing process is completed or cancelled.
-                                    </p>
-                                </div>
-
-                            </div>
-
+                    @error('is_paired')
+                        <div class="mt-2 flex items-center gap-1.5 text-xs font-medium text-red-600">
+                            <x-icon name="information-circle" class="h-3.5 w-3.5" />
+                            {{ $message }}
                         </div>
+                    @enderror
 
+                    @if(!$device->is_paired && !empty($device->pairing_code))
+                        <div class="mt-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                            <p class="text-sm font-semibold text-amber-900">Pending pairing</p>
+                            <p class="mt-1 text-xs leading-5 text-amber-800/80">
+                                This workstation is waiting to be paired. Pairing code: <span class="font-mono font-semibold">{{ $device->pairing_code }}</span>
+                            </p>
+                        </div>
+                    @elseif($device->is_paired)
+                        <p class="mt-2 text-xs leading-5 text-slate-400">
+                            Set to <strong>Unpaired</strong> to revoke access and generate a new pairing code for re-pairing.
+                        </p>
+                    @else
+                        <p class="mt-2 text-xs leading-5 text-slate-400">
+                            Unpaired devices require a pairing code to connect. Saving as unpaired will generate a new pairing code if needed.
+                        </p>
                     @endif
 
                 </div>

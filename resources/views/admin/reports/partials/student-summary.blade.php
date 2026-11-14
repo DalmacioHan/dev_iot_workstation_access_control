@@ -483,7 +483,7 @@
     APEXCHARTS SCRIPT FOR COURSE DISTRIBUTION PIE GRAPH
 ========================================================== --}}
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+@vite('resources/js/charts.js')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const pieEl = document.querySelector('#student-summary-pie-chart');

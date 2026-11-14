@@ -49,7 +49,7 @@ class DeviceController extends Controller
     $pairingCode = strtoupper(Str::random(6));
 
     Device::create([
-        'workstation_name'=> $validated['workstation_name'],
+        'workstation_name'=> trim($validated['workstation_name']),
         'pairing_code' => $pairingCode,
         'is_paired'    => false, 
     ]);
@@ -66,14 +66,38 @@ class DeviceController extends Controller
             'is_paired' => 'required|boolean',
         ]);
 
+        $isPaired = (bool) $request->input('is_paired');
+        $workstationName = trim($request->input('workstation_name'));
+
+        // If unpairing (or keeping unpaired), clear token/last pairing so it can be paired again.
+        if (!$isPaired) {
+            $device->revokeToken();
+        }
+
         $device->update([
-            'workstation_name' => $request->input('workstation_name'),
-            'is_paired' => $request->input('is_paired'),
+            'workstation_name' => $workstationName,
+            'is_paired' => $isPaired,
+            'last_seen_at' => $isPaired ? $device->last_seen_at : null,
         ]);
 
-        
+        $message = 'Device updated successfully.';
 
-        return redirect()->route('device', $device)->with('success', 'Device updated successfully.');
+        // Ensure an unpaired device always has a pairing code available.
+        if (!$isPaired && empty($device->fresh()->pairing_code)) {
+            $code = strtoupper(Str::random(6));
+
+            $device->update(['pairing_code' => $code]);
+
+            $message = "Device updated. New pairing code: {$code}";
+        }
+
+        // If marked paired manually without an active token context, keep state consistent.
+        if ($isPaired) {
+            // pairing_code is normally cleared on activation; keep as-is if already paired.
+            $device->update(['pairing_code' => null]);
+        }
+
+        return redirect()->route('device', $device)->with('success', $message);
     }
     public function edit(Device $device){
         return view('admin.device.edit', compact('device'));
@@ -89,14 +113,19 @@ public function show(Device $device ){
 }
     public function destroy($id)
     {
-    
         $device = Device::findOrFail($id);
-        if ($device->is_paired) { 
-            return redirect()->route('device')
-                ->with('error', "Cannot delete device '{$device->workstation_name}' because it is currently Paired. Please unpair it before attempting to delete.");
+
+        // Best effort: close any open sessions tied to this device before removal.
+        try {
+            $this->sessions->closeOpenSessionsForDevice(
+                $device->id,
+                'Device deleted by admin',
+                SessionService::ENDED_BY_ADMIN
+            );
+        } catch (\Throwable $e) {
+            // Deletion should still proceed even if cleanup fails.
         }
 
-        
         $device->delete();
 
         return redirect()->route('device')->with('success', "Device '{$device->workstation_name}' was successfully deleted.");
@@ -109,7 +138,7 @@ public function show(Device $device ){
         ]);
 
         // Close the session on the server first. This works even when the
-        // kiosk is offline, restarted, or showing a stale login.
+        // client is offline, restarted, or showing a stale login.
         $closed = $this->sessions->closeOpenSessionsForDevice(
             $device->id,
             'Remote lock by staff',

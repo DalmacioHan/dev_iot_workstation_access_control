@@ -39,7 +39,7 @@ it('closes the previous session when the same workstation signs in again', funct
         ->toBe('New sign-in on same workstation');
 });
 
-it('closes an orphan when the kiosk reports no active session', function () {
+it('closes an orphan when the client reports no active session', function () {
     $device = sessionTestDevice();
     $sessionId = sessionTestStart($device, null, now()->subMinutes(5));
 

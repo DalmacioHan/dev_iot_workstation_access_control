@@ -4,31 +4,41 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Device;
+use App\Services\ClientSettings;
 use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeviceController extends Controller
 {
-    public function __construct(private SessionService $sessions)
-    {
+    public function __construct(
+        private SessionService $sessions,
+        private ClientSettings $clientSettings
+    ) {
     }
 
     public function activate(Request $request)
     {
+        // devices.device_uid was dropped from the schema; workstation_name is
+        // now the device identity. device_uid is still accepted as an alias so
+        // older clients keep working.
         $validated = $request->validate([
-            'device_uid'   => 'required|string',
-            'pairing_code' => 'required|string', 
+            'workstation_name' => 'required_without:device_uid|string|max:255',
+            'device_uid'       => 'required_without:workstation_name|string|max:255',
+            'pairing_code'     => 'required|string|max:32',
         ]);
 
-        $device = Device::where('device_uid', $validated['device_uid'])
-                        ->where('pairing_code', $validated['pairing_code'])
+        $name = trim((string) ($validated['workstation_name'] ?? $validated['device_uid']));
+        $code = strtoupper(trim($validated['pairing_code']));
+
+        $device = Device::where('workstation_name', $name)
+                        ->where('pairing_code', $code)
                         ->first();
 
         if (!$device) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Device UID or Pairing Code.'
+                'message' => 'Invalid workstation name or pairing code.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -43,9 +53,10 @@ class DeviceController extends Controller
             'api_token'    => $token, 
         ]);
         return response()->json([
-            'success' => true,
-            'message' => 'Device successfully linked and activated!',
-            'token'   => $token,
+            'success'          => true,
+            'message'          => 'Device successfully linked and activated!',
+            'token'            => $token,
+            'workstation_name' => $device->workstation_name,
         ], Response::HTTP_OK);
     }
     
@@ -61,7 +72,7 @@ class DeviceController extends Controller
             'last_seen_at' => now(),
         ]);
 
-        // The kiosk reports which session (if any) it currently owns. Any
+        // The client reports which session (if any) it currently owns. Any
         // other open session on this device is an orphan and gets closed.
         $this->sessions->reconcileFromHeartbeat(
             $device,
@@ -76,7 +87,22 @@ class DeviceController extends Controller
     }
 
     /**
-     * Lightweight poll the kiosk calls frequently (~10s). Returns the
+     * Global client behavior config (power / idle timers + Task Manager flag).
+     * The desktop client (through the privileged agent) fetches this at
+     * startup and keeps the last copy as its offline fallback.
+     */
+    public function config()
+    {
+        return response()->json([
+            'success'    => true,
+            'config'     => $this->clientSettings->all(),
+            'version'    => $this->clientSettings->version(),
+            'fetched_at' => now()->toIso8601String(),
+        ], Response::HTTP_OK);
+    }
+
+    /**
+     * Lightweight poll the client calls frequently (~10s). Returns the
      * latest pending remote command (e.g. a staff-issued lock) or null.
      * Does NOT touch last_seen_at - that stays on the 60s heartbeat.
      */

@@ -178,14 +178,14 @@
                                     <button
                                         type="button"
                                         class="device-manage inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                                        data-device-name="{{ $device->workstation_name }} ({{ $device->device_uid }})"
+                                        data-device-name="{{ $device->workstation_name }}"
                                         data-view-url="{{ route('device.show', $device->id) }}"
                                         data-lock-url="{{ route('device.lock', $device->id) }}"
                                         data-announce-url="{{ route('device.announce', $device->id) }}"
                                         @if(auth()->user()->isSuperAdmin())
                                             data-edit-url="{{ route('device.edit', $device->id) }}"
                                             data-delete-url="{{ route('device.destroy', $device->id) }}"
-                                            data-delete-message="Are you sure you want to delete {{ $device->workstation_name }} ({{ $device->device_uid }})? This action cannot be undone."
+                                            data-delete-message="Are you sure you want to delete {{ $device->workstation_name }}? This action cannot be undone."
                                         @endif
                                         aria-haspopup="menu"
                                         aria-expanded="false"

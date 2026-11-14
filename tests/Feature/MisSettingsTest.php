@@ -86,10 +86,30 @@ it('saves the MIS URL and applies it without a config cache clear', function () 
     $this->actingAs($admin)
         ->put(route('settings.update'), [
             'student_api_url' => 'https://uisa.example.edu/mis',
-            'pir_timeout_seconds' => 60,
             'stale_session_minutes' => 5,
+            'client_no_presence_timeout_seconds' => 300,
+            'client_inactivity_warning_seconds' => 10,
+            'client_shutdown_grace_seconds' => 90,
         ])
         ->assertRedirect();
+
+    expect(app(MisSettings::class)->baseUrl())
+        ->toBe('https://uisa.example.edu/mis');
+});
+
+it('saves only the settings section that was submitted', function () {
+    misSetting('https://uisa.example.edu/mis');
+    $admin = User::factory()->create(['role' => 'superadmin']);
+
+    $this->actingAs($admin)
+        ->put(route('settings.update'), [
+            'section' => 'sessions',
+            'stale_session_minutes' => 12,
+        ])
+        ->assertRedirect(route('settings.index', ['tab' => 'sessions']));
+
+    expect(DB::table('system_settings')->where('key', 'stale_session_minutes')->value('value'))
+        ->toBe('12');
 
     expect(app(MisSettings::class)->baseUrl())
         ->toBe('https://uisa.example.edu/mis');

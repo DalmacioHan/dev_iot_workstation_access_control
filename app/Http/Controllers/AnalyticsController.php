@@ -30,13 +30,16 @@ class AnalyticsController extends Controller
             ->groupBy('app_name')
             ->orderBy('total', 'desc')
             ->get(1);
-        $failedEvents = PcAccessLogs::whereIn('result', ['denied', 'fail'])
+        $failedLogins = PcAccessLogs::whereIn('result', ['denied', 'fail'])
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->count();
-        $successfulEvents = PcAccessLogs::where('event_type', 'time_in')
+        $successfulLogins = PcAccessLogs::where('event_type', 'time_in')
             ->where('result', 'allowed')
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
-            ->count();
+            ->whereNotNull('student_name')
+            ->where('student_name', '<>', '')
+            ->distinct()
+            ->count('student_name');
 
         //line chart - only count time_in, not time_out
         $peakHoursByHour = PcAccessLogs::query()
@@ -185,7 +188,7 @@ class AnalyticsController extends Controller
             });
 
         return view('admin.analytics.index', compact(
-            'failedEvents', 'popularWorkstation', 'successfulEvents', 'popularApplication',
+            'failedLogins', 'popularWorkstation', 'successfulLogins', 'popularApplication',
             'topAccessStudents', 'topCourses', 'topApplication', 'peakHours', 'topUsageStudents',
             'dateFrom', 'dateTo'
             ));

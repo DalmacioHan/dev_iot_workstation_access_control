@@ -7,7 +7,7 @@
 [![ApexCharts](https://img.shields.io/badge/ApexCharts-3.46+-008FFB?style=for-the-badge&logo=airplayvideo&logoColor=white)](https://apexcharts.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-An enterprise-grade IoT access control, workstation monitoring, and analytics platform designed for university computer laboratories and library digital research centers. The system pairs physical computer kiosks and RFID/NFC hardware with a central Laravel cloud engine to authenticate users, manage workstation sessions, track foreground application usage, and generate institutional compliance reports.
+An enterprise-grade IoT access control, workstation monitoring, and analytics platform designed for university computer laboratories and library digital research centers. The system pairs physical workstation clients and RFID/NFC hardware with a central Laravel cloud engine to authenticate users, manage workstation sessions, track foreground application usage, and generate institutional compliance reports.
 
 ---
 
@@ -26,7 +26,7 @@ An enterprise-grade IoT access control, workstation monitoring, and analytics pl
   - [Database Setup & Migrations](#database-setup--migrations)
   - [Running the Application](#running-the-application)
 - [API Reference](#api-reference)
-  - [Kiosk & Device Endpoints](#kiosk--device-endpoints)
+  - [Client & Device Endpoints](#client--device-endpoints)
 - [Project Directory Structure](#project-directory-structure)
 - [Contributors](#contributors)
 - [License](#license)
@@ -47,7 +47,7 @@ An enterprise-grade IoT access control, workstation monitoring, and analytics pl
 - **Remote Commands**: Admins can broadcast remote lock commands, sound announcements, or force-end active sessions from the central web dashboard.
 
 ### 3. Application Usage Monitoring (`pc_app_usage`)
-- Desktop kiosk clients capture and transmit foreground software usage (e.g., Visual Studio Code, Chrome, AutoCAD, Word).
+- Desktop workstation clients capture and transmit foreground software usage (e.g., Visual Studio Code, Chrome, AutoCAD, Word).
 - Displays granular software popularity and duration metrics to analyze lab utility and license demand.
 
 ### 4. Advanced Multi-Step Reporting Wizard & Visual Analytics
@@ -74,8 +74,8 @@ An enterprise-grade IoT access control, workstation monitoring, and analytics pl
 ```mermaid
 graph TD
     subgraph Station["Physical Laboratory Workstation"]
-        RFID["RFID Card Reader"] -->|"Card Tap"| KIOSK["Desktop Kiosk Client (C# / ESP32)"]
-        PC["PC Workstation Lock/Screen"] <-->|"Control & App Telemetry"| KIOSK
+        RFID["RFID Card Reader"] -->|"Card Tap"| CLIENT["Desktop Workstation Client (C# / ESP32)"]
+        PC["PC Workstation Lock/Screen"] <-->|"Control & App Telemetry"| CLIENT
     end
 
     subgraph Uni["University Infrastructure"]
@@ -91,13 +91,13 @@ graph TD
         PDF["Headless PDF Engine (Chromium)"]
     end
 
-    KIOSK -->|"1. POST /api/access/scan"| API
+    CLIENT -->|"1. POST /api/access/scan"| API
     API --> AUTH
     AUTH -->|"2. Verify Student"| MIS
     AUTH -->|"3. Record Login & Session"| SESSION
     SESSION --> DB
-    KIOSK -->|"4. Periodic Heartbeat & App Telemetry"| API
-    API -->|"5. Remote Commands (Lock / Announce)"| KIOSK
+    CLIENT -->|"4. Periodic Heartbeat & App Telemetry"| API
+    API -->|"5. Remote Commands (Lock / Announce)"| CLIENT
 
     WEB -->|"Query Insights & Charts"| DB
     WEB -->|"Export Summary & Logs"| PDF
@@ -124,7 +124,7 @@ graph TD
 
 The platform is designed to interface with physical laboratory computer workstations:
 1. **IoT Controller / RFID Hardware**: ESP32 microcontroller or USB RFID smart-card reader connected to each physical terminal.
-2. **Kiosk Client Application**: Lightweight desktop background agent running on the target PC:
+2. **Workstation Client Application**: Lightweight desktop background agent running on the target PC:
    - Polls `/api/device/commands` for remote lock/unlock or force-logout commands.
    - Pushes foreground software usage to `/api/access/usage`.
    - Sends periodic heartbeat pings via `/api/device/ping` to refresh `last_seen_at`.
@@ -159,7 +159,7 @@ Step 1: Report Selection  ──>  Step 2: Period Range  ──>  Step 3: Granul
 
 ## Role-Based Access Control (RBAC)
 
-| Feature / Module | Superadmin | Admin | Hardware Kiosk |
+| Feature / Module | Superadmin | Admin | Workstation Client |
 |---|:---:|:---:|:---:|
 | **Dashboard & Workstation Overview** | Yes | Yes | — |
 | **Active Session Force-Ending** | Yes | Yes | — |
@@ -258,9 +258,9 @@ Access the application in your browser at:
 
 ## API Reference
 
-All hardware and kiosk communication endpoints are prefixed with `/api`. Protected routes require the `X-Device-Token` header generated upon workstation pairing.
+All hardware and client communication endpoints are prefixed with `/api`. Protected routes require the `X-Device-Token` header generated upon workstation pairing.
 
-### Kiosk & Device Endpoints
+### Client & Device Endpoints
 
 | Method | Endpoint | Auth | Description |
 |---|---|:---:|---|
@@ -340,7 +340,7 @@ iot-workstation-access-control/
 │       └── layout/
 │           └── app.blade.php               # Master layout with Tailwind & Flowbite
 ├── routes/
-│   ├── api.php                             # Hardware & kiosk endpoints
+│   ├── api.php                             # Hardware & client endpoints
 │   └── web.php                             # Admin panel routes & PDF downloads
 └── database/
     └── migrations/                         # Schema definitions
