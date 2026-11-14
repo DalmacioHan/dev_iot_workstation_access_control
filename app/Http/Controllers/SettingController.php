@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\KioskSettings;
+use App\Services\ClientSettings;
 use App\Services\MisSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +11,7 @@ class SettingController extends Controller
 {
     public function __construct(
         private MisSettings $mis,
-        private KioskSettings $kiosk
+        private ClientSettings $clientSettings
     ) {
     }
 
@@ -42,13 +42,13 @@ class SettingController extends Controller
             );
 
 
-        // Clamped kiosk behavior values (same payload the devices receive).
-        $kiosk = $this->kiosk->all();
+        // Clamped client behavior values (same payload the devices receive).
+        $client = $this->clientSettings->all();
 
-        $noPresenceTimeoutSeconds = $kiosk['no_presence_timeout_seconds'];
-        $inactivityWarningSeconds = $kiosk['inactivity_warning_seconds'];
-        $shutdownGraceSeconds = $kiosk['shutdown_grace_seconds'];
-        $disableTaskManager = $kiosk['disable_task_manager'];
+        $noPresenceTimeoutSeconds = $client['no_presence_timeout_seconds'];
+        $inactivityWarningSeconds = $client['inactivity_warning_seconds'];
+        $shutdownGraceSeconds = $client['shutdown_grace_seconds'];
+        $disableTaskManager = $client['disable_task_manager'];
 
 
         return view(
@@ -78,7 +78,7 @@ class SettingController extends Controller
         // the original behaviour: validate and save every section at once.
         $section = $request->input('section');
 
-        if (! in_array($section, ['kiosk', 'mis', 'sessions'], true)) {
+        if (! in_array($section, ['client', 'mis', 'sessions'], true)) {
             $section = null;
         }
 
@@ -101,29 +101,29 @@ class SettingController extends Controller
             ];
         }
 
-        if ($section === null || $section === 'kiosk') {
-            $rules['kiosk_no_presence_timeout_seconds'] = [
+        if ($section === null || $section === 'client') {
+            $rules['client_no_presence_timeout_seconds'] = [
                 'required',
                 'integer',
-                'min:' . KioskSettings::MIN_NO_PRESENCE,
-                'max:' . KioskSettings::MAX_NO_PRESENCE,
+                'min:' . ClientSettings::MIN_NO_PRESENCE,
+                'max:' . ClientSettings::MAX_NO_PRESENCE,
             ];
 
-            $rules['kiosk_inactivity_warning_seconds'] = [
+            $rules['client_inactivity_warning_seconds'] = [
                 'required',
                 'integer',
-                'min:' . KioskSettings::MIN_WARNING,
-                'max:' . KioskSettings::MAX_WARNING,
+                'min:' . ClientSettings::MIN_WARNING,
+                'max:' . ClientSettings::MAX_WARNING,
             ];
 
-            $rules['kiosk_shutdown_grace_seconds'] = [
+            $rules['client_shutdown_grace_seconds'] = [
                 'required',
                 'integer',
-                'min:' . KioskSettings::MIN_GRACE,
-                'max:' . KioskSettings::MAX_GRACE,
+                'min:' . ClientSettings::MIN_GRACE,
+                'max:' . ClientSettings::MAX_GRACE,
             ];
 
-            $rules['kiosk_disable_task_manager'] = [
+            $rules['client_disable_task_manager'] = [
                 'nullable',
                 'boolean',
             ];
@@ -142,21 +142,21 @@ class SettingController extends Controller
             $values['stale_session_minutes'] = (string) $validated['stale_session_minutes'];
         }
 
-        if (array_key_exists('kiosk_no_presence_timeout_seconds', $validated)) {
-            $values[KioskSettings::NO_PRESENCE_KEY] = (string) $validated['kiosk_no_presence_timeout_seconds'];
+        if (array_key_exists('client_no_presence_timeout_seconds', $validated)) {
+            $values[ClientSettings::NO_PRESENCE_KEY] = (string) $validated['client_no_presence_timeout_seconds'];
         }
 
-        if (array_key_exists('kiosk_inactivity_warning_seconds', $validated)) {
-            $values[KioskSettings::WARNING_KEY] = (string) $validated['kiosk_inactivity_warning_seconds'];
+        if (array_key_exists('client_inactivity_warning_seconds', $validated)) {
+            $values[ClientSettings::WARNING_KEY] = (string) $validated['client_inactivity_warning_seconds'];
         }
 
-        if (array_key_exists('kiosk_shutdown_grace_seconds', $validated)) {
-            $values[KioskSettings::GRACE_KEY] = (string) $validated['kiosk_shutdown_grace_seconds'];
+        if (array_key_exists('client_shutdown_grace_seconds', $validated)) {
+            $values[ClientSettings::GRACE_KEY] = (string) $validated['client_shutdown_grace_seconds'];
         }
 
-        if ($section === null || $section === 'kiosk') {
-            $values[KioskSettings::TASK_MANAGER_KEY] =
-                $request->boolean('kiosk_disable_task_manager') ? '1' : '0';
+        if ($section === null || $section === 'client') {
+            $values[ClientSettings::TASK_MANAGER_KEY] =
+                $request->boolean('client_disable_task_manager') ? '1' : '0';
         }
 
 
@@ -183,10 +183,10 @@ class SettingController extends Controller
         });
 
 
-        $tab = $section ?? 'kiosk';
+        $tab = $section ?? 'client';
 
         $messages = [
-            'kiosk' => 'Kiosk behavior settings saved for every connected kiosk.',
+            'client' => 'Client behavior settings saved for every connected workstation client.',
             'mis' => 'MIS / UISA API settings saved.',
             'sessions' => 'Session cleanup settings saved.',
         ];

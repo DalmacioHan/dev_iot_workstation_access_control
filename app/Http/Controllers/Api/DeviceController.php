@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Device;
-use App\Services\KioskSettings;
+use App\Services\ClientSettings;
 use App\Services\SessionService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ class DeviceController extends Controller
 {
     public function __construct(
         private SessionService $sessions,
-        private KioskSettings $kiosk
+        private ClientSettings $clientSettings
     ) {
     }
 
@@ -72,7 +72,7 @@ class DeviceController extends Controller
             'last_seen_at' => now(),
         ]);
 
-        // The kiosk reports which session (if any) it currently owns. Any
+        // The client reports which session (if any) it currently owns. Any
         // other open session on this device is an orphan and gets closed.
         $this->sessions->reconcileFromHeartbeat(
             $device,
@@ -87,7 +87,7 @@ class DeviceController extends Controller
     }
 
     /**
-     * Global kiosk behavior config (power / idle timers + Task Manager flag).
+     * Global client behavior config (power / idle timers + Task Manager flag).
      * The desktop client (through the privileged agent) fetches this at
      * startup and keeps the last copy as its offline fallback.
      */
@@ -95,14 +95,14 @@ class DeviceController extends Controller
     {
         return response()->json([
             'success'    => true,
-            'config'     => $this->kiosk->all(),
-            'version'    => $this->kiosk->version(),
+            'config'     => $this->clientSettings->all(),
+            'version'    => $this->clientSettings->version(),
             'fetched_at' => now()->toIso8601String(),
         ], Response::HTTP_OK);
     }
 
     /**
-     * Lightweight poll the kiosk calls frequently (~10s). Returns the
+     * Lightweight poll the client calls frequently (~10s). Returns the
      * latest pending remote command (e.g. a staff-issued lock) or null.
      * Does NOT touch last_seen_at - that stays on the 60s heartbeat.
      */

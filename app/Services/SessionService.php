@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\DB;
  */
 class SessionService
 {
-    public const ENDED_BY_KIOSK = 'kiosk';
+    public const ENDED_BY_CLIENT = 'client';
+    /** @deprecated Use ENDED_BY_CLIENT. Kept for legacy stored values/compat. */
+    public const ENDED_BY_KIOSK = 'client';
     public const ENDED_BY_SYSTEM = 'system';
     public const ENDED_BY_ADMIN = 'admin';
 
@@ -122,9 +124,9 @@ class SessionService
     }
 
     /**
-     * Reconcile the server's view with what the kiosk reports.
+     * Reconcile the server's view with what the client reports.
      *
-     * A null session_id means the kiosk is locked/idle. Only sessions older
+     * A null session_id means the client is locked/idle. Only sessions older
      * than the grace window are closed, so a scan that is still in flight
      * cannot be killed by a heartbeat that was queued a moment earlier.
      */
@@ -152,7 +154,7 @@ class SessionService
             $this->closeSession(
                 $sessionId,
                 now(),
-                'Kiosk reported no active session',
+                'Client reported no active session',
                 self::ENDED_BY_SYSTEM
             );
         }

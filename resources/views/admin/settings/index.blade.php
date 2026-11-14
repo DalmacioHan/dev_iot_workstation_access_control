@@ -6,8 +6,8 @@
 
 @php
     $tabs = [
-        'kiosk' => [
-            'label' => 'Kiosk Behavior',
+        'client' => [
+            'label' => 'Client Behavior',
             'icon' => 'bolt',
         ],
         'mis' => [
@@ -21,31 +21,31 @@
     ];
 
     $requestedTab = (string) (request('tab') ?: old('section'));
-    $activeTab = array_key_exists($requestedTab, $tabs) ? $requestedTab : 'kiosk';
+    $activeTab = array_key_exists($requestedTab, $tabs) ? $requestedTab : 'client';
 
     $timerFields = [
         [
-            'name' => 'kiosk_no_presence_timeout_seconds',
+            'name' => 'client_no_presence_timeout_seconds',
             'label' => 'No-Presence Timeout',
-            'value' => old('kiosk_no_presence_timeout_seconds', $noPresenceTimeoutSeconds ?? 300),
+            'value' => old('client_no_presence_timeout_seconds', $noPresenceTimeoutSeconds ?? 300),
             'min' => 30,
             'max' => 86400,
             'presets' => [['1 min', 60], ['5 min', 300], ['10 min', 600], ['30 min', 1800]],
-            'help' => 'The station counts as empty when both the PIR sensor and the keyboard/mouse have been silent for this long. Allowed 30 to 86,400 seconds.',
+            'help' => 'The workstation counts as empty when both the PIR sensor and the keyboard/mouse have been silent for this long. Allowed 30 to 86,400 seconds.',
         ],
         [
-            'name' => 'kiosk_inactivity_warning_seconds',
+            'name' => 'client_inactivity_warning_seconds',
             'label' => 'Warning Countdown',
-            'value' => old('kiosk_inactivity_warning_seconds', $inactivityWarningSeconds ?? 10),
+            'value' => old('client_inactivity_warning_seconds', $inactivityWarningSeconds ?? 10),
             'min' => 3,
             'max' => 120,
             'presets' => [['5 s', 5], ['10 s', 10], ['30 s', 30]],
-            'help' => 'How long the "Are you still there?" prompt counts down before the station locks. Allowed 3 to 120 seconds.',
+            'help' => 'How long the "Are you still there?" prompt counts down before the workstation client locks. Allowed 3 to 120 seconds.',
         ],
         [
-            'name' => 'kiosk_shutdown_grace_seconds',
+            'name' => 'client_shutdown_grace_seconds',
             'label' => 'Shutdown Grace Period',
-            'value' => old('kiosk_shutdown_grace_seconds', $shutdownGraceSeconds ?? 90),
+            'value' => old('client_shutdown_grace_seconds', $shutdownGraceSeconds ?? 90),
             'min' => 5,
             'max' => 3600,
             'presets' => [['30 s', 30], ['60 s', 60], ['90 s', 90]],
@@ -64,7 +64,7 @@
         </h1>
 
         <p class="mt-2 max-w-2xl text-sm leading-6 text-gray-500">
-            Configure kiosk behavior, the student-system connection, and stale-session cleanup.
+            Configure workstation client behavior, the student-system connection, and stale-session cleanup.
             Each section saves on its own.
         </p>
 
@@ -185,14 +185,14 @@
 
 
     {{-- =========================================================
-        KIOSK BEHAVIOR
+        CLIENT BEHAVIOR
     ========================================================== --}}
     <section
-        id="panel-kiosk"
+        id="panel-client"
         role="tabpanel"
-        aria-labelledby="tab-kiosk"
-        data-settings-panel="kiosk"
-        class="rounded-3xl border border-gray-100 bg-white shadow-sm @if ($activeTab !== 'kiosk') hidden @endif"
+        aria-labelledby="tab-client"
+        data-settings-panel="client"
+        class="rounded-3xl border border-gray-100 bg-white shadow-sm @if ($activeTab !== 'client') hidden @endif"
     >
 
         <form
@@ -205,7 +205,7 @@
 
             @method('PUT')
 
-            <input type="hidden" name="section" value="kiosk">
+            <input type="hidden" name="section" value="client">
 
 
             <div class="mb-8 flex items-start gap-4">
@@ -224,7 +224,7 @@
                     </h2>
 
                     <p class="mt-1 max-w-xl text-sm leading-6 text-gray-500">
-                        Delivered to every kiosk at app start. Each kiosk keeps the last copy,
+                        Delivered to every workstation client at app start. Each client keeps the last copy,
                         so it still works while the server is offline.
                     </p>
 
@@ -335,10 +335,10 @@
 
                     <input
                         type="checkbox"
-                        id="kiosk_disable_task_manager"
-                        name="kiosk_disable_task_manager"
+                        id="client_disable_task_manager"
+                        name="client_disable_task_manager"
                         value="1"
-                        @checked(old('kiosk_disable_task_manager', $disableTaskManager ?? false))
+                        @checked(old('client_disable_task_manager', $disableTaskManager ?? false))
                         class="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     >
 
@@ -350,8 +350,8 @@
                         </span>
 
                         <span class="mt-1 block max-w-xl text-xs leading-5 text-gray-500">
-                            The kiosk agent applies this machine-wide so students cannot end the
-                            kiosk process. Leave it off if staff need Task Manager on this PC.
+                            The access agent applies this machine-wide so students cannot end the
+                            client process. Leave it off if staff need Task Manager on this PC.
                         </span>
 
                     </span>
@@ -359,7 +359,7 @@
                 </label>
 
 
-                @error('kiosk_disable_task_manager')
+                @error('client_disable_task_manager')
 
                     <p class="mt-2 text-xs font-medium text-red-600">
                         {{ $message }}
@@ -371,7 +371,7 @@
 
 
             <p class="mt-6 max-w-2xl text-xs leading-5 text-gray-400">
-                Changes apply the next time each kiosk app starts. The kiosk keeps the last
+                Changes apply the next time each workstation client app starts. The client keeps the last
                 downloaded copy, so these timers still work if the server is briefly offline.
             </p>
 
@@ -381,7 +381,7 @@
             >
 
                 <p class="text-xs text-gray-400">
-                    Applies to every kiosk on its next start.
+                    Applies to every workstation client on its next start.
                 </p>
 
 
@@ -391,7 +391,7 @@
                 >
                     <x-icon name="save-floppy" class="h-5 w-5" />
 
-                    Save Kiosk Behavior
+                    Save Client Behavior
                 </button>
 
             </div>
@@ -682,7 +682,7 @@
 
 
                 <p class="mt-2 max-w-xl text-xs leading-5 text-gray-400">
-                    The kiosk sends a heartbeat every 60 seconds. Five minutes tolerates short
+                    The workstation client sends a heartbeat every 60 seconds. Five minutes tolerates short
                     network drops while clearing ghost sessions quickly. Allowed 1 to 1,440
                     minutes.
                 </p>

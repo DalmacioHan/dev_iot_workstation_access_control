@@ -16,14 +16,14 @@ Route::middleware(['device.auth', 'reap.sessions'])->group(function () {
     // heartbeat route
     Route::post('/device/ping',[DeviceController::class,'heartbeat']);
 
-    // global kiosk behavior config (idle/shutdown timers + Task Manager flag)
+    // global client behavior config (idle/shutdown timers + Task Manager flag)
     Route::get('/device/config',[DeviceController::class,'config']);
 
-    // remote command delivery (kiosk polls every ~10s) + ack
+    // remote command delivery (client polls every ~10s) + ack
     Route::post('/device/commands',[DeviceController::class,'commands']);
     Route::post('/device/ack',[DeviceController::class,'ack']);
 
-    // RFID scan / session endpoints used by the desktop kiosk
+    // RFID scan / session endpoints used by the desktop client
     Route::post('/access/scan', [AccessController::class, 'scan']);
     Route::post('/access/logout', [AccessController::class, 'logout']);
     Route::post('/access/usage', [AccessController::class, 'usage']);

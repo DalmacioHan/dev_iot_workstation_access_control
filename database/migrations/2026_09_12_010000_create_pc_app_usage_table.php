@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * In-session foreground app usage reported by the desktop kiosk.
+     * In-session foreground app usage reported by the desktop client.
      * Rows are per (session, app) and easily grouped for the dashboards.
      */
     public function up(): void

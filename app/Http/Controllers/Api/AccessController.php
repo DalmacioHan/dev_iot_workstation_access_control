@@ -22,7 +22,7 @@ class AccessController extends Controller
     /**
      * Validate one RFID scan against the university MIS and log the result.
      *
-     * Expected body (sent by the desktop kiosk app):
+     * Expected body (sent by the desktop client app):
      *   rfid_uid     - card id, uppercase hex without separators ("04A3B2C1")
      *   pc_port      - 1 or 2 (which PC/zone on this device)
      *   occurred_at  - optional ISO-8601 scan time (defaults to now)
@@ -96,7 +96,7 @@ class AccessController extends Controller
     }
 
     /**
-     * Close an open session. The kiosk calls this on lock / shutdown / timeout.
+     * Close an open session. The client calls this on lock / shutdown / timeout.
      *
      * Expected body:
      *   session_id   - id returned by /api/access/scan
@@ -117,10 +117,10 @@ class AccessController extends Controller
             $validated['session_id'],
             $occurredAt,
             'Session ended',
-            SessionService::ENDED_BY_KIOSK
+            SessionService::ENDED_BY_CLIENT
         );
 
-        // Idempotent: a retry (or a duplicate call from the kiosk) must not
+        // Idempotent: a retry (or a duplicate call from the client) must not
         // create a second time_out row or fail the client.
         return response()->json([
             'success'        => true,
@@ -133,7 +133,7 @@ class AccessController extends Controller
     /**
      * Record foreground app usage for one session.
      *
-     * Expected body (sent by the desktop kiosk):
+     * Expected body (sent by the desktop client):
      *   session_id  - id returned by /api/access/scan
      *   occurred_at - optional ISO-8601 flush time (defaults to now)
      *   apps        - [{ "app": "chrome", "seconds": 120 }, ...]

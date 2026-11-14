@@ -11,10 +11,10 @@ it('closes a session idempotently', function () {
     $sessionId = sessionTestStart($device);
     $service = app(SessionService::class);
 
-    expect($service->closeSession($sessionId, null, 'Session ended', SessionService::ENDED_BY_KIOSK))
+    expect($service->closeSession($sessionId, null, 'Session ended', SessionService::ENDED_BY_CLIENT))
         ->toBeTrue();
 
-    expect($service->closeSession($sessionId, null, 'Session ended', SessionService::ENDED_BY_KIOSK))
+    expect($service->closeSession($sessionId, null, 'Session ended', SessionService::ENDED_BY_CLIENT))
         ->toBeFalse();
 
     $timeOuts = PcAccessLogs::where('session_id', $sessionId)
@@ -22,7 +22,7 @@ it('closes a session idempotently', function () {
         ->get();
 
     expect($timeOuts)->toHaveCount(1);
-    expect($timeOuts->first()->ended_by)->toBe(SessionService::ENDED_BY_KIOSK);
+    expect($timeOuts->first()->ended_by)->toBe('client');
 });
 
 it('reaps sessions whose workstation stopped sending heartbeats', function () {

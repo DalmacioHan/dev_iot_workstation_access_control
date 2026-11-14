@@ -121,7 +121,7 @@ public function show(Device $device ){
         ]);
 
         // Close the session on the server first. This works even when the
-        // kiosk is offline, restarted, or showing a stale login.
+        // client is offline, restarted, or showing a stale login.
         $closed = $this->sessions->closeOpenSessionsForDevice(
             $device->id,
             'Remote lock by staff',

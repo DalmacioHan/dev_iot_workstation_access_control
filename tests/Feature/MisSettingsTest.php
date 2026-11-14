@@ -87,9 +87,9 @@ it('saves the MIS URL and applies it without a config cache clear', function () 
         ->put(route('settings.update'), [
             'student_api_url' => 'https://uisa.example.edu/mis',
             'stale_session_minutes' => 5,
-            'kiosk_no_presence_timeout_seconds' => 300,
-            'kiosk_inactivity_warning_seconds' => 10,
-            'kiosk_shutdown_grace_seconds' => 90,
+            'client_no_presence_timeout_seconds' => 300,
+            'client_inactivity_warning_seconds' => 10,
+            'client_shutdown_grace_seconds' => 90,
         ])
         ->assertRedirect();
 
