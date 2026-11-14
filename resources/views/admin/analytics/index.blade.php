@@ -4,9 +4,16 @@
 
 @section('content')
 
+@php
+    $isDefaultRange = $dateFrom->isToday() && $dateTo->isToday();
+    $rangeLabel = $isDefaultRange
+        ? 'Today'
+        : $dateFrom->format('M j, Y') . ' – ' . $dateTo->format('M j, Y');
+@endphp
+
 <div class="min-w-0 max-w-full space-y-6 overflow-x-hidden">
 
-    {{-- Page Header --}}
+    {{-- ======= PAGE HEADER ======= --}}
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
@@ -19,72 +26,89 @@
             </h1>
 
             <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                Access patterns across students, courses, applications, and workstations.
+                Login patterns across students, courses, applications, and workstations.
                 For full searchable records, open Reports.
             </p>
         </div>
-    </div>
 
-    {{-- Summary Metrics --}}
-    <form method="GET" action="{{ route('analytics') }}" class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
-        <div class="mb-4 flex items-center gap-2">
-            <span
-                class="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-xs font-bold text-blue-600"
-            >
-
-                <x-icon name="filter" class="h-3 w-3" aria-hidden="true" />
-
+        <div class="flex items-center gap-2 self-start sm:self-auto">
+            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+                {{ $rangeLabel }}
             </span>
-            <h3 class="text-sm font-bold text-gray-900">
-                Filters
-            </h3>
-        </div>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
-        {{-- Date From --}}
-            <div>
-                <label
-                    for="date_from"
-                    class="mb-1.5 block text-xs font-semibold text-gray-600"
+
+            <div class="relative">
+                <button
+                    id="overview-filter-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="overview-filter-panel"
+                    class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100"
                 >
-                    Date From
-                </label>
-                <input
-                    type="date"
-                    id="date_from"
-                    name="date_from"
-                    value="{{ $dateFrom->toDateString() }}"
-                    onchange="this.form.submit()"
-                    class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                    <x-icon name="filter" class="h-4 w-4" aria-hidden="true" />
+                    Filters
+                    <x-icon name="chevron-down" class="h-4 w-4" aria-hidden="true" />
+                </button>
+
+                <form
+                    id="overview-filter-panel"
+                    method="GET"
+                    action="{{ route('analytics') }}"
+                    class="absolute right-0 z-30 mt-2 hidden w-72 rounded-2xl border border-slate-200 bg-white p-4 shadow-lg"
                 >
+                    <div class="space-y-3">
+                        <div>
+                            <label for="date_from" class="mb-1.5 block text-xs font-semibold text-gray-600">
+                                Date From
+                            </label>
+                            <input
+                                type="date"
+                                id="date_from"
+                                name="date_from"
+                                value="{{ $dateFrom->toDateString() }}"
+                                class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                            >
+                        </div>
+
+                        <div>
+                            <label for="date_to" class="mb-1.5 block text-xs font-semibold text-gray-600">
+                                Date To
+                            </label>
+                            <input
+                                type="date"
+                                id="date_to"
+                                name="date_to"
+                                value="{{ $dateTo->toDateString() }}"
+                                class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-between gap-2">
+                        @if (! $isDefaultRange)
+                            <a href="{{ route('analytics') }}" class="inline-flex h-10 items-center rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                                Reset
+                            </a>
+                        @endif
+
+                        <button type="submit" class="ml-auto inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                            Apply
+                        </button>
+                    </div>
+                </form>
             </div>
-        {{-- Date To --}}
-            <div>
-                <label
-                    for="date_to"
-                    class="mb-1.5 block text-xs font-semibold text-gray-600"
-                >
-                    Date To
-                </label>
-                <input
-                    type="date"
-                    id="date_to"
-                    name="date_to"
-                    value="{{ $dateTo->toDateString() }}"
-                    onchange="this.form.submit()"
-                    class="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
-                >
-            </form>
         </div>
     </div>
+
+    {{-- ======= SUMMARY CARDS ======= --}}
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
             <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
                     <p class="text-sm font-medium text-slate-500">Popular Application</p>
-                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularApplication->first()->app_name ?? 'N/A' }}">
-                        {{ $popularApplication->first()->app_name ?? 'N/A' }}
+                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularApplication->first()?->app_name ?? 'N/A' }}">
+                        {{ $popularApplication->first()?->app_name ?? 'N/A' }}
                     </p>
-                    <p class="mt-1 text-xs text-slate-400">Most used · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">Most used · {{ $rangeLabel }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
 
@@ -98,10 +122,10 @@
             <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
                     <p class="text-sm font-medium text-slate-500">Popular Workstation</p>
-                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularWorkstation->first()->device->workstation_name ?? 'N/A' }}">
-                        {{ $popularWorkstation->first()->device->workstation_name ?? 'N/A' }}
+                    <p class="mt-2 truncate text-xl font-bold text-slate-900" title="{{ $popularWorkstation->first()?->device?->workstation_name ?? 'N/A' }}">
+                        {{ $popularWorkstation->first()?->device?->workstation_name ?? 'N/A' }}
                     </p>
-                    <p class="mt-1 text-xs text-slate-400">Highest access · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">Most activity · {{ $rangeLabel }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
                     <x-icon name="dashboard" class="h-5 w-5" aria-hidden="true" />
@@ -113,9 +137,9 @@
         <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-sm font-medium text-slate-500">Successful Access</p>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulEvents) ?? 'N/A' }}</p>
-                    <p class="mt-1 text-xs text-slate-400">Successful sessions · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
+                    <p class="text-sm font-medium text-slate-500">Successful Logins</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($successfulLogins) }}</p>
+                    <p class="mt-1 text-xs text-slate-400">Students who logged in · {{ $rangeLabel }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                     <x-icon name="check" class="h-5 w-5" aria-hidden="true" />
@@ -126,9 +150,9 @@
         <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-sm font-medium text-slate-500">Failed Access</p>
-                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($failedEvents) ?? 'N/A' }}</p>
-                    <p class="mt-1 text-xs text-slate-400">Failed events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}</p>
+                    <p class="text-sm font-medium text-slate-500">Failed Logins</p>
+                    <p class="mt-2 text-3xl font-bold tracking-tight text-slate-900">{{ number_format($failedLogins) }}</p>
+                    <p class="mt-1 text-xs text-slate-400">Failed login attempts · {{ $rangeLabel }}</p>
                 </div>
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
                     <x-icon name="exclamation-triangle" class="h-5 w-5" aria-hidden="true" />
@@ -137,12 +161,12 @@
         </div>
     </div>
 
-    {{-- Peak Hours --}}
+    {{-- ======= PEAK HOURS ======= --}}
     <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <div class="border-b border-slate-100 px-6 py-5 flex items-center justify-between gap-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900">Peak Hours</h2>
-                <p class="mt-1 text-sm text-slate-500">Hours with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
+                <p class="mt-1 text-sm text-slate-500">Hours with the most logins · {{ $rangeLabel }}.</p>
             </div>
         </div>
         <div class="p-6">
@@ -150,22 +174,22 @@
         </div>
     </div>
 
-    {{-- Ranked Activity --}}
+    {{-- ======= RANKED ACTIVITY ======= --}}
     <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Students</h2>
-                    <p id="student-ranking-description" class="mt-1 text-sm text-slate-500">Students with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
+                    <p id="student-ranking-description" class="mt-1 text-sm text-slate-500">Students with the most logins · {{ $rangeLabel }}.</p>
                 </div>
                 <div class="relative self-end sm:self-auto">
                     <button id="student-ranking-toggle" type="button" aria-expanded="false" aria-controls="student-ranking-dropdown" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
-                        <span id="student-ranking-toggle-label">Access Events</span>
+                        <span id="student-ranking-toggle-label">Logins</span>
                         <x-icon name="chevron-down" class="h-4 w-4" aria-hidden="true" />
                     </button>
                     <div id="student-ranking-dropdown" class="absolute right-0 z-20 mt-2 hidden w-44 overflow-hidden rounded-xl border border-gray-200 bg-white p-1 shadow-lg">
                         <button type="button" data-ranking-mode="access" class="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700">
-                            Access Events
+                            Logins
                         </button>
                         <button type="button" data-ranking-mode="usage" class="block w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition hover:bg-blue-50 hover:text-blue-700">
                             Time Usage
@@ -220,7 +244,7 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Courses</h2>
-                    <p class="mt-1 text-sm text-slate-500">Courses with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
+                    <p class="mt-1 text-sm text-slate-500">Courses with the most logins · {{ $rangeLabel }}.</p>
                 </div>
             </div>
             <div class="p-6">
@@ -240,7 +264,7 @@
             <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Application</h2>
-                    <p class="mt-1 text-sm text-slate-500">Applications with the most access events · {{ $dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y') }}.</p>
+                    <p class="mt-1 text-sm text-slate-500">Applications with the most usage · {{ $rangeLabel }}.</p>
                 </div>
             </div>
             <div class="p-6">
@@ -251,23 +275,91 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+@vite('resources/js/charts.js')
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const chartElement = document.querySelector('#peak-hours-chart');
     const getBrandColor = () => {
         const computedStyle = getComputedStyle(document.documentElement);
 
         return computedStyle.getPropertyValue('--color-fg-brand').trim() || '#1447E6';
     };
     const brandColor = getBrandColor();
+    const dateRange = @json($rangeLabel);
+
+    // ===== Dropdown helper =====
+    const setupDropdown = (toggle, panel) => {
+        if (!toggle || !panel) {
+            return;
+        }
+
+        toggle.addEventListener('click', function () {
+            const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+            toggle.setAttribute('aria-expanded', String(!isOpen));
+            panel.classList.toggle('hidden', isOpen);
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!toggle.contains(event.target) && !panel.contains(event.target)) {
+                panel.classList.add('hidden');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    };
+
+    // ===== Overview filters =====
+    const filterToggle = document.querySelector('#overview-filter-toggle');
+    const filterPanel = document.querySelector('#overview-filter-panel');
+    const dateFromInput = document.querySelector('#date_from');
+    const dateToInput = document.querySelector('#date_to');
+
+    setupDropdown(filterToggle, filterPanel);
+
+    dateFromInput?.addEventListener('change', function () {
+        if (dateToInput && dateToInput.value && this.value > dateToInput.value) {
+            dateToInput.value = this.value;
+        }
+    });
+
+    dateToInput?.addEventListener('change', function () {
+        if (dateFromInput && dateFromInput.value && this.value < dateFromInput.value) {
+            dateFromInput.value = this.value;
+        }
+    });
+
+    // ===== Student ranking toggle =====
+    const rankingToggle = document.querySelector('#student-ranking-toggle');
+    const rankingToggleLabel = document.querySelector('#student-ranking-toggle-label');
+    const rankingDropdown = document.querySelector('#student-ranking-dropdown');
+    const rankingDescription = document.querySelector('#student-ranking-description');
+    const accessChart = document.querySelector('#top-students-chart')?.parentElement;
+    const usageTable = document.querySelector('#top-students-usage');
+
+    setupDropdown(rankingToggle, rankingDropdown);
+
+    if (rankingToggleLabel && rankingDropdown && rankingDescription && accessChart && usageTable) {
+        rankingDropdown.querySelectorAll('[data-ranking-mode]').forEach((option) => {
+            option.addEventListener('click', function () {
+                const isUsageMode = option.dataset.rankingMode === 'usage';
+
+                rankingToggleLabel.textContent = isUsageMode ? 'Time Usage' : 'Logins';
+                rankingDescription.textContent = `Students with the most ${isUsageMode ? 'time usage' : 'logins'} · ${dateRange}.`;
+                accessChart.classList.toggle('hidden', isUsageMode);
+                usageTable.classList.toggle('hidden', !isUsageMode);
+                rankingDropdown.classList.add('hidden');
+                rankingToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    // ===== Peak hours chart =====
+    const chartElement = document.querySelector('#peak-hours-chart');
+    const peakHours = @json($peakHours);
 
     if (!chartElement || typeof ApexCharts === 'undefined') {
         return;
     }
-
-    const peakHours = @json($peakHours);
     // Generate clean hourly labels: "00:00", "01:00", ... "23:00"
     const hourLabels = Array.from({ length: 24 }, (_, hour) => `${String(hour).padStart(2, '0')}:00`);
 
@@ -281,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
             zoom: { enabled: false }
         },
         series: [{
-            name: 'Access events',
+            name: 'Logins',
             data: peakHours // Clean single data mapping array
         }],
         colors: [brandColor],
@@ -327,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             y: {
                 formatter: function (value) {
-                    return `${value} event${value === 1 ? '' : 's'}`;
+                    return `${value} login${value === 1 ? '' : 's'}`;
                 }
             }
         }
@@ -335,44 +427,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     chart.render();
 
-    const rankingToggle = document.querySelector('#student-ranking-toggle');
-    const rankingToggleLabel = document.querySelector('#student-ranking-toggle-label');
-    const rankingDropdown = document.querySelector('#student-ranking-dropdown');
-    const rankingDescription = document.querySelector('#student-ranking-description');
-    const accessChart = document.querySelector('#top-students-chart')?.parentElement;
-    const usageTable = document.querySelector('#top-students-usage');
-    const dateRange = @json($dateFrom->isToday() && $dateTo->isToday() ? 'Today' : $dateFrom->format('M j, Y') . ' to ' . $dateTo->format('M j, Y'));
-
-    if (rankingToggle && rankingToggleLabel && rankingDropdown && rankingDescription && accessChart && usageTable) {
-        rankingToggle.addEventListener('click', function () {
-            const isOpen = rankingToggle.getAttribute('aria-expanded') === 'true';
-
-            rankingToggle.setAttribute('aria-expanded', String(!isOpen));
-            rankingDropdown.classList.toggle('hidden', isOpen);
-        });
-
-        rankingDropdown.querySelectorAll('[data-ranking-mode]').forEach((option) => {
-            option.addEventListener('click', function () {
-                const isUsageMode = option.dataset.rankingMode === 'usage';
-
-                rankingToggleLabel.textContent = isUsageMode ? 'Time Usage' : 'Access Events';
-                rankingDescription.textContent = `Students with the most ${isUsageMode ? 'time usage' : 'access events'} · ${dateRange}.`;
-                accessChart.classList.toggle('hidden', isUsageMode);
-                usageTable.classList.toggle('hidden', !isUsageMode);
-                rankingDropdown.classList.add('hidden');
-                rankingToggle.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        document.addEventListener('click', function (event) {
-            if (!rankingToggle.contains(event.target) && !rankingDropdown.contains(event.target)) {
-                rankingDropdown.classList.add('hidden');
-                rankingToggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
-    const renderRankedBarChart = (elementId, entries, emptyMessage, color) => {
+    // ===== Ranked bar charts =====
+    const renderRankedBarChart = (elementId, entries, emptyMessage, color, unit) => {
         const element = document.querySelector(`#${elementId}`);
 
         if (!element) {
@@ -389,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         new ApexCharts(element, {
             series: [{
-                name: 'Access',
+                name: unit === 'sessions' ? 'Sessions' : 'Logins',
                 data: values
             }],
             chart: {
@@ -435,7 +491,7 @@ document.addEventListener('DOMContentLoaded', function () {
             tooltip: {
                 theme: 'light',
                 y: {
-                    formatter: (value) => `${Number(value).toLocaleString()} accesses`
+                    formatter: (value) => `${Number(value).toLocaleString()} ${unit}`
                 }
             },
             legend: { show: true }
@@ -446,21 +502,24 @@ document.addEventListener('DOMContentLoaded', function () {
         'top-students-chart',
         @json($topAccessStudents->map(fn ($student) => ['label' => $student->student_name, 'total' => $student->total])->values()),
         'No student activity found for this period.',
-        '#2563EB'
+        '#2563EB',
+        'logins'
     );
 
     renderRankedBarChart(
         'top-courses-chart',
         @json($topCourses->map(fn ($course) => ['label' => $course->course, 'total' => $course->total])->values()),
         'No course activity found for this period.',
-        '#1D4ED8'
+        '#1D4ED8',
+        'logins'
     );
 
     renderRankedBarChart(
         'top-app-chart',
         @json($topApplication->map(fn ($app) => ['label' => $app->app_name, 'total' => $app->total_sessions])->values()),
         'No application activity found for this period.',
-        '#1D4ED8'
+        '#1D4ED8',
+        'sessions'
     );
 });
 </script>
