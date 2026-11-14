@@ -96,3 +96,21 @@ it('saves the MIS URL and applies it without a config cache clear', function () 
     expect(app(MisSettings::class)->baseUrl())
         ->toBe('https://uisa.example.edu/mis');
 });
+
+it('saves only the settings section that was submitted', function () {
+    misSetting('https://uisa.example.edu/mis');
+    $admin = User::factory()->create(['role' => 'superadmin']);
+
+    $this->actingAs($admin)
+        ->put(route('settings.update'), [
+            'section' => 'sessions',
+            'stale_session_minutes' => 12,
+        ])
+        ->assertRedirect(route('settings.index', ['tab' => 'sessions']));
+
+    expect(DB::table('system_settings')->where('key', 'stale_session_minutes')->value('value'))
+        ->toBe('12');
+
+    expect(app(MisSettings::class)->baseUrl())
+        ->toBe('https://uisa.example.edu/mis');
+});

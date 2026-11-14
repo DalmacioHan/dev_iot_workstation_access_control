@@ -74,56 +74,90 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        $validated = $request->validate([
-            'student_api_url' => [
+        // Each tab posts its own section. A request without a section keeps
+        // the original behaviour: validate and save every section at once.
+        $section = $request->input('section');
+
+        if (! in_array($section, ['kiosk', 'mis', 'sessions'], true)) {
+            $section = null;
+        }
+
+        $rules = [];
+
+        if ($section === null || $section === 'mis') {
+            $rules['student_api_url'] = [
                 'required',
                 'url',
                 'max:500',
-            ],
+            ];
+        }
 
-            'stale_session_minutes' => [
+        if ($section === null || $section === 'sessions') {
+            $rules['stale_session_minutes'] = [
                 'required',
                 'integer',
                 'min:1',
                 'max:1440',
-            ],
+            ];
+        }
 
-            'kiosk_no_presence_timeout_seconds' => [
+        if ($section === null || $section === 'kiosk') {
+            $rules['kiosk_no_presence_timeout_seconds'] = [
                 'required',
                 'integer',
                 'min:' . KioskSettings::MIN_NO_PRESENCE,
                 'max:' . KioskSettings::MAX_NO_PRESENCE,
-            ],
+            ];
 
-            'kiosk_inactivity_warning_seconds' => [
+            $rules['kiosk_inactivity_warning_seconds'] = [
                 'required',
                 'integer',
                 'min:' . KioskSettings::MIN_WARNING,
                 'max:' . KioskSettings::MAX_WARNING,
-            ],
+            ];
 
-            'kiosk_shutdown_grace_seconds' => [
+            $rules['kiosk_shutdown_grace_seconds'] = [
                 'required',
                 'integer',
                 'min:' . KioskSettings::MIN_GRACE,
                 'max:' . KioskSettings::MAX_GRACE,
-            ],
+            ];
 
-            'kiosk_disable_task_manager' => [
+            $rules['kiosk_disable_task_manager'] = [
                 'nullable',
                 'boolean',
-            ],
-        ]);
+            ];
+        }
+
+        $validated = $request->validate($rules);
 
 
-        $values = [
-            'student_api_url' => trim($validated['student_api_url']),
-            'stale_session_minutes' => (string) $validated['stale_session_minutes'],
-            KioskSettings::NO_PRESENCE_KEY => (string) $validated['kiosk_no_presence_timeout_seconds'],
-            KioskSettings::WARNING_KEY => (string) $validated['kiosk_inactivity_warning_seconds'],
-            KioskSettings::GRACE_KEY => (string) $validated['kiosk_shutdown_grace_seconds'],
-            KioskSettings::TASK_MANAGER_KEY => $request->boolean('kiosk_disable_task_manager') ? '1' : '0',
-        ];
+        $values = [];
+
+        if (array_key_exists('student_api_url', $validated)) {
+            $values['student_api_url'] = trim($validated['student_api_url']);
+        }
+
+        if (array_key_exists('stale_session_minutes', $validated)) {
+            $values['stale_session_minutes'] = (string) $validated['stale_session_minutes'];
+        }
+
+        if (array_key_exists('kiosk_no_presence_timeout_seconds', $validated)) {
+            $values[KioskSettings::NO_PRESENCE_KEY] = (string) $validated['kiosk_no_presence_timeout_seconds'];
+        }
+
+        if (array_key_exists('kiosk_inactivity_warning_seconds', $validated)) {
+            $values[KioskSettings::WARNING_KEY] = (string) $validated['kiosk_inactivity_warning_seconds'];
+        }
+
+        if (array_key_exists('kiosk_shutdown_grace_seconds', $validated)) {
+            $values[KioskSettings::GRACE_KEY] = (string) $validated['kiosk_shutdown_grace_seconds'];
+        }
+
+        if ($section === null || $section === 'kiosk') {
+            $values[KioskSettings::TASK_MANAGER_KEY] =
+                $request->boolean('kiosk_disable_task_manager') ? '1' : '0';
+        }
 
 
         DB::transaction(function () use ($values) {
@@ -149,9 +183,17 @@ class SettingController extends Controller
         });
 
 
-        return back()->with(
-            'success',
-            'System settings have been saved successfully.'
-        );
+        $tab = $section ?? 'kiosk';
+
+        $messages = [
+            'kiosk' => 'Kiosk behavior settings saved for every connected kiosk.',
+            'mis' => 'MIS / UISA API settings saved.',
+            'sessions' => 'Session cleanup settings saved.',
+        ];
+
+
+        return redirect()
+            ->route('settings.index', ['tab' => $tab])
+            ->with('success', $messages[$tab]);
     }
 }

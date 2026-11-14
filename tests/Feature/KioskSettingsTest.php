@@ -58,7 +58,7 @@ it('shows and saves the kiosk power settings from the admin page', function () {
     $this->actingAs($admin)
         ->get(route('settings.index'))
         ->assertOk()
-        ->assertSee('Kiosk Power &amp; Idle', false)
+        ->assertSee('Client Behavior', false)
         ->assertSee('kiosk_no_presence_timeout_seconds', false);
 
     $this->actingAs($admin)
