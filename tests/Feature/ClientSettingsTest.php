@@ -17,6 +17,7 @@ it('uses the safe defaults when nothing has been saved', function () {
         'inactivity_warning_seconds' => 10,
         'shutdown_grace_seconds' => 90,
         'disable_task_manager' => false,
+        'admin_pin' => '',
     ]);
 });
 
@@ -34,6 +35,7 @@ it('clamps stored values into their safe range', function () {
     expect($config['inactivity_warning_seconds'])->toBe(120);
     expect($config['shutdown_grace_seconds'])->toBe(90);
     expect($config['disable_task_manager'])->toBeTrue();
+    expect($config['admin_pin'])->toBe('');
 });
 
 it('reads legacy kiosk keys for backward compatibility', function () {
@@ -49,6 +51,7 @@ it('reads legacy kiosk keys for backward compatibility', function () {
         'inactivity_warning_seconds' => 12,
         'shutdown_grace_seconds' => 60,
         'disable_task_manager' => true,
+        'admin_pin' => '',
     ]);
 });
 
@@ -61,7 +64,8 @@ it('returns the client config to an authenticated device', function () {
         ->assertJsonPath('config.no_presence_timeout_seconds', 300)
         ->assertJsonPath('config.inactivity_warning_seconds', 10)
         ->assertJsonPath('config.shutdown_grace_seconds', 90)
-        ->assertJsonPath('config.disable_task_manager', false);
+        ->assertJsonPath('config.disable_task_manager', false)
+        ->assertJsonPath('config.admin_pin', '');
 });
 
 it('rejects a config request without a device token', function () {
@@ -93,6 +97,7 @@ it('shows and saves the client behavior settings from the admin page', function 
         'inactivity_warning_seconds' => 15,
         'shutdown_grace_seconds' => 120,
         'disable_task_manager' => true,
+        'admin_pin' => '',
     ]);
 
     expect(DB::table('system_settings')->where('key', ClientSettings::NO_PRESENCE_KEY)->value('value'))

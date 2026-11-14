@@ -49,6 +49,7 @@ class SettingController extends Controller
         $inactivityWarningSeconds = $client['inactivity_warning_seconds'];
         $shutdownGraceSeconds = $client['shutdown_grace_seconds'];
         $disableTaskManager = $client['disable_task_manager'];
+        $adminPin = $client['admin_pin'] ?? '';
 
 
         return view(
@@ -60,7 +61,8 @@ class SettingController extends Controller
                 'noPresenceTimeoutSeconds',
                 'inactivityWarningSeconds',
                 'shutdownGraceSeconds',
-                'disableTaskManager'
+                'disableTaskManager',
+                'adminPin'
             )
         );
     }
@@ -127,6 +129,13 @@ class SettingController extends Controller
                 'nullable',
                 'boolean',
             ];
+
+            // Server-managed admin PIN for all clients (cached offline). Blank = unset (use local PIN).
+            $rules['client_admin_pin'] = [
+                'nullable',
+                'string',
+                'max:50',
+            ];
         }
 
         $validated = $request->validate($rules);
@@ -157,6 +166,8 @@ class SettingController extends Controller
         if ($section === null || $section === 'client') {
             $values[ClientSettings::TASK_MANAGER_KEY] =
                 $request->boolean('client_disable_task_manager') ? '1' : '0';
+
+            $values[ClientSettings::ADMIN_PIN_KEY] = trim((string) $request->input('client_admin_pin', ''));
         }
 
 

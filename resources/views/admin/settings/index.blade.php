@@ -330,6 +330,40 @@
             <div class="mt-8 border-t border-gray-100 pt-7">
 
                 <label
+                    for="client_admin_pin"
+                    class="mb-2.5 block text-sm font-semibold text-gray-900"
+                >
+                    Admin PIN (server-managed)
+                </label>
+
+                <div class="relative max-w-md">
+                    <input
+                        type="text"
+                        id="client_admin_pin"
+                        name="client_admin_pin"
+                        value="{{ old('client_admin_pin', $adminPin ?? '') }}"
+                        maxlength="50"
+                        autocomplete="off"
+                        placeholder="Leave blank to use the local/client PIN"
+                        class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-900 transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-50"
+                    >
+                </div>
+
+                @error('client_admin_pin')
+                    <p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>
+                @enderror
+
+                <p class="mt-2 max-w-xl text-xs leading-5 text-gray-400">
+                    When set, this PIN is pushed to all workstation clients and cached for offline use.
+                    Leave blank to fall back to the PIN configured locally on each client/agent.
+                </p>
+
+            </div>
+
+
+            <div class="mt-6 border-t border-gray-100 pt-7">
+
+                <label
                     class="flex cursor-pointer items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4"
                 >
 

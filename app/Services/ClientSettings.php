@@ -18,11 +18,13 @@ class ClientSettings
     public const WARNING_KEY = 'client_inactivity_warning_seconds';
     public const GRACE_KEY = 'client_shutdown_grace_seconds';
     public const TASK_MANAGER_KEY = 'client_disable_task_manager';
+    public const ADMIN_PIN_KEY = 'client_admin_pin';
 
     public const LEGACY_NO_PRESENCE_KEY = 'kiosk_no_presence_timeout_seconds';
     public const LEGACY_WARNING_KEY = 'kiosk_inactivity_warning_seconds';
     public const LEGACY_GRACE_KEY = 'kiosk_shutdown_grace_seconds';
     public const LEGACY_TASK_MANAGER_KEY = 'kiosk_disable_task_manager';
+    public const LEGACY_ADMIN_PIN_KEY = 'kiosk_admin_pin';
 
     public const DEFAULT_NO_PRESENCE = 300;
     public const DEFAULT_WARNING = 10;
@@ -42,7 +44,7 @@ class ClientSettings
     /**
      * The config every client receives, already clamped to its safe range.
      *
-     * @return array<string, int|bool>
+     * @return array<string, int|bool|string>
      */
     public function all(): array
     {
@@ -73,6 +75,8 @@ class ClientSettings
                 self::LEGACY_TASK_MANAGER_KEY,
                 self::DEFAULT_TASK_MANAGER
             ),
+            // Server-managed admin PIN (cached by clients for offline use). Empty = not set.
+            'admin_pin' => $this->setting(self::ADMIN_PIN_KEY, self::LEGACY_ADMIN_PIN_KEY),
         ];
     }
 
@@ -101,6 +105,7 @@ class ClientSettings
             self::WARNING_KEY,
             self::GRACE_KEY,
             self::TASK_MANAGER_KEY,
+            self::ADMIN_PIN_KEY,
         ];
     }
 
@@ -116,10 +121,12 @@ class ClientSettings
             self::WARNING_KEY,
             self::GRACE_KEY,
             self::TASK_MANAGER_KEY,
+            self::ADMIN_PIN_KEY,
             self::LEGACY_NO_PRESENCE_KEY,
             self::LEGACY_WARNING_KEY,
             self::LEGACY_GRACE_KEY,
             self::LEGACY_TASK_MANAGER_KEY,
+            self::LEGACY_ADMIN_PIN_KEY,
         ];
     }
 

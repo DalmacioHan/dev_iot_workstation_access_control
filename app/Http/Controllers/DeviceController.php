@@ -67,22 +67,34 @@ class DeviceController extends Controller
         ]);
 
         $isPaired = (bool) $request->input('is_paired');
+        $workstationName = trim($request->input('workstation_name'));
+
+        // If unpairing (or keeping unpaired), clear token/last pairing so it can be paired again.
+        if (!$isPaired) {
+            $device->revokeToken();
+        }
 
         $device->update([
-            'workstation_name' => trim($request->input('workstation_name')),
+            'workstation_name' => $workstationName,
             'is_paired' => $isPaired,
+            'last_seen_at' => $isPaired ? $device->last_seen_at : null,
         ]);
 
         $message = 'Device updated successfully.';
 
-        // Pairing clears the code, so unpairing must mint a fresh one or the
-        // device can never be paired again.
-        if (!$isPaired && empty($device->pairing_code)) {
+        // Ensure an unpaired device always has a pairing code available.
+        if (!$isPaired && empty($device->fresh()->pairing_code)) {
             $code = strtoupper(Str::random(6));
 
             $device->update(['pairing_code' => $code]);
 
             $message = "Device updated. New pairing code: {$code}";
+        }
+
+        // If marked paired manually without an active token context, keep state consistent.
+        if ($isPaired) {
+            // pairing_code is normally cleared on activation; keep as-is if already paired.
+            $device->update(['pairing_code' => null]);
         }
 
         return redirect()->route('device', $device)->with('success', $message);
@@ -101,14 +113,19 @@ public function show(Device $device ){
 }
     public function destroy($id)
     {
-    
         $device = Device::findOrFail($id);
-        if ($device->is_paired) { 
-            return redirect()->route('device')
-                ->with('error', "Cannot delete device '{$device->workstation_name}' because it is currently Paired. Please unpair it before attempting to delete.");
+
+        // Best effort: close any open sessions tied to this device before removal.
+        try {
+            $this->sessions->closeOpenSessionsForDevice(
+                $device->id,
+                'Device deleted by admin',
+                SessionService::ENDED_BY_ADMIN
+            );
+        } catch (\Throwable $e) {
+            // Deletion should still proceed even if cleanup fails.
         }
 
-        
         $device->delete();
 
         return redirect()->route('device')->with('success', "Device '{$device->workstation_name}' was successfully deleted.");
