@@ -14,11 +14,13 @@ use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
-Route::view('/', 'welcome');
+// Signed-in users skip the landing page and go straight to their dashboard.
+Route::view('/', 'welcome')->middleware('guest');
 
 
 // Authentication
-Route::get('/login',[AuthController::class,'index']);
+// Same for the login form: an active session goes to the dashboard.
+Route::get('/login',[AuthController::class,'index'])->middleware('guest');
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
