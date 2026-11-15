@@ -185,29 +185,34 @@
         <a
             href="/"
             class="flex items-center gap-3"
+            aria-label="Southern Leyte State University, Learning Commons and Library Services, Open Learning Hub"
         >
 
             <div
-                class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
             >
 
                 <img
                     src="{{ asset('image/library_logo.jpg') }}"
-                    alt="Open Learning Hub Logo"
+                    alt="Southern Leyte State University logo"
                     class="h-full w-full object-cover"
                 >
 
             </div>
 
 
-            <div>
+            <div class="leading-[13px]">
 
-                <span class="block text-sm font-bold tracking-wide text-slate-900">
-                    Open Learning Hub
+                <span class="block text-[10px] font-semibold leading-[13px] tracking-wide text-slate-500">
+                    Southern Leyte State University
                 </span>
 
-                <span class="block text-[10px] font-semibold uppercase tracking-[0.22em] text-blue-600">
-                    Workstation Access
+                <span class="block text-[11px] font-bold uppercase leading-[13px] tracking-wide text-slate-900">
+                    Learning Commons and Library Services
+                </span>
+
+                <span class="block text-[11px] font-semibold leading-[13px] text-blue-600">
+                    Open Learning Hub
                 </span>
 
             </div>

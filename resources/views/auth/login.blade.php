@@ -40,22 +40,25 @@
 
                 <div class="relative max-w-lg text-white">
 
-                    {{-- Logo --}}
+                    {{-- Institutional lockup, same as the workstation client --}}
                     <div class="mb-8 flex items-center gap-3">
-                        <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-lg backdrop-blur-sm">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white shadow-lg">
                             <img
                                 src="{{ asset('image/library_logo.jpg') }}"
-                                alt="Open Learning Hub Logo"
+                                alt="Southern Leyte State University logo"
                                 class="h-full w-full object-cover"
                             >
                         </div>
 
-                        <div>
-                            <p class="text-lg font-bold tracking-wide">
-                                Open Learning Hub
+                        <div class="leading-[13px]">
+                            <p class="text-[10px] font-semibold leading-[13px] tracking-wide text-blue-100/70">
+                                Southern Leyte State University
                             </p>
-                            <p class="text-xs font-medium text-blue-100/80">
-                                Digital Access Portal
+                            <p class="text-[11px] font-bold uppercase leading-[13px] tracking-wide text-white">
+                                Learning Commons and Library Services
+                            </p>
+                            <p class="text-[11px] font-semibold leading-[13px] text-sky-300">
+                                Open Learning Hub
                             </p>
                         </div>
                     </div>

@@ -104,31 +104,40 @@
                         <a
                             href="{{ route('login') }}"
                             class="mb-8 flex items-center gap-3"
+                            aria-label="Southern Leyte State University, Learning Commons and Library Services, Open Learning Hub"
                         >
 
                             <div
-                                class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-lg backdrop-blur-sm"
+                                class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-white shadow-lg"
                             >
 
                                 <img
                                     src="{{ asset('image/library_logo.jpg') }}"
-                                    alt="Open Learning Hub Logo"
+                                    alt="Southern Leyte State University logo"
                                     class="h-full w-full object-cover"
                                 >
 
                             </div>
 
 
-                            <div>
+                            <div class="leading-[13px]">
 
-                                <p class="text-lg font-bold tracking-wide">
-                                    Open Learning Hub
+                                <p
+                                    class="text-[10px] font-semibold leading-[13px] tracking-wide text-blue-100/70"
+                                >
+                                    Southern Leyte State University
                                 </p>
 
                                 <p
-                                    class="text-xs font-medium text-blue-100/80"
+                                    class="text-[11px] font-bold uppercase leading-[13px] tracking-wide text-white"
                                 >
-                                    Digital Access Portal
+                                    Learning Commons and Library Services
+                                </p>
+
+                                <p
+                                    class="text-[11px] font-semibold leading-[13px] text-sky-300"
+                                >
+                                    Open Learning Hub
                                 </p>
 
                             </div>
