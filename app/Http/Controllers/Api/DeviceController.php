@@ -60,6 +60,36 @@ class DeviceController extends Controller
         ], Response::HTTP_OK);
     }
     
+    /**
+     * Device-initiated unpair. Revokes the token and returns the fresh pairing
+     * code so the workstation can be paired again. The underlying model call
+     * is idempotent, so a concurrent dashboard unpair and client unpair settle
+     * on the same unpaired state and pairing code.
+     */
+    public function unpair(Request $request)
+    {
+        $device = $request->get('authenticated_device');
+
+        try {
+            $this->sessions->closeOpenSessionsForDevice(
+                $device->id,
+                'Device unpaired by client',
+                SessionService::ENDED_BY_CLIENT
+            );
+        } catch (\Throwable $e) {
+            // Unpairing must not fail because session cleanup did.
+        }
+
+        $code = $device->unpair();
+
+        return response()->json([
+            'success'      => true,
+            'paired'       => false,
+            'pairing_code' => $code,
+            'message'      => 'Device unpaired.',
+        ], Response::HTTP_OK);
+    }
+
     public function heartbeat(Request $request)
     {
         $validated = $request->validate([

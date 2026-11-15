@@ -51,7 +51,7 @@ class DeviceController extends Controller
         'workstation_name'=> 'required|string|max:255|unique:devices,workstation_name',
     ]);
     
-    $pairingCode = strtoupper(Str::random(6));
+    $pairingCode = Device::newPairingCode();
 
     Device::create([
         'workstation_name'=> trim($validated['workstation_name']),
@@ -74,35 +74,37 @@ class DeviceController extends Controller
         $isPaired = (bool) $request->input('is_paired');
         $workstationName = trim($request->input('workstation_name'));
 
-        // If unpairing (or keeping unpaired), clear token/last pairing so it can be paired again.
         if (!$isPaired) {
-            $device->revokeToken();
+            // Close any live session so the dashboard stops showing "In Use".
+            try {
+                $this->sessions->closeOpenSessionsForDevice(
+                    $device->id,
+                    'Device unpaired by admin',
+                    SessionService::ENDED_BY_ADMIN
+                );
+            } catch (\Throwable $e) {
+                // Unpairing should still proceed even if session cleanup fails.
+            }
+
+            // Revokes the token, marks the device unpaired, and guarantees a
+            // fresh pairing code for the next activation.
+            $code = $device->unpair();
+
+            $device->update(['workstation_name' => $workstationName]);
+
+            return redirect()->route('device', $device)
+                ->with('success', "Device updated. New pairing code: {$code}");
         }
 
+        // Marking paired manually: clear the one-time code (activation also
+        // clears it) but leave the token alone.
         $device->update([
             'workstation_name' => $workstationName,
-            'is_paired' => $isPaired,
-            'last_seen_at' => $isPaired ? $device->last_seen_at : null,
+            'is_paired' => true,
+            'pairing_code' => null,
         ]);
 
-        $message = 'Device updated successfully.';
-
-        // Ensure an unpaired device always has a pairing code available.
-        if (!$isPaired && empty($device->fresh()->pairing_code)) {
-            $code = strtoupper(Str::random(6));
-
-            $device->update(['pairing_code' => $code]);
-
-            $message = "Device updated. New pairing code: {$code}";
-        }
-
-        // If marked paired manually without an active token context, keep state consistent.
-        if ($isPaired) {
-            // pairing_code is normally cleared on activation; keep as-is if already paired.
-            $device->update(['pairing_code' => null]);
-        }
-
-        return redirect()->route('device', $device)->with('success', $message);
+        return redirect()->route('device', $device)->with('success', 'Device updated successfully.');
     }
     public function edit(Device $device){
         return view('admin.device.edit', compact('device'));

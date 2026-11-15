@@ -2,6 +2,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Device extends Model
 {
@@ -75,5 +78,78 @@ class Device extends Model
             'token_created_at' => null,
             'token_expires_at' => null,
         ]);
+    }
+
+    /**
+     * Unpair this device and return the pairing code needed to pair it again.
+     *
+     * Serialized per device with a row lock so a client-side unpair and a
+     * dashboard unpair landing at the same time cannot interleave (one wins,
+     * the other sees the already-unpaired row and simply reuses its code).
+     */
+    public function unpair(): string
+    {
+        return DB::transaction(function (): string {
+            /** @var Device $device */
+            $device = static::query()
+                ->whereKey($this->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $device->update([
+                'is_paired'        => false,
+                'last_seen_at'     => null,
+                'api_token'        => null,
+                'token_created_at' => null,
+                'token_expires_at' => null,
+            ]);
+
+            $code = $device->pairing_code;
+
+            if (empty($code)) {
+                $code = static::assignPairingCode($device);
+            }
+
+            return $code;
+        });
+    }
+
+    /**
+     * Return a pairing code that is not currently assigned to another device.
+     */
+    public static function newPairingCode(): string
+    {
+        for ($attempt = 0; $attempt < 10; $attempt++) {
+            $code = strtoupper(Str::random(6));
+
+            if (!static::query()->where('pairing_code', $code)->exists()) {
+                return $code;
+            }
+        }
+
+        return strtoupper(Str::random(10));
+    }
+
+    /**
+     * Assign a fresh, unique pairing code to a device. pairing_code has a
+     * unique index, so a collision is retried instead of bubbling up.
+     */
+    private static function assignPairingCode(Device $device): string
+    {
+        for ($attempt = 0; $attempt < 10; $attempt++) {
+            $code = static::newPairingCode();
+
+            try {
+                $device->update(['pairing_code' => $code]);
+                return $code;
+            } catch (QueryException) {
+                // Unique-index collision: try another code.
+            }
+        }
+
+        $code = strtoupper(Str::random(10));
+        $device->update(['pairing_code' => $code]);
+
+        return $code;
     }
 }

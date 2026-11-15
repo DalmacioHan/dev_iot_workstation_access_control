@@ -210,10 +210,17 @@
                                         Paired
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
-                                        <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
-                                        Not Paired
-                                    </span>
+                                    <div class="flex flex-col items-center gap-1">
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+                                            Not Paired
+                                        </span>
+                                        @if(!empty($device->pairing_code))
+                                            <span class="font-mono text-[11px] font-semibold tracking-wider text-slate-500" title="Pairing code">
+                                                {{ $device->pairing_code }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 @endif
                             </td>
 
