@@ -266,6 +266,24 @@
         <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
             <div class="flex items-center justify-between gap-4 border-b border-slate-100 px-6 py-5">
                 <div>
+                    <h2 class="text-lg font-bold text-slate-900">Top 10 Workstations</h2>
+                    <p class="mt-1 text-sm text-slate-500">Workstations with the most successful logins.</p>
+                </div>
+            </div>
+            <div class="p-6">
+                <div id="top-workstations-chart" class="min-h-80"></div>
+                <div class="mt-4 flex justify-end border-t border-slate-100 pt-4">
+                    <a href="{{ route('reports.index', array_merge($reportRange, ['tab' => 'access', 'step' => 4, 'event' => 'time_in', 'result' => 'allowed'])) }}" class="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                        View Report
+                        <x-icon name="arrow-right" class="w-4 h-4" aria-hidden="true" />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-slate-100 px-6 py-5">
+                <div>
                     <h2 class="text-lg font-bold text-slate-900">Top 10 Application</h2>
                     <p class="mt-1 text-sm text-slate-500">Applications with the most usage.</p>
                 </div>
@@ -520,6 +538,14 @@ document.addEventListener('DOMContentLoaded', function () {
         @json($topCourses->map(fn ($course) => ['label' => $course->course, 'total' => $course->total])->values()),
         'No course activity found for this period.',
         '#1D4ED8',
+        'logins'
+    );
+
+    renderRankedBarChart(
+        'top-workstations-chart',
+        @json($topWorkstations->map(fn ($workstation) => ['label' => $workstation->device?->workstation_name ?? 'Unknown Workstation', 'total' => $workstation->total])->values()),
+        'No workstation activity found for this period.',
+        '#D97706',
         'logins'
     );
 

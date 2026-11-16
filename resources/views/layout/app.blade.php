@@ -22,7 +22,7 @@
 
 
     <title>
-        @yield('title', 'Dashboard') | OLH
+        @yield('title', 'Dashboard') | Open Learning Hub
     </title>
 
 
@@ -71,38 +71,44 @@
                     </button>
 
 
-                    {{-- Brand --}}
+                    {{-- Brand: institutional lockup, same as the workstation client --}}
                     <a
                         href="{{ route('dashboard') }}"
                         class="flex items-center gap-3"
+                        aria-label="Southern Leyte State University, Learning Commons and Library Services, Open Learning Hub"
                     >
 
                         <div
-                            class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-blue-600 shadow-sm"
+                            class="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-sm"
                         >
 
                             <img
                                 src="{{ asset('image/library_logo.jpg') }}"
                                 class="h-full w-full object-cover"
-                                alt="OLH Logo"
+                                alt="Southern Leyte State University logo"
                             >
 
                         </div>
 
 
-                        <div class="hidden sm:block">
+                        <div class="hidden leading-[13px] sm:block">
 
                             <p
-                                class="text-base font-bold tracking-tight text-gray-900"
+                                class="text-[10px] font-semibold leading-[13px] tracking-wide text-gray-500"
                             >
-                                OLH
+                                Southern Leyte State University
                             </p>
 
+                            <p
+                                class="text-[11px] font-bold uppercase leading-[13px] tracking-wide text-gray-900"
+                            >
+                                Learning Commons and Library Services
+                            </p>
 
                             <p
-                                class="text-[11px] font-medium text-gray-400"
+                                class="text-[11px] font-semibold leading-[13px] text-blue-600"
                             >
-                                Workstation Management
+                                Open Learning Hub
                             </p>
 
                         </div>
@@ -649,7 +655,7 @@
                             <p
                                 class="text-xs font-semibold text-gray-800"
                             >
-                                OLH Library
+                                Open Learning Hub
                             </p>
 
 

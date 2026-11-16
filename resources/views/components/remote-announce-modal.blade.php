@@ -15,6 +15,7 @@
 
             <form id="remoteAnnounceForm" action="" method="POST" class="mt-4 text-left">
                 @csrf
+                <div id="remoteAnnounceDeviceIds"></div>
                 <label for="remoteAnnounceMessage" class="mb-1 block text-xs font-semibold text-gray-600">
                     Message shown on the PC
                 </label>
@@ -45,10 +46,24 @@
 </div>
 
 <script>
-    function openRemoteAnnounceModal(actionUrl, deviceName) {
-        document.getElementById('remoteAnnounceForm').action = actionUrl;
+    function openRemoteAnnounceModal(actionUrl, deviceName, deviceIds = null) {
+        const form = document.getElementById('remoteAnnounceForm');
+        form.action = actionUrl;
         document.getElementById('remoteAnnounceDeviceName').innerText = deviceName || 'this PC';
         document.getElementById('remoteAnnounceMessage').value = '';
+        const idsContainer = document.getElementById('remoteAnnounceDeviceIds');
+        if (idsContainer) {
+            idsContainer.innerHTML = '';
+            if (Array.isArray(deviceIds)) {
+                deviceIds.forEach(id => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'device_ids[]';
+                    input.value = id;
+                    idsContainer.appendChild(input);
+                });
+            }
+        }
         document.getElementById('remoteAnnounceModal').classList.remove('hidden');
     }
 

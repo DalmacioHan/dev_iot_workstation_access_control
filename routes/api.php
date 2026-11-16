@@ -16,6 +16,9 @@ Route::middleware(['device.auth', 'reap.sessions'])->group(function () {
     // heartbeat route
     Route::post('/device/ping',[DeviceController::class,'heartbeat']);
 
+    // device-initiated unpair (revokes the token server-side)
+    Route::post('/device/unpair',[DeviceController::class,'unpair']);
+
     // global client behavior config (idle/shutdown timers + Task Manager flag)
     Route::get('/device/config',[DeviceController::class,'config']);
 

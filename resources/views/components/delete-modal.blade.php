@@ -31,6 +31,7 @@
             <form id="delete-form" method="POST" class="w-full m-0">
                 @csrf
                 @method('DELETE')
+                <div id="delete-device-ids"></div>
                 <button 
                     type="submit" 
                     class="inline-flex w-full justify-center rounded-xl bg-red-600 px-6 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-200 transition-colors"
@@ -44,13 +45,27 @@
 
 <script>
     // Call this function from your delete buttons, passing the route URL and an optional custom message
-    function openDeleteModal(actionUrl, customMessage = null) {
+    function openDeleteModal(actionUrl, customMessage = null, deviceIds = null) {
         const modal = document.getElementById('delete-confirmation-modal');
         const form = document.getElementById('delete-form');
         const messageEl = document.getElementById('delete-modal-message');
 
         // Set the form action to the specific item's delete route
         form.action = actionUrl;
+
+        const idsContainer = document.getElementById('delete-device-ids');
+        if (idsContainer) {
+            idsContainer.innerHTML = '';
+            if (Array.isArray(deviceIds)) {
+                deviceIds.forEach(id => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'device_ids[]';
+                    input.value = id;
+                    idsContainer.appendChild(input);
+                });
+            }
+        }
 
         // Optionally override the default message
         if (customMessage) {

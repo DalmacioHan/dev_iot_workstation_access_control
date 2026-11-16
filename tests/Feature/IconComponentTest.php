@@ -47,7 +47,7 @@ it('has a local file for every icon referenced in the views', function () {
 
         $contents = file_get_contents($file->getPathname());
 
-        preg_match_all('/<x-icon\s+name="([^"]+)"/', $contents, $matches);
+        preg_match_all('/<x-icon\s+name="([a-z0-9-]+)"/', $contents, $matches);
 
         foreach ($matches[1] as $name) {
             if (! MageIcon::exists($name)) {

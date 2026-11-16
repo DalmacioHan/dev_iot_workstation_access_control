@@ -15,6 +15,7 @@
 
             <form id="remoteLockForm" action="" method="POST" class="mt-4 text-left">
                 @csrf
+                <div id="remoteLockDeviceIds"></div>
                 <label for="remoteLockMessage" class="mb-1 block text-xs font-semibold text-gray-600">
                     Message shown on the PC <span class="font-normal text-gray-400">(optional)</span>
                 </label>
@@ -47,10 +48,24 @@
 </div>
 
 <script>
-    function openRemoteLockModal(actionUrl, deviceName) {
-        document.getElementById('remoteLockForm').action = actionUrl;
+    function openRemoteLockModal(actionUrl, deviceName, deviceIds = null) {
+        const form = document.getElementById('remoteLockForm');
+        form.action = actionUrl;
         document.getElementById('remoteLockDeviceName').innerText = deviceName || 'this PC';
         document.getElementById('remoteLockMessage').value = '';
+        const idsContainer = document.getElementById('remoteLockDeviceIds');
+        if (idsContainer) {
+            idsContainer.innerHTML = '';
+            if (Array.isArray(deviceIds)) {
+                deviceIds.forEach(id => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'device_ids[]';
+                    input.value = id;
+                    idsContainer.appendChild(input);
+                });
+            }
+        }
         document.getElementById('remoteLockModal').classList.remove('hidden');
     }
 

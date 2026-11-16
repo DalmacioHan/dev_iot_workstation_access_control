@@ -19,12 +19,20 @@ class AnalyticsController extends Controller
         $dateTo = Carbon::parse($validated['date_to'] ?? $now->toDateString())->endOfDay();
 
         //Card data
-        $popularWorkstation = PcAccessLogs::select('device_id', PcAccessLogs::raw('COUNT(*) as total'))
+        $topWorkstations = PcAccessLogs::query()
+            ->select('device_id')
+            ->selectRaw('COUNT(DISTINCT session_id) as total')
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
+            ->where('event_type', 'time_in')
+            ->where('result', 'allowed')
+            ->whereNotNull('device_id')
+            ->whereNotNull('session_id')
             ->with('device')
             ->groupBy('device_id')
-            ->orderBy('total', 'desc')
-            ->get(1);
+            ->orderByDesc('total')
+            ->take(10)
+            ->get();
+        $popularWorkstation = $topWorkstations->take(1);
         $popularApplication = PcAppUsage::select('app_name', PcAppUsage::raw('COUNT(*) as total'))
             ->whereBetween('occurred_at', [$dateFrom, $dateTo])
             ->groupBy('app_name')
@@ -189,7 +197,7 @@ class AnalyticsController extends Controller
 
         return view('admin.analytics.index', compact(
             'failedLogins', 'popularWorkstation', 'successfulLogins', 'popularApplication',
-            'topAccessStudents', 'topCourses', 'topApplication', 'peakHours', 'topUsageStudents',
+            'topAccessStudents', 'topCourses', 'topApplication', 'topWorkstations', 'peakHours', 'topUsageStudents',
             'dateFrom', 'dateTo'
             ));
     }

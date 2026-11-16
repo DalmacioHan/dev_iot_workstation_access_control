@@ -6,7 +6,7 @@
         * { box-sizing: border-box; }
         body {
             color: #1e293b;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Aptos, sans-serif;
             margin: 0;
             padding: 0;
             background: #ffffff;

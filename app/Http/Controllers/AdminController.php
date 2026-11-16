@@ -342,6 +342,7 @@ class AdminController extends Controller
             'device_id' => (int) $session->device_id,
             'device_name' => $deviceName,
             'lock_url' => route('device.lock', $session->device_id),
+            'unlock_url' => route('device.unlock', $session->device_id),
             'announce_url' => route('device.announce', $session->device_id),
             'device_url' => route('device.show', $session->device_id),
             'started_at' => $startedAt->toIso8601String(),

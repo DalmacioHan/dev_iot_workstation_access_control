@@ -13,6 +13,33 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccessController extends Controller
 {
+    /**
+     * Defense-in-depth denylist for obvious shell/system processes. Client-side
+     * filtering is authoritative (e.g. Explorer is only tracked for real file
+     * windows), so keep this list conservative.
+     */
+    private const SYSTEM_APP_USAGE_DENYLIST = [
+        'searchhost',
+        'startmenuexperiencehost',
+        'shellexperiencehost',
+        'textinputhost',
+        'lockapp',
+        'searchapp',
+        'runtimebroker',
+        'dwm',
+        'sihost',
+        'ctfmon',
+        'fontdrvhost',
+        'widgets',
+        'widgetservice',
+        'pickerhost',
+        'credentialuibroker',
+        'crossdeviceresume',
+        'logonui',
+        'securityhealthsystray',
+        'systemsettingsadminflows',
+    ];
+
     public function __construct(
         private SessionService $sessions,
         private MisStudentLookup $mis

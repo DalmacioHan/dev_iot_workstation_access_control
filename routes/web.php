@@ -14,11 +14,13 @@ use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
-Route::view('/', 'welcome');
+// Signed-in users skip the landing page and go straight to their dashboard.
+Route::view('/', 'welcome')->middleware('guest');
 
 
 // Authentication
-Route::get('/login',[AuthController::class,'index']);
+// Same for the login form: an active session goes to the dashboard.
+Route::get('/login',[AuthController::class,'index'])->middleware('guest');
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -68,9 +70,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/sessions/{sessionId}/force-end', [AdminController::class, 'forceEndSession'])->name('dashboard.session.force-end');
 
     Route::get('/devices',[DeviceController::class,'index'])->name('device');
+    Route::post('/devices/bulk/lock', [DeviceController::class, 'bulkLock'])->name('device.bulk-lock');
+    Route::post('/devices/bulk/unlock', [DeviceController::class, 'bulkUnlock'])->name('device.bulk-unlock');
+    Route::post('/devices/bulk/announce', [DeviceController::class, 'bulkAnnounce'])->name('device.bulk-announce');
+    Route::delete('/devices/bulk/delete', [DeviceController::class, 'bulkDestroy'])->name('device.bulk-delete');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('device.show');
     Route::delete('/devices/{device}/delete', [DeviceController::class, 'destroy'])->name('device.destroy');
     Route::post('/devices/{device}/lock', [DeviceController::class, 'lockDevice'])->name('device.lock');
+    Route::post('/devices/{device}/unlock', [DeviceController::class, 'unlockDevice'])->name('device.unlock');
     Route::post('/devices/{device}/announce', [DeviceController::class, 'announceDevice'])->name('device.announce');
     // Monitoring
     Route::get('/monitoring',[MonitoringController::class,'index'])->name('monitoring');

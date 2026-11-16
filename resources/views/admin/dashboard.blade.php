@@ -149,7 +149,7 @@
 
                 <div
                     class="mt-3 flex items-center justify-between text-xs text-blue-100"
-                >d
+                >
 
                     {{-- <span>
                         {{ number_format($activeDevices ?? 0) }} active
@@ -451,13 +451,7 @@
                             </div>
 
 
-                            <span
-                                class="live-stale-badge {{ !empty($session['is_stale']) ? '' : 'hidden' }} inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700"
-                                title="No heartbeat for over {{ $session['stale_warning_minutes'] ?? 2 }} minutes. Auto-closes after {{ $session['stale_minutes'] ?? 5 }} minutes without a heartbeat."
-                            >
-                                <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                                No heartbeat
-                            </span>
+
 
 
                             <button
@@ -467,6 +461,7 @@
                                 data-student-name="{{ $session['student_name'] }}"
                                 data-device-name="{{ $session['device_name'] }}"
                                 data-lock-url="{{ $session['lock_url'] }}"
+                                data-unlock-url="{{ $session['unlock_url'] ?? '' }}"
                                 data-announce-url="{{ $session['announce_url'] }}"
                                 data-device-url="{{ $session['device_url'] }}"
                                 aria-haspopup="menu"
@@ -565,6 +560,17 @@
             <x-icon name="lock" class="h-4 w-4" aria-hidden="true" />
 
             Remote Lock
+        </button>
+
+
+        <button
+            type="button"
+            class="live-menu-unlock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+            role="menuitem"
+        >
+            <x-icon name="lock-open" class="h-4 w-4" aria-hidden="true" />
+
+            Remote Unlock
         </button>
 
 
@@ -1439,6 +1445,9 @@ document.addEventListener('DOMContentLoaded', function () {
         menuEl.dataset.lockUrl =
             button.getAttribute('data-lock-url') || '';
 
+        menuEl.dataset.unlockUrl =
+            button.getAttribute('data-unlock-url') || '';
+
         menuEl.dataset.announceUrl =
             button.getAttribute('data-announce-url') || '';
 
@@ -1482,6 +1491,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 openRemoteLockModal(url, deviceName);
+
+            });
+
+
+        menuEl.querySelector('.live-menu-unlock')
+            ?.addEventListener('click', function () {
+
+                const url = menuEl.dataset.unlockUrl;
+                const deviceName = menuEl.dataset.deviceName;
+
+                closeManageMenu();
+
+                if (!url || typeof openRemoteUnlockModal !== 'function') {
+                    return;
+                }
+
+                openRemoteUnlockModal(url, deviceName);
 
             });
 
@@ -1728,13 +1754,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
 
 
-                <span
-                    class="live-stale-badge ${session.is_stale ? '' : 'hidden'} inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700"
-                    title="No heartbeat for over ${session.stale_warning_minutes || 2} minutes. Auto-closes after ${session.stale_minutes || 5} minutes without a heartbeat."
-                >
-                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                    No heartbeat
-                </span>
+
 
 
                 <button
@@ -1744,6 +1764,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data-student-name="${escapeAttr(session.student_name || 'Live session')}"
                     data-device-name="${escapeAttr(session.device_name || session.workstation_name || 'Workstation')}"
                     data-lock-url="${escapeAttr(session.lock_url || '')}"
+                    data-unlock-url="${escapeAttr(session.unlock_url || '')}"
                     data-announce-url="${escapeAttr(session.announce_url || '')}"
                     data-device-url="${escapeAttr(session.device_url || '')}"
                     aria-haspopup="menu"
@@ -2018,32 +2039,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
 
 
-                            const staleBadge =
-                                card.querySelector(
-                                    '.live-stale-badge'
-                                );
 
-
-                            if (staleBadge) {
-
-                                staleBadge.classList.toggle(
-                                    'hidden',
-                                    !session.is_stale
-                                );
-
-
-                                if (session.is_stale) {
-
-                                    staleBadge.title =
-                                        'No heartbeat for over '
-                                        + (session.stale_warning_minutes || 2)
-                                        + ' minutes. Auto-closes after '
-                                        + (session.stale_minutes || 5)
-                                        + ' minutes without a heartbeat.';
-
-                                }
-
-                            }
 
                         }
 
@@ -2140,6 +2136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 {{-- Shared device actions, same modals as the Devices page --}}
 <x-remote-lock-modal />
+<x-remote-unlock-modal />
 <x-remote-announce-modal />
 
 @endsection

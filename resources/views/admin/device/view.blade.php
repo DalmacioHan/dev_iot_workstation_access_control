@@ -102,6 +102,7 @@
                         class="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-4 focus:ring-white/30"
                         data-device-name="{{ $device->workstation_name }}"
                         data-lock-url="{{ route('device.lock', $device->id) }}"
+                        data-unlock-url="{{ route('device.unlock', $device->id) }}"
                         data-announce-url="{{ route('device.announce', $device->id) }}"
                         @if(auth()->user()->isSuperAdmin())
                             data-edit-url="{{ route('device.edit', $device->id) }}"
@@ -267,6 +268,10 @@
                                     <span class="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-sky-700">
                                         Announcement
                                     </span>
+                                @elseif($command->command === 'unlock')
+                                    <span class="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-emerald-700">
+                                        Remote Unlock
+                                    </span>
                                 @else
                                     <span class="inline-flex items-center gap-1 rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-violet-700">
                                         Remote Lock
@@ -331,6 +336,17 @@
             <x-icon name="lock" class="h-4 w-4" aria-hidden="true" />
 
             Remote Lock
+        </button>
+
+
+        <button
+            type="button"
+            class="device-detail-unlock flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-medium text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+            role="menuitem"
+        >
+            <x-icon name="lock-open" class="h-4 w-4" aria-hidden="true" />
+
+            Remote Unlock
         </button>
 
 
@@ -464,6 +480,26 @@
                 });
 
 
+            menuEl.querySelector('.device-detail-unlock')
+                .addEventListener('click', function () {
+
+                    const url =
+                        buttonEl.getAttribute('data-unlock-url');
+
+                    const deviceName =
+                        buttonEl.getAttribute('data-device-name') || 'this PC';
+
+                    closeMenu();
+
+                    if (!url || typeof openRemoteUnlockModal !== 'function') {
+                        return;
+                    }
+
+                    openRemoteUnlockModal(url, deviceName);
+
+                });
+
+
             menuEl.querySelector('.device-detail-announce')
                 .addEventListener('click', function () {
 
@@ -528,6 +564,7 @@
 
 
 <x-remote-lock-modal />
+<x-remote-unlock-modal />
 <x-remote-announce-modal />
 
 </div>
