@@ -149,7 +149,7 @@
 
                 <div
                     class="mt-3 flex items-center justify-between text-xs text-blue-100"
-                >d
+                >
 
                     {{-- <span>
                         {{ number_format($activeDevices ?? 0) }} active

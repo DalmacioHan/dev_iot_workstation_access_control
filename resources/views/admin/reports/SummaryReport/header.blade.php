@@ -8,7 +8,7 @@
         margin: 0;
         padding: 0;
         width: 100%;
-        font-family: Georgia, 'Times New Roman', serif;
+        font-family: Aptos, sans-serif;
     }
     
     .header-wrapper {
